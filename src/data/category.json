@@ -1,0 +1,19 @@
+{
+  "categories": [
+    {
+      "id": "1",
+      "name": "TypeScript",
+      "thumbnail": "TypeScript_logo.svg"
+    },
+    {
+      "id": "2",
+      "name": "JavaScript",
+      "thumbnail": "JavaScript_logo.svg"
+    },
+    {
+      "id": "3",
+      "name": "NextJS",
+      "thumbnail": "NextJS_logo.png"
+    }
+  ]
+}
