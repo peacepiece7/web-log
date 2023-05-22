@@ -1,0 +1,18 @@
+{
+  "category": {
+    "categories": [
+      {
+        "id": "1",
+        "name": "TypeScript"
+      },
+      {
+        "id": "2",
+        "name": "JavaScript"
+      },
+      {
+        "id": "3",
+        "name": "NextJS"
+      }
+    ]
+  }
+}
