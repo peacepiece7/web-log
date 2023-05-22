@@ -19,6 +19,7 @@ class FileData implements IFileData {
   }
   getContent<T>(): T | null {
     const contentData = this.promiseServeFileDataOrNull<T>(path.join(this.dir, 'content.json'))
+    // todo : 파일을 읽어오는 거라 어쩔 수 없이 전체 파일을 읽고 필요한 데이터만 출력하는 방법으로 진행합니다. db로 변경하면 getContent로 변경할 수 있습니다.
     return contentData
   }
   getLogInformation<T>(): T | null {
