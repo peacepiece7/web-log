@@ -14,6 +14,11 @@
       "id": "3",
       "name": "NextJS",
       "thumbnail": "NextJS_logo.png"
+    },
+    {
+      "id": "4",
+      "name": "NodeJs",
+      "thumbnail": "NodeJs_logo.svg"
     }
   ]
 }

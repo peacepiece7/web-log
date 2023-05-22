@@ -24,5 +24,6 @@ export type ContentData = {
   [key: string]: Contents
 }
 type Contents = {
+  title: string
   content: string
 }
