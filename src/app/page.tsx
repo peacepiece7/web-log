@@ -1,7 +1,7 @@
 import fileData from '../service/getFileData'
 import { CategoryData, LogData } from '@/type'
-import CategoryList from './components/CategoryList'
-import LatestLogList from './components/LatestLogList'
+import CategoryList from '../components/CategoryList'
+import LatestLogList from '../components/LatestLogList'
 
 export default function Home() {
   const categoryData = fileData.getCategory<CategoryData>()
