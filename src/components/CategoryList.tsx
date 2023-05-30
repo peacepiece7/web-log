@@ -10,7 +10,10 @@ export default function CategoryList({ categories }: Props) {
     <ul className='flex text-center'>
       {categories.map((category) => {
         return (
-          <li key={category.id}>
+          <li
+            key={category.id}
+            className='p-5'
+          >
             <div className='w-[100px] h-[100px] flex justify-center items-center rounded-md overflow-hidden'>
               <Image
                 src={`/${category.thumbnail}`}
