@@ -1,21 +1,30 @@
 import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { LogData } from '../type'
-type Props = {
-  logData: LogData
+
+type Log = {
+  id: string
+  title: string
+  categories: string[]
+  thumbnail: string
+  fileName: string
+  createdAt: string
 }
-export default function LatestLogList({ logData }: Props) {
+
+type Props = {
+  logs: Log[]
+}
+export default function LatestLogList({ logs }: Props) {
   return (
     <div>
-      {logData.webLog.map((log) => {
+      {logs.map((log) => {
         return (
           <div
             key={log.id}
             className='flex justify-center'
           >
             <div className='pb-12'>
-              <Link href={`/log/${log.contentID}`}>
+              <Link href={`/log/${log.id}`}>
                 <Image
                   src={`/${log.thumbnail}`}
                   alt={log.title + ' thumnail'}

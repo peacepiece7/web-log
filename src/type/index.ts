@@ -1,6 +1,7 @@
 export type CategoryData = {
   categories: Categories[]
 }
+
 type Categories = {
   id: string
   name: string

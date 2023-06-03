@@ -1,21 +1,21 @@
 import { init } from './config'
 import { DocumentData, Firestore, collection, getDocs, getFirestore } from 'firebase/firestore/lite'
-import { doc, setDoc } from 'firebase/firestore'
+import { CollectionReference, doc, setDoc } from 'firebase/firestore'
 
 export default class FirebaseCollection {
-  column
+  db: CollectionReference<DocumentData>
   type: string
   constructor(type: string) {
     this.type = type
-    this.column = collection(getFirestore(init), type)
+    this.db = collection(getFirestore(init), type)
   }
 
   async getData() {
-    const snapshot = await getDocs(this.column)
+    const snapshot = await getDocs(this.db)
     return snapshot.docs.map((doc) => doc.data())
   }
   async setData<T>(types: string[], data: T) {
-    await setDoc(doc(this.column, ...types), data as DocumentData)
+    await setDoc(doc(this.db, ...types), data as DocumentData)
   }
 
   // async getDataMap<T>(cb: (data: DocumentData) => T | DocumentData) {

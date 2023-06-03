@@ -1,7 +1,5 @@
-import { getAnalytics } from 'firebase/analytics'
 import { initializeApp } from 'firebase/app'
 import dotenv from 'dotenv'
-import { getFirestore } from 'firebase/firestore/lite'
 
 dotenv.config()
 const firebaseConfig = {

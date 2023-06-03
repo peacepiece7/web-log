@@ -1,18 +1,20 @@
 import fileData from '../service/getFileData'
-import { CategoryData, LogData } from '@/type'
+import { CategoryData } from '@/type'
 import CategoryList from '../components/CategoryList'
 import LatestLogList from '../components/LatestLogList'
-import FirebaseCollection from '../../service/Firebase/collection'
+import FirebaseCollection from '../service/Firebase/collection'
 
-export default function Home() {
+type Log = {
+  id: string
+  title: string
+  categories: string[]
+  thumbnail: string
+  fileName: string
+  createdAt: string
+}
+
+export default async function Home() {
   const categoryData = fileData.getCategory<CategoryData>()
-  const logData = fileData.getLogInformation<LogData>()
-
-  const co = new FirebaseCollection('log')
-  
-  co.getData().then((data) => {
-    console.log(data)
-  })
 
   return (
     <main className='pl-5 pr-5'>
@@ -28,7 +30,7 @@ export default function Home() {
       </section>
       <section>
         <h2 className='text-2xl pb-20'>Latest Logs</h2>
-        {logData ? <LatestLogList logData={logData} /> : <div>not found log data</div>}
+        {logs ? <LatestLogList logs={logs} /> : <div>not found log data</div>}
       </section>
     </main>
   )
