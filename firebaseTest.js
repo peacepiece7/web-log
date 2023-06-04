@@ -1,7 +1,15 @@
 import { initializeApp } from 'firebase/app'
 import dotenv from 'dotenv'
-import { collection, getDocs, getFirestore, addDoc } from 'firebase/firestore/lite'
-// import { CollectionReference, doc, setDoc, addDoc } from 'firebase/firestore'
+import {
+  collection,
+  getDocs,
+  getFirestore,
+  setDoc,
+  doc,
+  addDoc,
+  deleteField,
+  updateDoc,
+} from 'firebase/firestore'
 
 dotenv.config()
 const firebaseConfig = {
@@ -17,37 +25,34 @@ const firebaseConfig = {
 const init = initializeApp(firebaseConfig)
 
 const db = getFirestore(init)
-const logCol = collection(db, 'test')
+const logCol = collection(db, 'log')
 
 const snapshot = await getDocs(logCol)
+// * 데이터 가져오기
 const getData = snapshot.docs.map((doc) => doc.data())
 console.log(getData)
 
-// const db2 = getFirestore(isnit)
+const newData = {
+  title: 'waldo',
+  categories: ['bar'],
+  lastModifedAt: '2021-12-20',
+  thumbnail: 'JavaScript_logo.svg',
+  fileName: 'C123',
+  createdAt: '2022-12-24',
+}
 
-const docRef2 = await addDoc(collection(db, 'test'), {
-  name: 'bar',
-})
+// * 추가
+// const docRef = await addDoc(collection(db, 'log'), newData)
 
-// const docRef = await addDoc(logCol, {
-//   categories: ['TypeScript', 'NextJS'],
-//   createdAt: '2021-05-01',
-//   fileName: 'C123',
-//   lastModifedAt: '2021-05-02',
-//   thumbnail: 'NextJS_logo.png',
-//   title: 'NextJS Tutorial with Typescript',
+// * 업데이트
+// 문서가 없을 경우 생성됩니다.
+// await setDoc(doc(db, 'log', 'oUDHb2Ti2Gj2OUEFdqF0'), newData)
+// merge : true일 경우 빈 문자열로 데이터가 초기화 되는 현상을 막고, 부분 업데이트 됩니다. default : true 입니다.
+// merge : false일 경우 주어진 데이터 그대로 필드가 덮어 씌워집니다.
+await setDoc(doc(db, 'log', 'oUDHb2Ti2Gj2OUEFdqF1'), { title: 'foo' })
+
+// * 삭제
+// const ref = doc(db, 'logs', 'oUDHb2Ti2Gj2OUEFdqF0')
+// await updateDoc(ref, {
+//   capital: deleteField(),
 // })
-
-// console.log(docRef2)
-
-// const res = await setDoc(doc(db2, 'log'), {
-//   id: '123123',
-//   title: 'foo',
-//   categories: ['bar'],
-//   lastModifedAt: '2021-10-10',
-//   thumbnail: 'JavaScript_logo.svg',
-//   fileName: 'C123',
-//   createdAt: '2022-10-10',
-// })
-
-// console.log('setdoc res : ', res)
