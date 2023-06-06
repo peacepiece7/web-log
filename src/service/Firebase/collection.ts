@@ -1,25 +1,55 @@
 import { init } from './config'
-import { DocumentData, Firestore, collection, getDocs, getFirestore } from 'firebase/firestore/lite'
-import { CollectionReference, doc, setDoc } from 'firebase/firestore'
+
+import {
+  CollectionReference,
+  addDoc,
+  doc,
+  setDoc,
+  updateDoc,
+  DocumentData,
+  collection,
+  getDocs,
+  getFirestore,
+  deleteField,
+} from 'firebase/firestore'
 
 export default class FirebaseCollection {
-  db: CollectionReference<DocumentData>
-  type: string
-  constructor(type: string) {
-    this.type = type
-    this.db = collection(getFirestore(init), type)
+  db
+  constructor() {
+    this.db = getFirestore(init)
   }
 
-  async getData() {
-    const snapshot = await getDocs(this.db)
+  async getDocs(_collection: string) {
+    const snapshot = await getDocs(collection(this.db, _collection))
     return snapshot.docs.map((doc) => doc.data())
   }
-  async setData<T>(types: string[], data: T) {
-    await setDoc(doc(this.db, ...types), data as DocumentData)
+  async addDoc<T extends object>(_collection: string, fields: T) {
+    const docRef = await addDoc(collection(this.db, _collection), fields)
+    return docRef
   }
-
-  // async getDataMap<T>(cb: (data: DocumentData) => T | DocumentData) {
-  //   const snapshot = await getDocs(this.column)
-  //   snapshot.docs.map((doc) => cb(doc.data()))
-  // }
+  /**
+   * @description merge : true일 경우 빈 문자열로 데이터가 초기화 되는 현상을 막고, 부분 업데이트 됩니다. default : true 입니다.
+   *
+   * merge : false일 경우 주어진 데이터 그대로 필드가 덮어 씌워집니다.
+   */
+  async setDoc<T extends object>(
+    _collection: string,
+    params: {
+      pathSegments?: string[]
+      fields: T
+    },
+  ) {
+    params.pathSegments === undefined && (params.pathSegments = [])
+    const docRef = await setDoc(
+      doc(collection(this.db, _collection), ...params.pathSegments),
+      params.fields,
+    )
+    return docRef
+  }
+  async delectDoc(_collection: string, pathSegments: string[]) {
+    const docRef = await updateDoc(doc(collection(this.db, _collection), ...pathSegments), {
+      capital: deleteField(),
+    })
+    return docRef
+  }
 }

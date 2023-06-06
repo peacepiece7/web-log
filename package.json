@@ -28,6 +28,5 @@
   "devDependencies": {
     "@types/markdown-it": "^12.2.3",
     "encoding": "^0.1.13"
-  },
-  "type": "module"
+  }
 }

@@ -6,8 +6,8 @@ export default function Header() {
       <div className='flex justify-between pl-4 pr-4'>
         <div>
           <Link href='/'>
-            <p>peace</p>
-            <p>piece</p>
+            <p>PEACE</p>
+            <p>PIECE</p>
           </Link>
         </div>
         <nav className='flex items-center'>
