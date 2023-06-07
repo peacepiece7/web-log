@@ -11,6 +11,9 @@ import {
   getDocs,
   getFirestore,
   deleteField,
+  query,
+  where,
+  WhereFilterOp,
 } from 'firebase/firestore'
 
 export default class FirebaseCollection {
@@ -19,9 +22,35 @@ export default class FirebaseCollection {
     this.db = getFirestore(init)
   }
 
-  async getDocs(_collection: string) {
+  async getDocs<T>(_collection: string): Promise<T> {
     const snapshot = await getDocs(collection(this.db, _collection))
-    return snapshot.docs.map((doc) => doc.data())
+    const docs = snapshot.docs.map((doc) => {
+      return { id: doc.id, ...doc.data() }
+    })
+    return docs as T
+  }
+  async getDocById<T>(_collection: string, id: string): Promise<T> {
+    const snapshot = await getDocs(collection(this.db, _collection))
+    const doc = snapshot.docs.find((doc) => {
+      // console.log(doc.id, id)
+      if (doc.id === id) return true
+      return false
+    })
+    if (!doc) return {} as T
+    return { id: doc.id, ...doc.data() } as T
+  }
+  async getDoc<T>(
+    _collection: string,
+    fildPath: string,
+    filterOp: WhereFilterOp,
+    value: unknown,
+  ): Promise<T> {
+    const q = query(collection(this.db, _collection), where(fildPath, filterOp, value))
+    const querySnapshot = await getDocs(q)
+    const docs = querySnapshot.docs.map((doc) => {
+      return { id: doc.id, ...doc.data() }
+    })
+    return docs as T
   }
   async addDoc<T extends object>(_collection: string, fields: T) {
     const docRef = await addDoc(collection(this.db, _collection), fields)

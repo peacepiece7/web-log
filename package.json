@@ -17,6 +17,7 @@
     "eslint": "8.40.0",
     "eslint-config-next": "13.4.3",
     "firebase": "^9.22.1",
+    "highlight.js": "^11.8.0",
     "markdown-it": "^13.0.1",
     "next": "13.4.3",
     "postcss": "8.4.23",

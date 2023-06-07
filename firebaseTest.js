@@ -10,6 +10,7 @@ const {
   deleteField,
   updateDoc,
 } = require('firebase/firestore')
+const fs = require('fs')
 
 dotenv.config()
 const firebaseConfig = {
@@ -26,15 +27,13 @@ const firebaseConfig = {
 //   const init = initializeApp(firebaseConfig)
 
 //   const db = getFirestore(init)
-//   const logCol = collection(db, 'category')
+//   const logs = collection(db, 'logs')
 
-//   const snapshot = await getDocs(logCol)
+//   const snapshot = await getDocs(logs, 'aLSg9FaCCv1LsVfPxuIR')
+//   console.log(snapshot)
 //   // * 데이터 가져오기
-//   const getData = snapshot.docs.map((doc) => doc.data())
-
-//   getData.forEach((data) => {
-//     addDoc(collection(db, 'tags'), data)
-//   })
+//   const getData = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+//   console.log(getData)
 // }
 
 // getData()
@@ -49,7 +48,16 @@ const firebaseConfig = {
 // }
 
 // * 추가
-// const docRef = await addDoc(collection(db, 'log'), newData)
+const init = initializeApp(firebaseConfig)
+const db = getFirestore(init)
+const fileData = fs.readFileSync('./markdown_demo.md', 'utf8')
+
+const data = {
+  content: fileData,
+}
+// addDoc(collection(db, 'contents'), data)
+
+setDoc(doc(db, 'contents', 'Gf9k2seJ0s2oPDFfciCM'), data)
 
 // * 업데이트
 // 문서가 없을 경우 생성됩니다.

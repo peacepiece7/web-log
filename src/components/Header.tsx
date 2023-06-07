@@ -3,7 +3,7 @@ import Link from 'next/link'
 export default function Header() {
   return (
     <header className='border-b-2'>
-      <div className='flex justify-between pl-4 pr-4'>
+      <div className='flex justify-between pr-4 pl-4'>
         <div>
           <Link href='/'>
             <p>PEACE</p>
@@ -11,14 +11,14 @@ export default function Header() {
           </Link>
         </div>
         <nav className='flex items-center'>
-          <ul className='flex justify-between w-48'>
-            <li>
+          <ul className='flex justify-between'>
+            <li className='pr-4'>
               <Link href='/'>Home</Link>
             </li>
-            <li>
+            <li className='pr-4'>
               <Link href='log'>Log</Link>
             </li>
-            <li>
+            <li className='pr-4'>
               <Link href='about'>About</Link>
             </li>
           </ul>

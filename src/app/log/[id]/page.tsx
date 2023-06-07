@@ -1,7 +1,10 @@
 import React from 'react'
 import fileData from '@/service/getFileData'
-import { ContentData, LogData } from '@/type'
+import { Contents, Logs, Log, Content } from '@/type'
+import FirebaseCollection from '@/service/Firebase/collection'
 import MarkdownIt from 'markdown-it'
+import hljs from 'highlight.js'
+// import h1lg from "highlight.js/lib/languages/h1lg";
 
 type Props = {
   params: {
@@ -9,30 +12,39 @@ type Props = {
   }
 }
 
-export default function WebLogPage({ params }: Props) {
-  const content = fileData.getContent<ContentData>()
-  // * 임시 title 가져오는 로직
-  const logData = fileData.getLogInformation<LogData>()
-  let title = ''
-  logData?.webLog.map((log) => {
-    if (log.contentID === params.id) {
-      title = log.title
-    }
-  })
+export default async function WebLogPage({ params }: Props) {
+  const db = new FirebaseCollection()
+  const logs = await db.getDocs<Logs>('logs')
+  const log = logs.find((log) => log.id === params.id) as Log
+  const content = await db.getDocById<Content>('contents', log.contentId)
 
-  // throw new Error Or redirect해버리기
-  if (!content) return <div>Not Found</div>
-  const md = new MarkdownIt()
+  const md = new MarkdownIt({
+    html: true,
+    linkify: true,
+    typographer: true,
+    highlight: function (str, lang) {
+      if (lang && hljs.getLanguage(lang)) {
+        try {
+          return hljs.highlight(str, { language: lang }).value
+        } catch (__) {}
+      }
+      return '' // use external default escaping
+    },
+  })
   // todo : fs로 파일을 읽어서 랜더링합니다. `fs.readFileSync(content[params.id].filename, 'utf-8') 이런식으로 가져옵시당.
   // 아니면 모든 페이지를 api요청 보내서 컨텐츠 받아와서 SSG로 만듭니다.
-  const result = md.render(content[params.id].content)
+  const result = md.render(content.content)
+
   return (
     <div>
-      <h1>{title}</h1>
-      <section
-        id='markdown-body'
-        dangerouslySetInnerHTML={{ __html: result }}
-      />
+      <section className='flex flex-col items-center'>
+        <h1>{'title'}</h1>
+        <div
+          id='markdown-body'
+          className='max-w-7xl w-full'
+          dangerouslySetInnerHTML={{ __html: result }}
+        />
+      </section>
     </div>
   )
 }
@@ -42,8 +54,8 @@ export default function WebLogPage({ params }: Props) {
  * @description [slug]에서 slug외 다른 속성은 추가할 수 없습니다.
  * @example [{ id: '1' }, { id: '2' }]
  */
-export function generateStaticParams() {
-  const contents = fileData.getContent<ContentData>()
-  if (!contents) return []
-  return Object.keys(contents).map((key) => ({ id: key, title: 'TEST!' }))
+export async function generateStaticParams() {
+  const db = new FirebaseCollection()
+  const logs = await db.getDocs<Logs>('logs')
+  return logs.map((log) => ({ slug: log.contentId }))
 }

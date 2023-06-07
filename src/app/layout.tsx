@@ -1,6 +1,7 @@
 import './globals.css'
 import Header from '../components/Header'
 import { Azeret_Mono } from 'next/font/google'
+import localFont from 'next/font/local'
 
 const AzeretMonoFont = Azeret_Mono({
   subsets: ['latin'],
@@ -19,7 +20,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   // * 즉 Root Layout은 body안에 컴포넌트를 넣으면 됩니다.
   return (
     <html
-      lang='en'
+      lang='kor'
       className={`${AzeretMonoFont.className}`}
     >
       <body>

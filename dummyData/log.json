@@ -1,0 +1,59 @@
+{
+  "webLog": [
+    {
+      "id": "log1",
+      "title": "NextJS Tutorial with TypeScript",
+      "categories": ["TypeScript", "NextJS"],
+      "createdAt": "2021-05-01",
+      "lastModifiedAt": "2021-05-01",
+      "thumbnail": "NextJS_logo.png",
+      "contentID": "C123"
+    },
+    {
+      "id": "log2",
+      "title": "NextJS Tutorial with JavaScript",
+      "categories": ["JavaScript", "NextJS"],
+      "createdAt": "2021-05-01",
+      "lastModifiedAt": "2022-05-01",
+      "thumbnail": "JavaScript_logo.svg",
+      "contentID": "C124"
+    },
+    {
+      "id": "log3",
+      "title": "NODEJS!",
+      "categories": ["JavaScript", "NodeJs"],
+      "createdAt": "2022-05-21",
+      "lastModifiedAt": "2023-05-11",
+      "thumbnail": "JavaScript_logo.svg",
+      "contentID": "C125"
+    },
+    {
+      "id": "log4",
+      "title": "JavaScript, NodeJs, TypeScript!",
+      "categories": ["JavaScript", "NodeJs", "TypeScript"],
+      "createdAt": "2022-05-21",
+      "lastModifiedAt": "2023-06-11",
+      "thumbnail": "JavaScript_logo.svg",
+      "contentID": "C126"
+    },
+    {
+      "id": "log5",
+      "title": "TYPE!",
+      "categories": ["TypeScript"],
+      "createdAt": "2023-05-21",
+      "lastModifiedAt": "2023-04-11",
+      "thumbnail": "JavaScript_logo.svg",
+      "contentID": "C127"
+    },
+
+    {
+      "id": "log6",
+      "title": "NODEJS!",
+      "categories": ["NodeJs"],
+      "createdAt": "2022-06-21",
+      "lastModifiedAt": "2023-01-11",
+      "thumbnail": "JavaScript_logo.svg",
+      "contentID": "C128"
+    }
+  ]
+}

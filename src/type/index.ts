@@ -1,30 +1,36 @@
-export type CategoryData = {
-  categories: Categories[]
-}
+export type Tags = Tag[]
 
-type Categories = {
+type Tag = {
   id: string
   name: string
-  thumbnail: string
+  thumbnailId: string
+  thumbnailSource?: string
 }
+export type Logs = Log[]
 
-export type LogData = {
-  webLog: WebLog[]
-}
-type WebLog = {
+export type Log = {
   id: string
   title: string
-  categories: string[]
+  tags: string[]
   createdAt: string
   lastModifiedAt: string
-  thumbnail: string
-  contentID: string
+  thumbnailId: string
+  thumbnailSource?: string
+  contentId: string
 }
 
-export type ContentData = {
-  [key: string]: Contents
+export type Thumbnails = Thumbnail[]
+type Thumbnail = {
+  id: string
+  name: string
+  source: string
 }
-type Contents = {
-  title: string
+
+export type Contents = Content[]
+
+export type Content = {
+  id: string
+  logId: string
+  tagId: string
   content: string
 }
