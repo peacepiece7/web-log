@@ -1,7 +1,6 @@
 import './globals.css'
 import Header from '../components/Header'
 import { Azeret_Mono } from 'next/font/google'
-import localFont from 'next/font/local'
 
 const AzeretMonoFont = Azeret_Mono({
   subsets: ['latin'],

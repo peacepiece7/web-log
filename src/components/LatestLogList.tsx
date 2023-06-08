@@ -42,7 +42,6 @@ export default function LatestLogList({ logs }: Props) {
                   Tags :
                   {log.tags.map((name) => {
                     const rgb = randomBrightColor(name)
-                    console.log(rgb)
                     return (
                       <span
                         style={{ backgroundColor: rgb }}

@@ -3,6 +3,8 @@ import CategoryList from '../components/CategoryList'
 import LatestLogList from '../components/LatestLogList'
 import FirebaseCollection from '../service/Firebase/collection'
 import { Logs, Tags, Thumbnails } from '@/type'
+import https from 'https'
+import fs from 'fs'
 
 export default async function Home() {
   const db = new FirebaseCollection()
@@ -19,7 +21,6 @@ export default async function Home() {
   const logsData = logs.map((log) => {
     const thumbnail = thumbnails.find((thumb) => thumb.id === log.thumbnailId)
     log.thumbnailSource = thumbnail?.source
-
     return log
   })
 

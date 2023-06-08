@@ -23,6 +23,11 @@ a {
   text-decoration: none;
   color: inherit;
 }
+input {
+  border: none;
+  outline: none;
+  background-color: transparent;
+}
 
 #markdown-body h1 {
   font-size: 2.5rem;

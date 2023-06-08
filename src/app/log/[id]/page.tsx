@@ -4,6 +4,7 @@ import { Contents, Logs, Log, Content } from '@/type'
 import FirebaseCollection from '@/service/Firebase/collection'
 import MarkdownIt from 'markdown-it'
 import hljs from 'highlight.js'
+import { FirebaseStorage } from '@/service/Firebase/storage'
 // import h1lg from "highlight.js/lib/languages/h1lg";
 
 type Props = {
@@ -13,11 +14,13 @@ type Props = {
 }
 
 export default async function WebLogPage({ params }: Props) {
+  console.log(params)
   const db = new FirebaseCollection()
   const logs = await db.getDocs<Logs>('logs')
   const log = logs.find((log) => log.id === params.id) as Log
-  const content = await db.getDocById<Content>('contents', log.contentId)
 
+  const storage = new FirebaseStorage()
+  const content = await storage.getStreamData(log.storagePath)
   const md = new MarkdownIt({
     html: true,
     linkify: true,
@@ -31,9 +34,9 @@ export default async function WebLogPage({ params }: Props) {
       return '' // use external default escaping
     },
   })
+
   // todo : fs로 파일을 읽어서 랜더링합니다. `fs.readFileSync(content[params.id].filename, 'utf-8') 이런식으로 가져옵시당.
   // 아니면 모든 페이지를 api요청 보내서 컨텐츠 받아와서 SSG로 만듭니다.
-  const result = md.render(content.content)
 
   return (
     <div>
@@ -42,7 +45,7 @@ export default async function WebLogPage({ params }: Props) {
         <div
           id='markdown-body'
           className='max-w-7xl w-full'
-          dangerouslySetInnerHTML={{ __html: result }}
+          dangerouslySetInnerHTML={{ __html: md.render(content as string) }}
         />
       </section>
     </div>
@@ -57,5 +60,5 @@ export default async function WebLogPage({ params }: Props) {
 export async function generateStaticParams() {
   const db = new FirebaseCollection()
   const logs = await db.getDocs<Logs>('logs')
-  return logs.map((log) => ({ slug: log.contentId }))
+  return logs.map((log) => ({ slug: log.id }))
 }

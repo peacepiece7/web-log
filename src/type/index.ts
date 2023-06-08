@@ -16,7 +16,7 @@ export type Log = {
   lastModifiedAt: string
   thumbnailId: string
   thumbnailSource?: string
-  contentId: string
+  storagePath: string
 }
 
 export type Thumbnails = Thumbnail[]
