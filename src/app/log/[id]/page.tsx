@@ -23,6 +23,7 @@ export default async function WebLogPage({ params }: Props) {
   }
 
   const content = await storage.getStreamData(log.storagePath)
+
   const md = new MarkdownIt({
     html: true,
     linkify: true,

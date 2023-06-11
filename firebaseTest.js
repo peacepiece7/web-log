@@ -19,6 +19,7 @@ const {
   uploadBytes,
   UploadResult,
   deleteObject,
+  uploadString,
 } = require('firebase/storage')
 const fs = require('fs')
 
@@ -93,11 +94,12 @@ const init = initializeApp(firebaseConfig)
 //     console.error(error)
 //   })
 
-const storage = getStorage(init)
+// const storage = getStorage(init)
 
-const mRef = ref(storage, 'markdown/testest.md')
-const content = fs.readFileSync('./markdown_demo.md', 'utf8')
+// const mRef = ref(storage, 'markdown/testeststringtest.md')
+// const content = fs.readFileSync('./markdown_demo.md', 'utf8')
 
-console.log(content)
-const buf = Buffer.from(content, 'utf8')
-uploadBytes(mRef, buf)
+// console.log(content)
+// const buf = Buffer.from(content, 'utf8')
+// // uploadBytes(mRef, buf)
+// uploadString(mRef, content)

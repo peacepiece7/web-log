@@ -3,12 +3,11 @@ import { init } from './config'
 import {
   getStorage,
   ref,
-  getStream,
-  uploadBytes,
   UploadResult,
   deleteObject,
+  uploadString,
+  getBytes,
 } from 'firebase/storage'
-import FirebaseCollection from './collection'
 
 export type ContentData = {
   storagePath: string
@@ -27,23 +26,19 @@ export class FirebaseStorage {
         return ''
       }
       const storageRef = ref(this.storage, _ref)
-      const stream = getStream(storageRef)
-      const data = await new Promise((res) => {
-        stream.on('data', (data) => {
-          res(data.toString('utf-8'))
-        })
-      })
-      return data as string
+      // * 글자가 짤린다면 maxDownloadSizeBytes를 확인해봅시다.
+      const abuf = await getBytes(storageRef, 120000)
+      const enc = new TextDecoder('utf-8')
+      return enc.decode(abuf)
     } catch (error) {
       console.error(error)
       return ''
     }
   }
+
   async uploadContentData(storagePath: string, content: string): Promise<UploadResult | void> {
     const mountainsRef = ref(this.storage, storagePath)
-    const buf = Buffer.from(content, 'utf8')
-    const snapshot = await uploadBytes(mountainsRef, buf)
-    return snapshot
+    return await uploadString(mountainsRef, content)
   }
 
   async deleteContentData(storagePath: string) {
