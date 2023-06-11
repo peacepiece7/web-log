@@ -12,6 +12,7 @@ import {
   getStream,
   uploadBytes,
 } from 'firebase/storage'
+import FirebaseCollection from './collection'
 
 export class FirebaseStorage {
   private storage
@@ -19,21 +20,41 @@ export class FirebaseStorage {
     this.storage = getStorage(init)
   }
   async getStreamData(_ref: string): Promise<unknown> {
-    const storageRef = ref(this.storage, _ref)
-    const stream = getStream(storageRef)
-    const data = await new Promise((res) => {
-      stream.on('data', (data) => {
-        res(data.toString('utf-8'))
+    try {
+      const storageRef = ref(this.storage, _ref)
+      const stream = getStream(storageRef)
+      const data = await new Promise((res) => {
+        stream.on('data', (data) => {
+          res(data.toString('utf-8'))
+        })
       })
-    })
-    return data
+      return data
+    } catch (error) {
+      console.error(error)
+      return ''
+    }
   }
-  uploadData(data: { log: Log; content: string }) {
-    const mountainsRef = ref(this.storage, data.log.storagePath)
-    const buf = Buffer.from(data.content, 'utf-8')
-    uploadBytes(mountainsRef, buf).then((snapshot) => {
-      console.log('SNPAESHOT', snapshot)
-    })
+  async uploadContentData(data: { log: Log; content: string }) {
+    try {
+      const mountainsRef = ref(this.storage, data.log.storagePath)
+      const buf = Buffer.from(data.content, 'utf-8')
+      const snapshot = await uploadBytes(mountainsRef, buf)
+      return snapshot
+    } catch (error) {
+      console.error(error)
+      return error
+    }
+  }
+  async updateTagData(data: { name: string; thumbnail: string }) {
+    try {
+      const db = new FirebaseCollection()
+      const ThumbRes = await db.addDoc('thumbnails', { name: data.name, source: data.thumbnail })
+      const tagRes = await db.addDoc('tags', { name: data.name, thumbnailId: ThumbRes.id })
+      return { tag: tagRes, thumb: ThumbRes }
+    } catch (error) {
+      console.error(error)
+      return error
+    }
   }
 }
 
@@ -61,7 +82,7 @@ export class FirebaseStorage {
 // getDownloadURL(mdStorageRef)
 //   .then((url) => {
 //     // https://stackoverflow.com/questions/38284765/get-file-from-external-url-with-fs-readfile
-//     console.log(url)
+//     console. log(url)
 //     https.get(url, (res) => {
 //       console.log(res)
 //     })

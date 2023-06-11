@@ -35,9 +35,6 @@ export default async function WebLogPage({ params }: Props) {
     },
   })
 
-  // todo : fs로 파일을 읽어서 랜더링합니다. `fs.readFileSync(content[params.id].filename, 'utf-8') 이런식으로 가져옵시당.
-  // 아니면 모든 페이지를 api요청 보내서 컨텐츠 받아와서 SSG로 만듭니다.
-
   return (
     <div>
       <section className='flex flex-col items-center'>

@@ -12,7 +12,7 @@ export default function CategoryList({ tags }: Props) {
         return (
           <li
             key={tag.id}
-            className='pl-5'
+            className='pl-12'
           >
             <div
               className='w-[100px] h-[100px] flex justify-center items-center rounded-md overflow-hidden'

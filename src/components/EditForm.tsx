@@ -1,12 +1,16 @@
 'use client'
-import { Log } from '@/type'
-import React, { useEffect } from 'react'
+import { Log, Tags } from '@/type'
+import { randomBrightColor } from '@/utils'
+import React, { useEffect, useState } from 'react'
 
 type Props = {
   log: Log
   content: string
+  tags: Tags
 }
-export default function EditForm({ log, content }: Props) {
+export default function EditForm({ log, content, tags }: Props) {
+  const [tagsState, setTagsState] = useState(log.tags)
+
   useEffect(() => {
     document.getElementById('textbox')?.addEventListener('keydown', function (e: KeyboardEvent) {
       if (e.key == 'Tab') {
@@ -21,11 +25,13 @@ export default function EditForm({ log, content }: Props) {
         target.selectionEnd = start + 2
       }
     })
-  })
-
+  }, [])
   function updatePost() {
     const textarea = document.querySelector('.weblog-textarea') as HTMLTextAreaElement
-    fetch('/update/api', {
+
+    log.tags = tagsState
+
+    fetch('/update/api/content', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -36,8 +42,71 @@ export default function EditForm({ log, content }: Props) {
       }),
     })
   }
+  function addTag(e: React.ChangeEvent<HTMLSelectElement>) {
+    const targetTag = (e.target as HTMLSelectElement).value
+    if (targetTag === '') return
+    setTagsState((prev) => {
+      if (prev.includes(targetTag)) return prev
+      return [...prev, targetTag]
+    })
+  }
+
+  function removeTag(e: React.MouseEvent<HTMLButtonElement>) {
+    const targetTag = (e.target as HTMLButtonElement).textContent
+    console.log(targetTag)
+    setTagsState((prev) => {
+      console.log(prev.filter((tag) => tag !== targetTag))
+      return prev.filter((tag) => tag !== targetTag)
+    })
+  }
+  function resetTags() {
+    setTagsState(log.tags)
+  }
+
   return (
-    <div>
+    <div className='mb-12'>
+      <div className='pb-5 pr-5 text-end'>
+        {tagsState.map((name) => {
+          const rgb = randomBrightColor(name)
+          return (
+            <button
+              onClick={removeTag}
+              style={{ backgroundColor: rgb }}
+              className='p-1 ml-1 rounded-md cursor-pointer border-none'
+              key={name}
+            >
+              {name}
+            </button>
+          )
+        })}
+        <select
+          name='tag'
+          onChange={addTag}
+          className='ml-5'
+        >
+          <option value=''>Add Tag</option>
+          {tags
+            .sort((a, b) => {
+              return a.name > b.name ? 1 : -1
+            })
+            .map((tag) => {
+              return (
+                <option
+                  key={tag.name}
+                  value={tag.name}
+                >
+                  {tag.name}
+                </option>
+              )
+            })}
+        </select>
+        <button
+          className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-4 border-none cursor-pointer'
+          onClick={resetTags}
+        >
+          Reset
+        </button>
+      </div>
       <textarea
         id='textbox'
         className='w-full h-[60rem] weblog-textarea'
