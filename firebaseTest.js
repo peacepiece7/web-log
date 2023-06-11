@@ -9,7 +9,17 @@ const {
   addDoc,
   deleteField,
   updateDoc,
+  deleteDoc,
 } = require('firebase/firestore')
+
+const {
+  getStorage,
+  ref,
+  getStream,
+  uploadBytes,
+  UploadResult,
+  deleteObject,
+} = require('firebase/storage')
 const fs = require('fs')
 
 dotenv.config()
@@ -49,22 +59,22 @@ const firebaseConfig = {
 
 // * 추가
 const init = initializeApp(firebaseConfig)
-const db = getFirestore(init)
-const fileData = fs.readFileSync('./markdown_demo.md', 'utf8')
+// const db = getFirestore(init)
+// const fileData = fs.readFileSync('./markdown_demo.md', 'utf8')
 
-const data = {
-  id: 'TKLpa1cfBtd97X8MWqnr',
-  title: 'Hello, world!',
-  tags: ['JavaScript', 'NextJS', 'TypeScript'],
-  storagePath: 'markdown/testd09859e0-082d-11ee-9e81-6b1cc8ea817e.md',
-  lastModifiedAt: '2023-06-11',
-  thumbnailId: 'Buw5DCTltxWMh1cJi1Fj',
-  createdAt: '2023-06-11',
-}
+// const data = {
+//   id: 'TKLpa1cfBtd97X8MWqnr',
+//   title: 'Hello, world!',
+//   tags: ['JavaScript', 'NextJS', 'TypeScript'],
+//   storagePath: 'markdown/testd09859e0-082d-11ee-9e81-6b1cc8ea817e.md',
+//   lastModifiedAt: '2023-06-11',
+//   thumbnailId: 'Buw5DCTltxWMh1cJi1Fj',
+//   createdAt: '2023-06-11',
+// }
 
-// addDoc(collection(db, 'contents'), data)
+// // addDoc(collection(db, 'contents'), data)
 
-setDoc(doc(db, 'logs', data.id), data)
+// setDoc(doc(db, 'logs', data.id), data)
 
 // * 업데이트
 // 문서가 없을 경우 생성됩니다.
@@ -74,7 +84,20 @@ setDoc(doc(db, 'logs', data.id), data)
 // await setDoc(doc(db, 'log', 'oUDHb2Ti2Gj2OUEFdqF1'), { title: 'foo' })
 
 // * 삭제
-// const ref = doc(db, 'logs', 'oUDHb2Ti2Gj2OUEFdqF0')
-// await updateDoc(ref, {
-//   capital: deleteField(),
-// })
+// const ref = doc(db, 'logs', 'TKLpa1cfBtd97X8MWqnr')
+// deleteDoc(ref)
+//   .then((res) => {
+//     console.log(res)
+//   })
+//   .catch((error) => {
+//     console.error(error)
+//   })
+
+const storage = getStorage(init)
+
+const mRef = ref(storage, 'markdown/testest.md')
+const content = fs.readFileSync('./markdown_demo.md', 'utf8')
+
+console.log(content)
+const buf = Buffer.from(content, 'utf8')
+uploadBytes(mRef, buf)

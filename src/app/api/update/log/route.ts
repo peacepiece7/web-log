@@ -1,17 +1,23 @@
 import FirebaseCollection from '@/service/Firebase/collection'
+import { LogDocument, LogResponse } from '@/type'
 import { NextResponse } from 'next/server'
 
 export async function POST(request: Request) {
   try {
-    const { log: data } = await request.json()
+    const log = (await request.json()) as LogResponse
+    console.log('Edit log : ', log)
     const db = new FirebaseCollection()
-    db.setDoc('logs', data.id, data)
-    return NextResponse.json({ state: 'success' })
-  } catch (err) {
-    return NextResponse.json({ state: 'failure' })
+    const logId = log.id
+    const { id, ...logData } = log
+
+    const response = await db.setDoc<LogDocument>('logs', logId, logData)
+    return NextResponse.json({ state: 'success', response })
+  } catch (error) {
+    console.error(error)
+    return NextResponse.json({ state: 'failure', error })
   }
 }
 
 export async function GET() {
-  return NextResponse.json({ hi: 'hi' })
+  return NextResponse.json({ state: 'success' })
 }

@@ -1,20 +1,26 @@
 'use client'
 import React, { useEffect, useState } from 'react'
-import { Log, Tags } from '@/type'
+import { TagsResponse } from '@/type'
 import dayjs from 'dayjs'
 import { randomBrightColor } from '@/utils'
+import { DATE_FORMAT } from '@/app/constants'
+import { AddLogRequest } from '@/app/api/add/log/route'
+import { useRouter } from 'next/navigation'
 
 type Props = {
-  tags: Tags
+  tags: TagsResponse
 }
 
 export default function AddForm({ tags }: Props) {
-  const [fileName, setFileName] = useState('test')
+  const [fileName, setFileName] = useState('example-file-name')
   const [title, setTitle] = useState('')
   const [thumbnail, setThumbnail] = useState('')
   const [tagsState, setTagsState] = useState([] as string[])
   const [content, setContent] = useState('')
 
+  const router = useRouter()
+
+  // todo : hooks로 뺴기
   useEffect(() => {
     document.getElementById('textbox')?.addEventListener('keydown', function (e: KeyboardEvent) {
       if (e.key == 'Tab') {
@@ -43,7 +49,6 @@ export default function AddForm({ tags }: Props) {
   function removeTag(e: React.MouseEvent<HTMLButtonElement>) {
     const targetTag = (e.target as HTMLButtonElement).textContent
     setTagsState((prev) => {
-      console.log(prev.filter((tag) => tag !== targetTag))
       return prev.filter((tag) => tag !== targetTag)
     })
   }
@@ -53,23 +58,21 @@ export default function AddForm({ tags }: Props) {
   }
 
   function addPost() {
-    const date = dayjs().format('YYYY-MM-DD')
+    const date = dayjs().format(DATE_FORMAT)
+    const log: AddLogRequest = {
+      title: title,
+      thumbnailSource: thumbnail,
+      tags: tagsState,
+      content: content,
+      createdAt: date,
+      lastModifiedAt: date,
+      fileName: fileName,
+    }
     fetch('/api/add/log', {
       method: 'POST',
-      body: JSON.stringify({
-        title,
-        thumbnail,
-        tags: tagsState,
-        content,
-        createdAt: date,
-        lastModifiedAt: date,
-        fileName,
-      }),
+      body: JSON.stringify(log),
     })
-    setTitle('')
-    setThumbnail('')
-    setTagsState([])
-    setContent('')
+    router.push('/admin/logs')
   }
 
   return (
@@ -114,7 +117,7 @@ export default function AddForm({ tags }: Props) {
           className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-4 mt-4 border-none cursor-pointer'
           onClick={resetTags}
         >
-          Reset
+          Remove all
         </button>
       </div>
       <div className='mt-4 mb-4'>
@@ -138,6 +141,16 @@ export default function AddForm({ tags }: Props) {
         value={content}
         onChange={(e) => setContent(e.target.value)}
       />
+      <div className='text-end  mt-4'>
+        <p className='text-red-600'>Warnning : Be sure to remove special characters or spaces!</p>
+        <input
+          className='border border-solid border-gray-300 rounded-md p-1 w-96 text-2xl'
+          type='text'
+          value={fileName}
+          placeholder='Enter a file name'
+          onChange={(e) => setFileName(e.target.value)}
+        />
+      </div>
       <div className='text-end'>
         <button
           className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded max-w-[125px] h-[45px] mt-4 ml-auto border-none cursor-pointer'

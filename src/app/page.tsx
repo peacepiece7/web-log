@@ -1,25 +1,14 @@
-import fileData from '../service/getFileData'
 import CategoryList from '../components/CategoryList'
 import LatestLogList from '../components/LatestLogList'
 import FirebaseCollection from '../service/Firebase/collection'
-import { Logs, Tags, Thumbnails } from '@/type'
+import { LogsResponse, TagsResponse, ThumbnailsResponse } from '@/type'
 
 export default async function Home() {
   const db = new FirebaseCollection()
-  const tags = await db.getDocs<Tags>('tags')
-  const logs = await db.getDocs<Logs>('logs')
-  const thumbnails = await db.getDocs<Thumbnails>('thumbnails')
+  const tags = await db.getDocs<TagsResponse>('tags')
+  const logs = await db.getDocs<LogsResponse>('logs')
+  const thumbnails = await db.getDocs<ThumbnailsResponse>('thumbnails')
 
-  const tagsData = tags.map((tag) => {
-    const thumbnail = thumbnails.find((thumb) => thumb.id === tag.thumbnailId)
-    tag.thumbnailSource = thumbnail?.source
-    return tag
-  })
-  const logsData = logs.map((log) => {
-    const thumbnail = thumbnails.find((thumb) => thumb.id === log.thumbnailId)
-    log.thumbnailSource = thumbnail?.source
-    return log
-  })
   return (
     <main className=''>
       <div className='max-w-7xl inset-0 m-auto'>
@@ -32,11 +21,25 @@ export default async function Home() {
 
         <section className='pt-32'>
           <h1 className='text-3xl pb-10 pl-5 pr-5'>Tags</h1>
-          {tags ? <CategoryList tags={tagsData} /> : <div>not found tag data</div>}
+          {tags ? (
+            <CategoryList
+              tags={tags}
+              thumbnails={thumbnails}
+            />
+          ) : (
+            <div>not found tag data</div>
+          )}
         </section>
         <section className='pt-32'>
           <h1 className='text-3xl pb-10 pl-5 pr-5'>Latest Logs</h1>
-          {logs ? <LatestLogList logs={logsData} /> : <div>not found log data</div>}
+          {logs ? (
+            <LatestLogList
+              logs={logs}
+              thumbnails={thumbnails}
+            />
+          ) : (
+            <div>not found log data</div>
+          )}
         </section>
       </div>
     </main>

@@ -1,20 +1,23 @@
 import { FirebaseStorage } from '@/service/Firebase/storage'
-import { Log } from '@/type'
 import { NextResponse } from 'next/server'
+
+export type UpdateContentRequest = {
+  storagePath: string
+  content: string
+}
 
 export async function POST(request: Request) {
   try {
-    const data = (await request.json()) as { log: Log; content?: string }
+    const { storagePath, content } = (await request.json()) as UpdateContentRequest
     const store = new FirebaseStorage()
-
-    const content = data.content
-    if (content !== undefined) {
-      store.uploadContentData({ ...data, content })
-    }
-
-    return NextResponse.json({ state: 'success' })
-  } catch (err) {
-    return NextResponse.json({ state: 'failure' })
+    const response = await store.uploadContentData(storagePath, content)
+    console.log('10초 ㄱㄷ')
+    await new Promise((res) => setTimeout(res, 10000))
+    console.log('10초 끝')
+    return NextResponse.json({ state: 'success', response })
+  } catch (error) {
+    console.error(error)
+    return NextResponse.json({ state: 'failure', error })
   }
 }
 

@@ -1,10 +1,10 @@
 import FirebaseCollection from '@/service/Firebase/collection'
-import { Logs } from '@/type'
+import { LogsResponse } from '@/type'
 import Link from 'next/link'
 
 export default async function Posts() {
   const db = new FirebaseCollection()
-  const logs = await db.getDocs<Logs>('logs')
+  const logs = await db.getDocs<LogsResponse>('logs')
 
   return (
     <div>

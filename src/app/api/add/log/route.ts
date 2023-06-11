@@ -1,51 +1,58 @@
 import FirebaseCollection from '@/service/Firebase/collection'
 import { FirebaseStorage } from '@/service/Firebase/storage'
-import { Log } from '@/type'
+import { LogDocument, ThumbnailDocument } from '@/type'
 import { NextResponse } from 'next/server'
 import { v1 } from 'uuid'
 
+export type AddLogRequest = {
+  title: string
+  tags: string[]
+  createdAt: string
+  lastModifiedAt: string
+  thumbnailSource?: string
+  content: string
+  fileName: string
+}
+
 export async function POST(request: Request) {
   try {
-    const data = (await request.json()) as {
-      title: string
-      thumbnail: string
-      tags: string[]
-      content: string
-      fileName: string
-      thumbnailId: string
-      createdAt: string
-      lastModifiedAt: string
-    }
+    const log = (await request.json()) as AddLogRequest
+    console.log('ADD log : ', log)
     const db = new FirebaseCollection()
     const store = new FirebaseStorage()
 
-    // 썸네일 저장
-    if (data.thumbnail) {
-      const thumbRes = await db.addDoc('thumbnails', { name: data.tags[0], source: data.thumbnail })
-      data.thumbnailId = thumbRes.id
+    const fileName = `${log.fileName}-${v1()}.md`
+
+    // * markdown 저장
+    await store.uploadContentData(`markdown/${fileName}`, log.content)
+
+    // * 썸네일 저장
+    let thumbnailId = ''
+    if (log.thumbnailSource) {
+      const thumbRes = await db.addDoc<ThumbnailDocument>('thumbnails', {
+        name: `${fileName}_logo`,
+        source: log.thumbnailSource,
+      })
+      thumbnailId = thumbRes.id
     }
-
-    const log: Omit<Log, 'id'> = {
-      title: data.title,
-      thumbnailId: data.thumbnailId,
-      tags: data.tags,
-      createdAt: data.createdAt,
-      lastModifiedAt: data.lastModifiedAt,
-      storagePath: `markdown/${data.fileName}-${v1()}.md`,
+    const logDoc: LogDocument = {
+      createdAt: log.createdAt,
+      lastModifiedAt: log.lastModifiedAt,
+      storagePath: `markdown/${fileName}`,
+      tags: log.tags,
+      thumbnailId: thumbnailId,
+      title: log.title,
     }
-
-    // markdown 저장
-    await store.uploadContentData({ log: log, content: data.content })
-
-    const logRes = await db.addDoc('logs', log)
-
-    return NextResponse.json({ state: 'success', response: logRes })
+    // * 로그 저장
+    const logRes = await db.addDoc<LogDocument>('logs', logDoc)
+    return NextResponse.json({ state: 'success', response: { logRes } })
   } catch (error) {
     console.error(error)
-    return NextResponse.json({ state: 'failure', error: error })
+    // todo : 중간까지 저장된 데이터 전부 삭제해야 함 or 에러 처리 할 수 있게 로그 남기기
+    return NextResponse.json({ state: 'failure', error })
   }
 }
 
 export async function GET() {
-  return NextResponse.json({ hi: 'hi' })
+  return NextResponse.json({ hi: 'hi!' })
 }

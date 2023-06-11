@@ -1,16 +1,22 @@
 'use client'
-import { Log, Tags } from '@/type'
+import { LogResponse, TagsResponse } from '@/type'
 import { randomBrightColor } from '@/utils'
 import React, { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { DeleteRequest } from '@/app/api/delete/route'
 
 type Props = {
-  log: Log
+  log: LogResponse
   content: string
-  tags: Tags
+  tags: TagsResponse
 }
 export default function EditForm({ log, content, tags }: Props) {
+  const [contentState, setContentState] = useState(content)
   const [tagsState, setTagsState] = useState(log.tags)
+  const [title, setTitle] = useState(log.title)
+  const router = useRouter()
 
+  // todo : hooks로 뺴기
   useEffect(() => {
     document.getElementById('textbox')?.addEventListener('keydown', function (e: KeyboardEvent) {
       if (e.key == 'Tab') {
@@ -27,43 +33,53 @@ export default function EditForm({ log, content, tags }: Props) {
     })
   }, [])
 
-  function updatePost() {
+  async function updatePost() {
     const textarea = document.querySelector('.weblog-textarea') as HTMLTextAreaElement
-    log.tags = tagsState
-    // Edit content
-    fetch('/api/update/content', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        log,
-        content: textarea.value,
-      }),
-    })
 
-    // Edit log
-    fetch('/api/update/log', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        log,
-      }),
-    })
+    // * content의 변경사항이 있다면 업데이트 합니다.
+    if (content !== contentState) {
+      fetch('/api/update/content', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          storagePath: log.storagePath,
+          content: textarea.value,
+        }),
+      })
+    }
+
+    // * log(Document)에 변경사항이 있다면 업데이트 합니다.
+    if (title !== log.title || JSON.stringify(tagsState) !== JSON.stringify(log.tags)) {
+      const curLog: LogResponse = {
+        ...log,
+        title: title,
+        tags: tagsState,
+      }
+      fetch('/api/update/log', {
+        method: 'POST',
+        body: JSON.stringify(curLog),
+      })
+    }
+
+    router.push('/admin/logs')
   }
 
   function removeTag(e: React.MouseEvent<HTMLButtonElement>) {
     const targetTag = (e.target as HTMLButtonElement).textContent
-    console.log(targetTag)
     setTagsState((prev) => {
-      console.log(prev.filter((tag) => tag !== targetTag))
       return prev.filter((tag) => tag !== targetTag)
     })
   }
   function resetTags() {
     setTagsState(log.tags)
+  }
+  function resetTitle() {
+    setTitle(log.title)
+  }
+  function resetContent() {
+    setContentState(content)
   }
   function addTag(e: React.ChangeEvent<HTMLSelectElement>) {
     const targetTag = (e.target as HTMLSelectElement).value
@@ -74,13 +90,41 @@ export default function EditForm({ log, content, tags }: Props) {
     })
   }
 
-  function deletePost() {
-    const res = prompt('Are you sure you want to delete this post?\nso, type "delete"')
-    console.log('res : ', res)
+  async function deleteLog() {
+    const trigger = prompt('Are you sure you want to delete this post?\nso, type "delete"')
+    if (trigger !== 'delete') return
+
+    const body: DeleteRequest = {
+      logId: log.id,
+      thumbnailId: log.thumbnailId,
+      storagePath: log.storagePath,
+    }
+    await fetch('/api/delete', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    })
+    router.push('/admin/logs')
   }
 
   return (
     <div className='mb-12'>
+      <div className='flex'>
+        <input
+          className='border border-solid border-gray-300 rounded-md w-96 text-2xl'
+          type='text'
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+        <button
+          className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded ml-4 border-none cursor-pointer'
+          onClick={resetTitle}
+        >
+          Reset
+        </button>
+      </div>
       <div className='pb-5 pr-5 text-end'>
         {tagsState.map((name) => {
           const rgb = randomBrightColor(name)
@@ -123,10 +167,19 @@ export default function EditForm({ log, content, tags }: Props) {
           Reset
         </button>
       </div>
+      <div className='mt-4 mb-2'>
+        <button
+          className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded border-none cursor-pointer'
+          onClick={resetContent}
+        >
+          Reset Content
+        </button>
+      </div>
       <textarea
         id='textbox'
         className='w-full h-[60rem] weblog-textarea'
-        value={content as string}
+        value={contentState as string}
+        onChange={(e) => setContentState(e.target.value)}
       />
       <div className='text-end'>
         <button
@@ -137,7 +190,7 @@ export default function EditForm({ log, content, tags }: Props) {
         </button>
         <button
           className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded max-w-[125px] h-[45px] mt-4 ml-12 border-none cursor-pointer'
-          onClick={deletePost}
+          onClick={deleteLog}
         >
           Delete Post
         </button>

@@ -1,16 +1,18 @@
 import React from 'react'
 import Link from 'next/link'
-import { Logs } from '@/type'
+import { LogsResponse, ThumbnailsResponse } from '@/type'
 import { randomBrightColor } from '@/utils'
 
 type Props = {
-  logs: Logs
+  logs: LogsResponse
+  thumbnails: ThumbnailsResponse
 }
 
-export default function LatestLogList({ logs }: Props) {
+export default function LatestLogList({ logs, thumbnails }: Props) {
   return (
     <div className='pl-5 pr-5'>
       {logs.map((log) => {
+        const thumb = thumbnails.find((thumb) => log.thumbnailId === thumb.id)
         return (
           <div
             key={log.id}
@@ -18,12 +20,10 @@ export default function LatestLogList({ logs }: Props) {
           >
             <div className='pb-14 flex-1'>
               <Link href={`/log/${log.id}`}>
-                {log.thumbnailSource && (
-                  <div
-                    className='w-[200px] h-[200px] flex justify-center items-center rounded-md overflow-hidden'
-                    dangerouslySetInnerHTML={{ __html: log.thumbnailSource }}
-                  />
-                )}
+                <div
+                  className='w-[200px] h-[200px] flex justify-center items-center rounded-md overflow-hidden'
+                  dangerouslySetInnerHTML={{ __html: thumb?.source ? thumb.source : '' }}
+                />
                 <h2 className='text-2xl'>{log.title}</h2>
                 <p className='text-end pt-12'>
                   Tags :

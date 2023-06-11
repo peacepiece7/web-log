@@ -1,12 +1,10 @@
 import { init } from './config'
 
 import {
-  CollectionReference,
   addDoc,
   doc,
   setDoc,
   updateDoc,
-  DocumentData,
   collection,
   getDocs,
   getFirestore,
@@ -14,6 +12,9 @@ import {
   query,
   where,
   WhereFilterOp,
+  DocumentData,
+  DocumentReference,
+  deleteDoc,
 } from 'firebase/firestore'
 
 export default class FirebaseCollection {
@@ -21,7 +22,6 @@ export default class FirebaseCollection {
   constructor() {
     this.db = getFirestore(init)
   }
-
   async getDocs<T>(_collection: string): Promise<T> {
     const snapshot = await getDocs(collection(this.db, _collection))
     const docs = snapshot.docs.map((doc) => {
@@ -32,7 +32,6 @@ export default class FirebaseCollection {
   async getDocById<T>(_collection: string, id: string): Promise<T> {
     const snapshot = await getDocs(collection(this.db, _collection))
     const doc = snapshot.docs.find((doc) => {
-      // console.log(doc.id, id)
       if (doc.id === id) return true
       return false
     })
@@ -52,7 +51,10 @@ export default class FirebaseCollection {
     })
     return docs as T
   }
-  async addDoc<T extends object>(_collection: string, fields: T) {
+  async addDoc<T extends object>(
+    _collection: string,
+    fields: T,
+  ): Promise<DocumentReference<DocumentData>> {
     const docRef = await addDoc(collection(this.db, _collection), fields)
     return docRef
   }
@@ -62,13 +64,13 @@ export default class FirebaseCollection {
    * merge : false일 경우 주어진 데이터 그대로 필드가 덮어 씌워집니다.
    */
   async setDoc<T extends object>(_collection: string, id: string, data: T) {
-    const docRef = await setDoc(doc(this.db, _collection, id), data)
-    return docRef
+    await setDoc(doc(this.db, _collection, id), data)
   }
-  async delectDoc(_collection: string, pathSegments: string[]) {
-    const docRef = await updateDoc(doc(collection(this.db, _collection), ...pathSegments), {
-      capital: deleteField(),
-    })
-    return docRef
+  async deleteDoc(_collection: string, id: string) {
+    if (!_collection || !id) throw new Error('컬렉션과 아이디가 입력되지 않았습니다.')
+    await deleteDoc(doc(this.db, _collection, id)),
+      {
+        capital: deleteField(),
+      }
   }
 }

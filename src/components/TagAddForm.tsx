@@ -14,7 +14,6 @@ export default function TagAddForm() {
       }),
     })
   }
-
   return (
     <div>
       <form onSubmit={addTag}>

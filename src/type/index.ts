@@ -1,36 +1,40 @@
-export type Tags = Tag[]
-
-type Tag = {
+// * firebase response type
+export type TagsResponse = TagResponse[]
+type TagResponse = {
   id: string
   name: string
   thumbnailId: string
-  thumbnailSource?: string
 }
-export type Logs = Log[]
 
-export type Log = {
+export type LogsResponse = LogResponse[]
+export type LogResponse = {
   id: string
-  title: string
-  tags: string[]
-  createdAt: string
+  thumbnailId?: string
+  storagePath: string
   lastModifiedAt: string
-  thumbnailId: string
-  thumbnailSource?: string
-  storagePath?: string
+  tags: string[]
+  title: string
+  createdAt: string
 }
 
-export type Thumbnails = Thumbnail[]
-type Thumbnail = {
+export type ThumbnailsResponse = ThumbnailResponse[]
+export type ThumbnailResponse = {
   id: string
   name: string
   source: string
 }
 
-export type Contents = Content[]
+// * fireabase document type (request type)
+export type LogDocument = {
+  createdAt: string
+  lastModifiedAt: string
+  storagePath: string
+  tags: string[]
+  thumbnailId?: string
+  title: string
+}
 
-export type Content = {
-  id: string
-  logId: string
-  tagId: string
-  content: string
+export type ThumbnailDocument = {
+  name: string
+  source: string
 }
