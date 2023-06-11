@@ -61,18 +61,8 @@ export default class FirebaseCollection {
    *
    * merge : false일 경우 주어진 데이터 그대로 필드가 덮어 씌워집니다.
    */
-  async setDoc<T extends object>(
-    _collection: string,
-    params: {
-      pathSegments?: string[]
-      fields: T
-    },
-  ) {
-    params.pathSegments === undefined && (params.pathSegments = [])
-    const docRef = await setDoc(
-      doc(collection(this.db, _collection), ...params.pathSegments),
-      params.fields,
-    )
+  async setDoc<T extends object>(_collection: string, id: string, data: T) {
+    const docRef = await setDoc(doc(this.db, _collection, id), data)
     return docRef
   }
   async delectDoc(_collection: string, pathSegments: string[]) {

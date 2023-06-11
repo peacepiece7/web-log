@@ -26,12 +26,12 @@ export default function EditForm({ log, content, tags }: Props) {
       }
     })
   }, [])
+
   function updatePost() {
     const textarea = document.querySelector('.weblog-textarea') as HTMLTextAreaElement
-
     log.tags = tagsState
-
-    fetch('/update/api/content', {
+    // Edit content
+    fetch('/api/update/content', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -41,13 +41,16 @@ export default function EditForm({ log, content, tags }: Props) {
         content: textarea.value,
       }),
     })
-  }
-  function addTag(e: React.ChangeEvent<HTMLSelectElement>) {
-    const targetTag = (e.target as HTMLSelectElement).value
-    if (targetTag === '') return
-    setTagsState((prev) => {
-      if (prev.includes(targetTag)) return prev
-      return [...prev, targetTag]
+
+    // Edit log
+    fetch('/api/update/log', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        log,
+      }),
     })
   }
 
@@ -61,6 +64,19 @@ export default function EditForm({ log, content, tags }: Props) {
   }
   function resetTags() {
     setTagsState(log.tags)
+  }
+  function addTag(e: React.ChangeEvent<HTMLSelectElement>) {
+    const targetTag = (e.target as HTMLSelectElement).value
+    if (targetTag === '') return
+    setTagsState((prev) => {
+      if (prev.includes(targetTag)) return prev
+      return [...prev, targetTag]
+    })
+  }
+
+  function deletePost() {
+    const res = prompt('Are you sure you want to delete this post?\nso, type "delete"')
+    console.log('res : ', res)
   }
 
   return (
@@ -110,7 +126,7 @@ export default function EditForm({ log, content, tags }: Props) {
       <textarea
         id='textbox'
         className='w-full h-[60rem] weblog-textarea'
-        defaultValue={content as string}
+        value={content as string}
       />
       <div className='text-end'>
         <button
@@ -118,6 +134,12 @@ export default function EditForm({ log, content, tags }: Props) {
           onClick={updatePost}
         >
           Update Post
+        </button>
+        <button
+          className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded max-w-[125px] h-[45px] mt-4 ml-12 border-none cursor-pointer'
+          onClick={deletePost}
+        >
+          Delete Post
         </button>
       </div>
     </div>

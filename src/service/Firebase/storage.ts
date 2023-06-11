@@ -11,6 +11,7 @@ import {
   getMetadata,
   getStream,
   uploadBytes,
+  UploadResult,
 } from 'firebase/storage'
 import FirebaseCollection from './collection'
 
@@ -34,7 +35,7 @@ export class FirebaseStorage {
       return ''
     }
   }
-  async uploadContentData(data: { log: Log; content: string }) {
+  async uploadContentData(data: { log: Omit<Log, 'id'>; content: string }): Promise<UploadResult> {
     try {
       const mountainsRef = ref(this.storage, data.log.storagePath)
       const buf = Buffer.from(data.content, 'utf-8')
@@ -42,7 +43,7 @@ export class FirebaseStorage {
       return snapshot
     } catch (error) {
       console.error(error)
-      return error
+      throw new Error(error as string)
     }
   }
   async updateTagData(data: { name: string; thumbnail: string }) {

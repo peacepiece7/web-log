@@ -8,14 +8,14 @@ export default async function Posts() {
 
   return (
     <div>
-      <h1>Posts</h1>
+      <h1>Logs</h1>
       {logs.map((log) => {
         return (
           <div
             className='mt-4'
             key={log.id}
           >
-            <Link href={`/admin/edit/${log.id}`}>{log.title}</Link>
+            <Link href={`/admin/logs/edit/${log.id}`}>{log.title}</Link>
           </div>
         )
       })}

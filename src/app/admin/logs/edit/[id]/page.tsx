@@ -17,7 +17,7 @@ export default async function EditPost({ params }: Props) {
   const tags = await db.getDocs<Tags>('tags')
 
   const storage = new FirebaseStorage()
-  const content = await storage.getStreamData(log.storagePath)
+  const content = await storage.getStreamData(log.storagePath as string)
 
   return (
     <div className='max-w-7xl m-auto'>

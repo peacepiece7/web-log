@@ -53,11 +53,18 @@ const db = getFirestore(init)
 const fileData = fs.readFileSync('./markdown_demo.md', 'utf8')
 
 const data = {
-  content: fileData,
+  id: 'TKLpa1cfBtd97X8MWqnr',
+  title: 'Hello, world!',
+  tags: ['JavaScript', 'NextJS', 'TypeScript'],
+  storagePath: 'markdown/testd09859e0-082d-11ee-9e81-6b1cc8ea817e.md',
+  lastModifiedAt: '2023-06-11',
+  thumbnailId: 'Buw5DCTltxWMh1cJi1Fj',
+  createdAt: '2023-06-11',
 }
+
 // addDoc(collection(db, 'contents'), data)
 
-setDoc(doc(db, 'contents', 'Gf9k2seJ0s2oPDFfciCM'), data)
+setDoc(doc(db, 'logs', data.id), data)
 
 // * 업데이트
 // 문서가 없을 경우 생성됩니다.

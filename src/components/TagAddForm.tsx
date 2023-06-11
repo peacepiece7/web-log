@@ -6,7 +6,7 @@ export default function TagAddForm() {
   const [thumbnail, setThumbnail] = React.useState('')
 
   const addTag = () => {
-    fetch('/update/api/tag', {
+    fetch('/api/update/tag', {
       method: 'POST',
       body: JSON.stringify({
         name: name,
@@ -22,13 +22,13 @@ export default function TagAddForm() {
           className=''
           type='text'
           placeholder='Enter a tag name'
-          defaultValue={name}
+          value={name}
           onChange={(e) => setName(e.target.value)}
         />
         <input
           type='text'
           placeholder='Enter a svg icon to svg tag'
-          defaultValue={thumbnail}
+          value={thumbnail}
           onChange={(e) => setThumbnail(e.target.value)}
         />
         <button type='submit'>Submit</button>

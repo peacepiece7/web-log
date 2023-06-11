@@ -18,6 +18,6 @@ export async function POST(request: Request) {
   }
 }
 
-export async function GET(request: Request) {
+export async function GET() {
   return NextResponse.json({ hi: 'hi' })
 }
