@@ -4,6 +4,9 @@ import FirebaseCollection from '@/service/Firebase/collection'
 import MarkdownIt from 'markdown-it'
 import hljs from 'highlight.js'
 import { FirebaseStorage } from '@/service/Firebase/storage'
+import { addIdToStringHTML, createToc } from '@/utils'
+import TableOfContent from '@/components/TableOfContent'
+import './styles.css'
 
 type Props = {
   params: {
@@ -12,19 +15,23 @@ type Props = {
 }
 
 export default async function WebLogPage({ params }: Props) {
+  // * firebase에서 log를 가져옵니다.
   const db = new FirebaseCollection()
   const storage = new FirebaseStorage()
-
   const logs = await db.getDocs<LogsResponse>('logs')
   const log = logs.find((log) => log.id === params.id)
-
   if (!log) {
     return <div>not found</div>
   }
 
+  // * firebase에서 content를 가져옵니다.
   const content = await storage.getStreamData(log.storagePath)
 
-  const md = new MarkdownIt({
+  // * Table of content를 생성합니다.
+  const toc = createToc(content)
+
+  // * Markdown to HTML 규칙을 생성합니다.
+  const mdRole = new MarkdownIt({
     html: true,
     linkify: true,
     typographer: true,
@@ -38,14 +45,17 @@ export default async function WebLogPage({ params }: Props) {
     },
   })
 
+  const html = addIdToStringHTML(mdRole.render(content))
+
   return (
     <div>
       <section className='flex flex-col items-center'>
-        <h1>{'title'}</h1>
+        <h1 className='text-7xl'>{log.title}</h1>
+        <TableOfContent toc={toc} />
         <div
           id='markdown-body'
-          className='max-w-7xl w-full'
-          dangerouslySetInnerHTML={{ __html: md.render(content) }}
+          className='max-w-7xl w-full pl-8 pr-8'
+          dangerouslySetInnerHTML={{ __html: html }}
         />
       </section>
     </div>
