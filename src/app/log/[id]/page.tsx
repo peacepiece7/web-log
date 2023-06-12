@@ -7,6 +7,7 @@ import { FirebaseStorage } from '@/service/Firebase/storage'
 import { addIdToStringHTML, createToc } from '@/utils'
 import TableOfContent from '@/components/TableOfContent'
 import './styles.css'
+import ScrollToTop from '@/components/ScrollToTop'
 
 type Props = {
   params: {
@@ -57,6 +58,7 @@ export default async function WebLogPage({ params }: Props) {
           className='max-w-7xl w-full pl-8 pr-8'
           dangerouslySetInnerHTML={{ __html: html }}
         />
+        <ScrollToTop />
       </section>
     </div>
   )

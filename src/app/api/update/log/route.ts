@@ -5,7 +5,6 @@ import { NextResponse } from 'next/server'
 export async function POST(request: Request) {
   try {
     const log = (await request.json()) as LogResponse
-    console.log('Edit log : ', log)
     const db = new FirebaseCollection()
     const logId = log.id
     const { id, ...logData } = log

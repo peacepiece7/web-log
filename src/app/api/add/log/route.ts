@@ -17,7 +17,6 @@ export type AddLogRequest = {
 export async function POST(request: Request) {
   try {
     const log = (await request.json()) as AddLogRequest
-    console.log('ADD log : ', log)
     const db = new FirebaseCollection()
     const store = new FirebaseStorage()
 
