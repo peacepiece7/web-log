@@ -8,6 +8,7 @@ export default function Login() {
   function login() {
     console.log(name, password)
   }
+
   return (
     <div className=''>
       <div className='max-w-7xl inset-0 m-auto pr-4 pl-4 mt-48'>
