@@ -3,14 +3,14 @@ import { LogResponse, TagsResponse } from '@/type'
 import { randomBrightColor } from '@/utils'
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { DeleteRequest } from '@/app/api/delete/route'
+import { DeleteRequest } from '@/app/api/delete/storage/route'
 
 type Props = {
   log: LogResponse
   content: string
   tags: TagsResponse
 }
-export default function EditForm({ log, content, tags }: Props) {
+export default function EditLogForm({ log, content, tags }: Props) {
   const [contentState, setContentState] = useState(content)
   const [tagsState, setTagsState] = useState(log.tags)
   const [title, setTitle] = useState(log.title)
@@ -99,7 +99,7 @@ export default function EditForm({ log, content, tags }: Props) {
       thumbnailId: log.thumbnailId,
       storagePath: log.storagePath,
     }
-    await fetch('/api/delete', {
+    await fetch('/api/delete/storage', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

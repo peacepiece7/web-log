@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import AdminHeader from '@/components/AdminHeader'
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter()
@@ -18,10 +19,21 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     })
       .then((res) => res.json())
       .then((data) => {
-        if (!data.isAdmin) router.push('/')
+        if (!data.isAdmin) router.push('/admin')
         setIsAdmin(data.isAdmin)
       })
-  }, [])
+  }, [router])
 
-  return <div>{isAdmin ? <>{children}</> : <div>Loading...</div>}</div>
+  return (
+    <div>
+      {isAdmin ? (
+        <>
+          <AdminHeader />
+          <div>{children}</div>
+        </>
+      ) : (
+        <div>Loading...</div>
+      )}
+    </div>
+  )
 }

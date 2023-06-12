@@ -1,6 +1,6 @@
 // * firebase response type
 export type TagsResponse = TagResponse[]
-type TagResponse = {
+export type TagResponse = {
   id: string
   name: string
   thumbnailId: string

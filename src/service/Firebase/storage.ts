@@ -19,7 +19,7 @@ export class FirebaseStorage {
   constructor() {
     this.storage = getStorage(init)
   }
-  async getStreamData(_ref?: string): Promise<string> {
+  async getContentData(_ref?: string): Promise<string> {
     try {
       if (!_ref) {
         console.warn('ref is not defined')

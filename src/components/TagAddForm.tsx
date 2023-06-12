@@ -6,7 +6,7 @@ export default function TagAddForm() {
   const [thumbnail, setThumbnail] = React.useState('')
 
   const addTag = () => {
-    fetch('/api/update/tag', {
+    fetch('/api/add/tag', {
       method: 'POST',
       body: JSON.stringify({
         name: name,
@@ -14,6 +14,7 @@ export default function TagAddForm() {
       }),
     })
   }
+
   return (
     <div>
       <form onSubmit={addTag}>

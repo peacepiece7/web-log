@@ -16,8 +16,6 @@ export default async function Home() {
         <p className='text-xl text-center pt-32'>
           This space is the playground that writting my experience
         </p>
-        <p className='text-xl text-center '>안녕하세요. 한글 테스트용 글자입니다.</p>
-        <p className='text-xl text-center '>할 말이 없네요 ㅎㅎ</p>
 
         <section className='pt-32'>
           <h1 className='text-3xl pb-10 pl-5 pr-5'>Tags</h1>

@@ -2,7 +2,7 @@ import FirebaseCollection from '@/service/Firebase/collection'
 import { FirebaseStorage } from '@/service/Firebase/storage'
 import { LogsResponse, TagsResponse } from '@/type'
 
-import EditForm from '@/components/EditForm'
+import EditLogForm from '@/components/EditLogForm'
 import { Suspense } from 'react'
 
 type Props = {
@@ -19,7 +19,7 @@ export default async function EditPost({ params }: Props) {
 
   const tags = await db.getDocs<TagsResponse>('tags')
 
-  const content = await storage.getStreamData(log?.storagePath)
+  const content = await storage.getContentData(log?.storagePath)
 
   return (
     <div className='max-w-7xl m-auto'>
@@ -28,7 +28,7 @@ export default async function EditPost({ params }: Props) {
         <div>Not Found The {params.id} Log</div>
       ) : (
         <Suspense fallback={<div>Loading...</div>}>
-          <EditForm
+          <EditLogForm
             tags={tags}
             log={log}
             content={content as string}

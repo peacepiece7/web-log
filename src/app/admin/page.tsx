@@ -1,12 +1,18 @@
 'use client'
 import React, { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 export default function Login() {
+  const router = useRouter()
   const [name, setName] = useState('')
   const [password, setPassword] = useState('')
 
-  function login() {
-    console.log(name, password)
+  function setUserInfoToLocalStorage(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    localStorage.setItem('weblogId', name)
+    localStorage.setItem('weblogPassword', password)
+
+    router.push('/admin/logs')
   }
 
   return (
@@ -15,7 +21,7 @@ export default function Login() {
         <h1 className='text-5xl'>Log-in for admin</h1>
         <form
           className='flex flex-col max-w-2xl ml-12'
-          onSubmit={login}
+          onSubmit={setUserInfoToLocalStorage}
         >
           <input
             className='h-12 mt-24'

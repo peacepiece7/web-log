@@ -26,7 +26,7 @@ export default async function WebLogPage({ params }: Props) {
   }
 
   // * firebase에서 content를 가져옵니다.
-  const content = await storage.getStreamData(log.storagePath)
+  const content = await storage.getContentData(log.storagePath)
 
   // * Table of content를 생성합니다.
   const toc = createToc(content)
@@ -51,7 +51,7 @@ export default async function WebLogPage({ params }: Props) {
   return (
     <div>
       <section className='flex flex-col items-center'>
-        <h1 className='text-7xl'>{log.title}</h1>
+        <h1 className='text-4xl text-center'>{log.title}</h1>
         <TableOfContent toc={toc} />
         <div
           id='markdown-body'

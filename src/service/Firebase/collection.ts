@@ -4,6 +4,7 @@ import {
   addDoc,
   doc,
   setDoc,
+  getDoc,
   updateDoc,
   collection,
   getDocs,
@@ -38,18 +39,10 @@ export default class FirebaseCollection {
     if (!doc) return {} as T
     return { id: doc.id, ...doc.data() } as T
   }
-  async getDoc<T>(
-    _collection: string,
-    fildPath: string,
-    filterOp: WhereFilterOp,
-    value: unknown,
-  ): Promise<T> {
-    const q = query(collection(this.db, _collection), where(fildPath, filterOp, value))
-    const querySnapshot = await getDocs(q)
-    const docs = querySnapshot.docs.map((doc) => {
-      return { id: doc.id, ...doc.data() }
-    })
-    return docs as T
+  async getDoc<T>(_collection: string, id: string): Promise<T> {
+    const ref = doc(this.db, _collection, id)
+    const docSnap = await getDoc(ref)
+    return { id: docSnap.id, ...docSnap.data() } as T
   }
   async addDoc<T extends object>(
     _collection: string,
