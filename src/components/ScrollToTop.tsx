@@ -6,7 +6,7 @@ import React from 'react'
 export default function ScrollToTop() {
   const [scroll] = useScroll()
   function toTop() {
-    window.scrollTo({ top: 0, behavior: 'instant' })
+    window.scrollTo({ top: 0 })
   }
   return (
     <div
