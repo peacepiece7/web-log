@@ -5,7 +5,7 @@ import React from 'react'
 
 type Props = {
   params: {
-    offset: string
+    page: string
   }
 }
 export default async function LogPage(props: Props) {
@@ -18,12 +18,24 @@ export default async function LogPage(props: Props) {
       <div className='max-w-7xl inset-0 m-auto pl-5 pr-5'>
         <h1>Logs</h1>
         <PagenatedItems
-          itemsPerPage={2}
+          itemsPerPage={5}
           items={logs}
           thumbs={thumbnails}
-          page={parseInt(props.params.offset) - 1}
+          page={parseInt(props.params.page) - 1}
         />
       </div>
     </main>
   )
+}
+
+export async function generateStaticParams() {
+  const db = new FirebaseCollection()
+  const logs = await db.getDocs<LogsResponse>('logs')
+  const itemsPerPage = 5
+  const pages = []
+  for (let i = 0; i < Math.ceil(logs.length / itemsPerPage); i++) {
+    pages.push(i + 1)
+  }
+
+  return pages.map((page) => ({ page: String(page) }))
 }

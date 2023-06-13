@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { TagsResponse } from '@/type'
 import dayjs from 'dayjs'
 import { randomBrightColor } from '@/utils'
-import { DATE_FORMAT } from '@/app/constants'
+import { DATE_FORMAT } from '@/constants'
 import { AddLogRequest } from '@/app/api/add/log/route'
 import { useRouter } from 'next/navigation'
 

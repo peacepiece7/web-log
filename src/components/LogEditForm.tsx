@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { DeleteRequest } from '@/app/api/delete/storage/route'
 import dayjs from 'dayjs'
-import { DATE_FORMAT } from '@/app/constants'
+import { DATE_FORMAT } from '@/constants'
 
 type Props = {
   log: LogResponse

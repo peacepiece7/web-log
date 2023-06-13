@@ -20,7 +20,6 @@
     "firebase": "^9.22.1",
     "highlight.js": "^11.8.0",
     "markdown-it": "^13.0.1",
-    "markdown-toc": "^1.2.0",
     "next": "13.4.3",
     "postcss": "8.4.23",
     "react": "18.2.0",

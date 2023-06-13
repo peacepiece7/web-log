@@ -21,7 +21,7 @@ export default function FilteredList({ logs, thumbs, basePath }: Props) {
             <div className='pb-4 flex-1'>
               <Link href={`${basePath}/${log.id}`}>
                 <div
-                  className='w-[200px] h-[200px] flex justify-center items-center rounded-md overflow-hidden'
+                  className='w-[120px] h-[120px] flex justify-center items-center rounded-md overflow-hidden'
                   dangerouslySetInnerHTML={{ __html: thumb?.source ? thumb.source : '' }}
                 />
                 <h2 className='text-2xl pt-4'>{log.title}</h2>

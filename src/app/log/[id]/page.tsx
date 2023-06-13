@@ -67,5 +67,5 @@ export default async function WebLogPage({ params }: Props) {
 export async function generateStaticParams() {
   const db = new FirebaseCollection()
   const logs = await db.getDocs<LogsResponse>('logs')
-  return logs.map((log) => ({ slug: log.id }))
+  return logs.map((log) => ({ id: log.id }))
 }

@@ -1,5 +1,4 @@
 'use client'
-
 import { LogsResponse, ThumbnailsResponse } from '@/type'
 import React from 'react'
 import { useRouter } from 'next/navigation'
@@ -17,16 +16,22 @@ export default function PagenatedItems({ itemsPerPage, items, thumbs, page }: Pr
   const router = useRouter()
   const itemOffset = page * itemsPerPage
 
+  const latestItems = items.sort((a, b) => {
+    const anum = parseInt(a.lastModifiedAt.split('-').join(''))
+    const bnum = parseInt(b.lastModifiedAt.split('-').join(''))
+    return bnum - anum
+  })
+
   // Simulate fetching items from another resources.
   // (This could be items from props; or items loaded in a local state
   // from an API endpoint with useEffect and useState)
   const endOffset = itemOffset + itemsPerPage
-  const currentItems = items.slice(itemOffset, endOffset)
-  const pageCount = Math.ceil(items.length / itemsPerPage)
+  const currentItems = latestItems.slice(itemOffset, endOffset)
+  const pageCount = Math.ceil(latestItems.length / itemsPerPage)
 
   // Invoke when user click to request another page.
   const handlePageClick = (event: { selected: number }) => {
-    const newOffset = (event.selected * itemsPerPage) % items.length
+    const newOffset = (event.selected * itemsPerPage) % latestItems.length
     router.push(`/logs/${newOffset / itemsPerPage + 1}`)
   }
   return (
