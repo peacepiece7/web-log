@@ -40,14 +40,6 @@ export default async function Header() {
                 Logs
               </Link>
             </li>
-            <li className='pr-4'>
-              <Link
-                href='about'
-                className='hover:text-red-500 transition-all'
-              >
-                About
-              </Link>
-            </li>
           </ul>
         </nav>
       </div>
