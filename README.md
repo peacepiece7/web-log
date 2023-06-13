@@ -7,5 +7,3 @@
 - Firebase Cloud Firestore
 - Firebase Storage
 - Vercel
-
-# Release
