@@ -1,39 +1,27 @@
-import CategoryList from '../components/CategoryList'
-import LatestLogList from '../components/LatestLogList'
+import PagenatedItems from '@/components/PagenatedItems'
 import FirebaseCollection from '../service/Firebase/collection'
-import { LogsResponse, TagsResponse, ThumbnailsResponse } from '@/type'
+import { LogsResponse, ThumbnailsResponse } from '@/type'
 
 export default async function Home() {
   const db = new FirebaseCollection()
-  const tags = await db.getDocs<TagsResponse>('tags')
   const logs = await db.getDocs<LogsResponse>('logs')
   const thumbnails = await db.getDocs<ThumbnailsResponse>('thumbnails')
 
   return (
-    <main className=''>
-      <div className='max-w-7xl inset-0 m-auto'>
+    <main className='relative overflow-hidden'>
+      <div className='max-w-7xl inset-0 m-auto pl-5 pr-5'>
         <h1 className='text-3xl text-center pt-10'>{`Front end developer jung tae uk`}</h1>
         <p className='text-xl text-center pt-32'>
           This space is the playground that writting my experience
         </p>
-
-        <section className='pt-32'>
-          <h1 className='text-3xl pb-10 pl-5 pr-5'>Tags</h1>
-          {tags ? (
-            <CategoryList
-              tags={tags}
-              thumbnails={thumbnails}
-            />
-          ) : (
-            <div>not found tag data</div>
-          )}
-        </section>
-        <section className='pt-32'>
-          <h1 className='text-3xl pb-10 pl-5 pr-5'>Latest Logs</h1>
+        <section className='pt-32 pb-32'>
+          <h1 className='text-3xl pb-10'>Latest Logs</h1>
           {logs ? (
-            <LatestLogList
-              logs={logs}
-              thumbnails={thumbnails}
+            <PagenatedItems
+              itemsPerPage={2}
+              items={logs}
+              thumbs={thumbnails}
+              page={0}
             />
           ) : (
             <div>not found log data</div>

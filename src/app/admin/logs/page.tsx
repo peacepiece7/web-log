@@ -1,24 +1,20 @@
+import LatestLogList from '@/components/LatestLogList'
 import FirebaseCollection from '@/service/Firebase/collection'
-import { LogsResponse } from '@/type'
-import Link from 'next/link'
+import { LogsResponse, ThumbnailsResponse } from '@/type'
 
 export default async function Posts() {
   const db = new FirebaseCollection()
   const logs = await db.getDocs<LogsResponse>('logs')
+  const thumbs = await db.getDocs<ThumbnailsResponse>('thumbnails')
 
   return (
-    <div>
-      <h1>Logs</h1>
-      {logs.map((log) => {
-        return (
-          <div
-            className='mt-4'
-            key={log.id}
-          >
-            <Link href={`/admin/logs/edit/${log.id}`}>{log.title}</Link>
-          </div>
-        )
-      })}
+    <div className='pl-8 pr-8 max-w-7xl m-auto'>
+      <h1>Admin Logs</h1>
+      <LatestLogList
+        logs={logs}
+        thumbnails={thumbs}
+        basePath='/admin/logs/edit'
+      />
     </div>
   )
 }

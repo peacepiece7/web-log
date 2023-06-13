@@ -4,13 +4,15 @@ import { randomBrightColor } from '@/utils'
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { DeleteRequest } from '@/app/api/delete/storage/route'
+import dayjs from 'dayjs'
+import { DATE_FORMAT } from '@/app/constants'
 
 type Props = {
   log: LogResponse
   content: string
   tags: TagsResponse
 }
-export default function EditLogForm({ log, content, tags }: Props) {
+export default function LogEditForm({ log, content, tags }: Props) {
   const [contentState, setContentState] = useState(content)
   const [tagsState, setTagsState] = useState(log.tags)
   const [title, setTitle] = useState(log.title)
@@ -33,9 +35,8 @@ export default function EditLogForm({ log, content, tags }: Props) {
     })
   }, [])
 
-  async function updatePost() {
+  async function updateLog() {
     const textarea = document.querySelector('.weblog-textarea') as HTMLTextAreaElement
-
     // * content의 변경사항이 있다면 업데이트 합니다.
     if (content !== contentState) {
       fetch('/api/update/content', {
@@ -51,11 +52,16 @@ export default function EditLogForm({ log, content, tags }: Props) {
     }
 
     // * log(Document)에 변경사항이 있다면 업데이트 합니다.
-    if (title !== log.title || JSON.stringify(tagsState) !== JSON.stringify(log.tags)) {
+    if (
+      title !== log.title ||
+      JSON.stringify(tagsState) !== JSON.stringify(log.tags) ||
+      content !== contentState
+    ) {
       const curLog: LogResponse = {
         ...log,
         title: title,
         tags: tagsState,
+        lastModifiedAt: dayjs().format(DATE_FORMAT),
       }
       fetch('/api/update/log', {
         method: 'POST',
@@ -184,7 +190,7 @@ export default function EditLogForm({ log, content, tags }: Props) {
       <div className='text-end'>
         <button
           className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded max-w-[125px] h-[45px] mt-4 ml-auto border-none cursor-pointer'
-          onClick={updatePost}
+          onClick={updateLog}
         >
           Update Post
         </button>

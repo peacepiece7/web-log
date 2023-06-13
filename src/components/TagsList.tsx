@@ -18,7 +18,7 @@ export default function TagsList({ tags, thumbs }: Props) {
             key={tag.id}
             className='pt-24'
           >
-            <Link href={`admin/tags/${tag.id}`}>
+            <Link href={`admin/tags/edit/${tag.id}`}>
               <div
                 className='w-[100px] h-[100px] flex justify-center items-center rounded-md overflow-hidden'
                 dangerouslySetInnerHTML={{ __html: thumb?.source ? thumb.source : '' }}

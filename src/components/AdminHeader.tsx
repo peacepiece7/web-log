@@ -22,6 +22,12 @@ export default function AdminHeader() {
       >
         Tags
       </Link>
+      <Link
+        className='pr-12'
+        href='/admin/tags/add'
+      >
+        Add Tag
+      </Link>
     </header>
   )
 }

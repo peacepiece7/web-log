@@ -7,7 +7,7 @@ export async function POST(request: Request) {
   try {
     const body = (await request.json()) as ThumbnailResponse
     const db = new FirebaseCollection()
-    await db.deleteDoc('tags', body.id)
+    await db.deleteDoc('thumbnails', body.id)
     return { status: 'success', response: '' }
   } catch (error) {
     console.error(error)

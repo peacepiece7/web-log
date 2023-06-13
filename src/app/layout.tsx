@@ -23,6 +23,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`${AzeretMonoFont.className}`}
     >
       <body>
+        {/* @ts-expect-error Async Server Component */}
         <Header />
         {children}
       </body>

@@ -1,3 +1,14 @@
+'use client'
+// import Swiper core and required modules
+import { Navigation, Pagination, Scrollbar, A11y, Autoplay } from 'swiper'
+import { Swiper, SwiperSlide } from 'swiper/react'
+// Import Swiper styles
+// import './swiper.css'
+import 'swiper/css'
+import 'swiper/css/navigation'
+import 'swiper/css/scrollbar'
+import 'swiper/css/a11y'
+
 import { TagsResponse, ThumbnailsResponse } from '@/type'
 
 type Props = {
@@ -6,24 +17,28 @@ type Props = {
 }
 
 export default function CategoryList({ tags, thumbnails }: Props) {
-  // todo : Image h-100%말고 더 좋은 방법 찾아보기, height : 100px될 때 까지 width 늘리고 중심만 보이도록 하면 좋을 듯 합니다.
   return (
-    <ul className='flex text-center pl-0 pr-5'>
+    <Swiper
+      modules={[Navigation, Pagination, Scrollbar, A11y, Autoplay]}
+      spaceBetween={0}
+      slidesPerView={7}
+      navigation
+      scrollbar={{ draggable: true }}
+    >
       {tags.map((tag) => {
         const thumb = thumbnails.find((thumb) => tag.thumbnailId === thumb.id)
         return (
-          <li
-            key={tag.id}
-            className='pl-12'
-          >
+          <SwiperSlide key={tag.id}>
             <div
               className='w-[100px] h-[100px] flex justify-center items-center rounded-md overflow-hidden'
               dangerouslySetInnerHTML={{ __html: thumb?.source ? thumb.source : '' }}
-            />
-            <p>{tag.name}</p>
-          </li>
+            ></div>
+            <p className='w-[100px] text-center'>{tag.name}</p>
+          </SwiperSlide>
         )
       })}
-    </ul>
+    </Swiper>
   )
 }
+
+// <ul className='flex text-center pl-0 pr-5 overflow-x-scroll'>

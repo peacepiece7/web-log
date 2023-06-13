@@ -2,7 +2,7 @@ import FirebaseCollection from '@/service/Firebase/collection'
 import { FirebaseStorage } from '@/service/Firebase/storage'
 import { LogsResponse, TagsResponse } from '@/type'
 
-import EditLogForm from '@/components/EditLogForm'
+import EditLogForm from '@/components/LogEditForm'
 import { Suspense } from 'react'
 
 type Props = {
@@ -23,7 +23,7 @@ export default async function EditPost({ params }: Props) {
 
   return (
     <div className='max-w-7xl m-auto'>
-      <h1 className='mb-20'>Edit Post</h1>
+      <h1 className='mb-20'>Admin Edit Post</h1>
       {typeof log === 'undefined' ? (
         <div>Not Found The {params.id} Log</div>
       ) : (

@@ -1,0 +1,23 @@
+#pagenation a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 50px;
+  height: 25px;
+  padding: 0 1rem;
+  margin: 0 2rem;
+  border-radius: 1rem;
+  transition: all ease-in-out 0.1s;
+}
+
+#pagenation a:hover {
+  --tw-drop-shadow: drop-shadow(0 4px 3px rgb(0 0 0 / 0.07))
+    drop-shadow(0 2px 2px rgb(0 0 0 / 0.06));
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale)
+    var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+  background-color: white;
+}
+
+#pagenation .selected {
+  color: rgb(214, 52, 52);
+}

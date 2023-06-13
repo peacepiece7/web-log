@@ -11,7 +11,7 @@ type Props = {
   tags: TagsResponse
 }
 
-export default function AddForm({ tags }: Props) {
+export default function LogAddForm({ tags }: Props) {
   const [fileName, setFileName] = useState('example-file-name')
   const [title, setTitle] = useState('')
   const [thumbnail, setThumbnail] = useState('')

@@ -1,37 +1,50 @@
 'use client'
+import { useRouter } from 'next/navigation'
 import React from 'react'
 
 export default function TagAddForm() {
   const [name, setName] = React.useState('')
   const [thumbnail, setThumbnail] = React.useState('')
 
-  const addTag = () => {
-    fetch('/api/add/tag', {
+  const router = useRouter()
+
+  const addTag = async () => {
+    await fetch('/api/add/tag', {
       method: 'POST',
       body: JSON.stringify({
         name: name,
         thumbnail: thumbnail,
       }),
     })
+    router.push('/admin/tags')
   }
 
   return (
     <div>
-      <form onSubmit={addTag}>
+      <form
+        className='flex flex-col pl-8'
+        onSubmit={addTag}
+      >
         <input
-          className=''
+          className='border border-solid border-gray-300 rounded-md p-1 mt-4 w-96 text-2xl'
           type='text'
           placeholder='Enter a tag name'
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
         <input
+          className='border border-solid border-gray-300 rounded-md p-1 mt-4 w-96 text-2xl'
           type='text'
           placeholder='Enter a svg icon to svg tag'
           value={thumbnail}
           onChange={(e) => setThumbnail(e.target.value)}
         />
-        <button type='submit'>Submit</button>
+        <button
+          className='bg-blue-500 hover:bg-blue-700 text-white font-bold max-w-[150px] py-2 px-4 rounded mt-4 border-none cursor-pointer'
+          type='submit'
+        >
+          Submit
+        </button>
       </form>
     </div>
   )

@@ -1,4 +1,4 @@
-import EditTagForm from '@/components/EditTagForm'
+import TagEditForm from '@/components/TagEditForm'
 import FirebaseCollection from '@/service/Firebase/collection'
 import { LogsResponse, TagResponse, ThumbnailResponse } from '@/type'
 import React from 'react'
@@ -16,8 +16,8 @@ export default async function EditTag({ params }: Props) {
 
   return (
     <div className='max-w-7xl m-auto'>
-      <h1>Edit Tag</h1>
-      <EditTagForm
+      <h1>Admin Edit Tag</h1>
+      <TagEditForm
         logs={logs}
         tag={tag}
         thumb={thumb}
