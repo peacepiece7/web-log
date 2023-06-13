@@ -24,7 +24,7 @@ export default async function Home() {
           />
           <div className='pl-24'>
             <h1 className='pb-4'>TaeUk Jung</h1>
-            <p className='pb-4'>Front end developer</p>
+            <p className='pb-4'>FRONT-END DEVELOPER</p>
 
             <a
               className='flex mt-4 hover:text-red-500 transition-all'
