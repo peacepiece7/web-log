@@ -7,6 +7,8 @@ import { DATE_FORMAT } from '@/constants'
 import { AddLogRequest } from '@/app/api/add/log/route'
 import { useRouter } from 'next/navigation'
 
+import Preview from './Preview'
+
 type Props = {
   tags: TagsResponse
 }
@@ -76,89 +78,92 @@ export default function LogAddForm({ tags }: Props) {
   }
 
   return (
-    <div className='mb-12 pl-8 pr-8'>
-      <div className='pb-5 pr-5 text-end flex flex-wrap'>
-        <input
-          className='border border-solid border-gray-300 rounded-md p-1 mt-4 w-96 text-2xl'
-          type='text'
-          value={title}
-          placeholder='Enter a title'
-          onChange={(e) => setTitle(e.target.value)}
+    <div className='flex'>
+      <div className='flex-1 mb-12 pl-4 pr-4'>
+        <div className='pb-5 pr-5 text-end flex flex-wrap'>
+          <input
+            className='border border-solid border-gray-300 rounded-md p-1 mt-4 w-96 text-2xl  ml-4'
+            type='text'
+            value={title}
+            placeholder='Enter a title'
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          <input
+            className='border border-solid border-gray-300 rounded-md p-1 mt-4 text-2xl ml-4'
+            type='text'
+            value={thumbnail}
+            placeholder='Enter a svg thumbnail'
+            onChange={(e) => setThumbnail(e.target.value)}
+          />
+          <select
+            name='tag'
+            onChange={addTag}
+            className='border border-solid border-gray-300 rounded-md p-1 mt-4 ml-5'
+          >
+            <option value=''>Add Tag</option>
+            {tags
+              .sort((a, b) => {
+                return a.name > b.name ? 1 : -1
+              })
+              .map((tag) => {
+                return (
+                  <option
+                    key={tag.name}
+                    value={tag.name}
+                  >
+                    {tag.name}
+                  </option>
+                )
+              })}
+          </select>
+          <button
+            className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-4 mt-4 border-none cursor-pointer'
+            onClick={resetTags}
+          >
+            Remove all
+          </button>
+        </div>
+        <div className='mt-4 mb-4'>
+          {tagsState.map((name) => {
+            const rgb = randomBrightColor(name)
+            return (
+              <button
+                onClick={removeTag}
+                style={{ backgroundColor: rgb }}
+                className='p-1 mr-4 rounded-md cursor-pointer border-none'
+                key={name}
+              >
+                {name}
+              </button>
+            )
+          })}
+        </div>
+        <textarea
+          id='textbox'
+          className='w-full h-[60rem] weblog-textarea'
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
         />
-        <input
-          className='border border-solid border-gray-300 rounded-md p-1 mt-4 text-2xl ml-4'
-          type='text'
-          value={thumbnail}
-          placeholder='Enter a svg thumbnail'
-          onChange={(e) => setThumbnail(e.target.value)}
-        />
-        <select
-          name='tag'
-          onChange={addTag}
-          className='border border-solid border-gray-300 rounded-md p-1 mt-4 ml-5'
-        >
-          <option value=''>Add Tag</option>
-          {tags
-            .sort((a, b) => {
-              return a.name > b.name ? 1 : -1
-            })
-            .map((tag) => {
-              return (
-                <option
-                  key={tag.name}
-                  value={tag.name}
-                >
-                  {tag.name}
-                </option>
-              )
-            })}
-        </select>
-        <button
-          className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-4 mt-4 border-none cursor-pointer'
-          onClick={resetTags}
-        >
-          Remove all
-        </button>
+        <div className='text-end  mt-4'>
+          <p className='text-red-600'>Warnning : Be sure to remove special characters or spaces!</p>
+          <input
+            className='border border-solid border-gray-300 rounded-md p-1 w-96 text-2xl'
+            type='text'
+            value={fileName}
+            placeholder='Enter a file name'
+            onChange={(e) => setFileName(e.target.value)}
+          />
+        </div>
+        <div className='text-end'>
+          <button
+            className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded max-w-[125px] h-[45px] mt-4 ml-auto border-none cursor-pointer'
+            onClick={addPost}
+          >
+            Add Post
+          </button>
+        </div>
       </div>
-      <div className='mt-4 mb-4'>
-        {tagsState.map((name) => {
-          const rgb = randomBrightColor(name)
-          return (
-            <button
-              onClick={removeTag}
-              style={{ backgroundColor: rgb }}
-              className='p-1 mr-4 rounded-md cursor-pointer border-none'
-              key={name}
-            >
-              {name}
-            </button>
-          )
-        })}
-      </div>
-      <textarea
-        id='textbox'
-        className='w-full h-[60rem] weblog-textarea'
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
-      />
-      <div className='text-end  mt-4'>
-        <p className='text-red-600'>Warnning : Be sure to remove special characters or spaces!</p>
-        <input
-          className='border border-solid border-gray-300 rounded-md p-1 w-96 text-2xl'
-          type='text'
-          value={fileName}
-          placeholder='Enter a file name'
-          onChange={(e) => setFileName(e.target.value)}
-        />
-      </div>
-      <div className='text-end'>
-        <button
-          className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded max-w-[125px] h-[45px] mt-4 ml-auto border-none cursor-pointer'
-          onClick={addPost}
-        >
-          Add Post
-        </button>
-      </div>
+      <Preview content={content}></Preview>
     </div>
   )
 }
