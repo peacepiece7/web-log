@@ -1,6 +1,7 @@
-import LatestLogList from '@/components/LatestLogList'
-import FirebaseCollection from '@/service/Firebase/collection'
 import { LogsResponse, ThumbnailsResponse } from '@/type'
+
+import FirebaseCollection from '@/service/Firebase/collection'
+import LatestLogList from '@/components/LatestLogList'
 
 export default async function Posts() {
   const db = new FirebaseCollection()

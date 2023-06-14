@@ -1,11 +1,9 @@
 'use client'
-
-import React from 'react'
 import MarkdownIt from 'markdown-it'
 import hljs from 'highlight.js'
 
-import './Preview.css'
-import { addIdToStringHTML } from '@/utils'
+import { addIdToHeader } from '@/utils'
+import '@/app/viewer.css'
 
 type Props = {
   content: string
@@ -25,7 +23,7 @@ export default function Preview({ content }: Props) {
       return ''
     },
   })
-  const html = addIdToStringHTML(mdRole.render(content))
+  const html = addIdToHeader(mdRole.render(content))
 
   return (
     <div className='flex-1'>

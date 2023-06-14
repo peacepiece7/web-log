@@ -1,22 +1,21 @@
 import FirebaseCollection from '@/service/Firebase/collection'
 import { FirebaseStorage } from '@/service/Firebase/storage'
-import { LogDocument, ThumbnailDocument } from '@/type'
-import { NextResponse } from 'next/server'
 
-export type DeleteRequest = {
-  logId: string
-  thumbnailId?: string
-  storagePath: string
-}
-
+// * Delete Log API
 export async function POST(request: Request) {
   try {
     const body = (await request.json()) as DeleteRequest
     const db = new FirebaseCollection()
     const storage = new FirebaseStorage()
+
+    // * 썸네일이 있다면 삭제
     if (body.thumbnailId) db.deleteDoc('thumbnails', body.thumbnailId)
-    await storage.deleteContentData(body.storagePath)
+
+    // * 로그 삭제
     await db.deleteDoc('logs', body.logId)
+
+    // * 저장소에서 markdown 파일 삭제
+    await storage.deleteContentData(body.storagePath)
 
     return { status: 'success', response: '' }
   } catch (error) {
@@ -25,6 +24,8 @@ export async function POST(request: Request) {
   }
 }
 
-export async function GET() {
-  return NextResponse.json({ hi: 'hi!' })
+export type DeleteRequest = {
+  logId: string
+  thumbnailId?: string
+  storagePath: string
 }

@@ -1,8 +1,15 @@
 #toc li {
-  margin-bottom: 0.5rem;
+  border-bottom: 1px solid black;
 }
 #toc li a {
+  display: inline-block;
+  line-height: 3rem;
+  width: 100%;
+  height: 100%;
   transition: all 0.2s ease-in-out;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 #toc li a:hover {
   font-weight: 700;
@@ -10,38 +17,29 @@
 #toc li[data-level='1'] {
   margin-left: 0rem;
 }
-
 #toc li[data-level='2'] {
-  margin-left: 1rem;
+  padding-left: 1rem;
 }
-
 #toc li[data-level='3'] {
-  margin-left: 1.5rem;
+  padding-left: 2rem;
 }
 #toc li[data-level='4'] {
-  margin-left: 2rem;
+  padding-left: 3rem;
 }
 #toc li[data-level='5'] {
-  margin-left: 2.5rem;
+  padding-left: 4rem;
 }
 #toc li[data-level='6'] {
-  margin-left: 3rem;
+  padding-left: 5rem;
 }
-
 #toc::-webkit-scrollbar {
   width: 7px; /* 스크롤바의 너비 */
 }
 #toc::-webkit-scrollbar-thumb {
   height: 25%; /* 스크롤바의 길이 */
   max-height: 10%; /* 스크롤바의 길이 */
-
   background: rgba(0, 0, 0, 0.2);
   border-radius: 7px;
-}
-/*스크롤바 뒷 배경 색상 */
-#toc::-webkit-scrollbar-track {
-  /* --tw-bg-opacity: 1; */
-  /* background: rgba(0, 0, 0, 0.7); */
 }
 
 #markdown-body img {
@@ -50,15 +48,12 @@
   width: inherit;
   margin: auto;
 }
-
 #markdown-body img[title='large'] {
   max-width: 700px;
 }
-
 #markdown-body img[title='small'] {
   max-width: 300px;
 }
-
 #markdown-body h1 {
   font-size: 2.5rem;
   line-height: 2.5rem;
@@ -98,10 +93,18 @@
 #markdown-body a {
   color: rgb(233, 122, 123);
 }
-
-#markdown-body ul,
+#markdown-body p,
 #markdown-body li {
+  margin: 0.5rem 0rem;
+  word-spacing: -0.07rem;
+  line-height: 1.8rem;
+}
+#markdown-body ul li {
   list-style: circle;
+}
+
+#markdown-body ol li {
+  list-style: decimal;
 }
 #markdown-body pre * {
   letter-spacing: 0;
@@ -122,11 +125,9 @@
   background-color: transparent;
   border-radius: 10px;
 }
-
 #markdown-body pre::-webkit-scrollbar-track {
   background-color: transparent;
 }
-
 #markdown-body * {
   font-family: var(--font-azeret-mono);
   font-weight: 200;
@@ -143,7 +144,6 @@
   padding: 0;
   color: black;
 }
-
 #markdown-body blockquote {
   border: 1px solid rgba(39, 169, 227, 0.5);
   margin-left: 0px;
@@ -152,7 +152,6 @@
   padding-right: 10px;
   border-left: 6px solid rgba(39, 169, 227, 0.5);
 }
-
 #markdown-body .hljs-keyword {
   color: rgb(179, 67, 179);
 }

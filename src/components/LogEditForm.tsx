@@ -1,10 +1,12 @@
 'use client'
 import { LogResponse, TagsResponse } from '@/type'
-import { randomBrightColor } from '@/utils'
-import React, { useEffect, useState } from 'react'
+
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { DeleteRequest } from '@/app/api/delete/storage/route'
 import dayjs from 'dayjs'
+
+import { randomBrightColor } from '@/utils'
+import { DeleteRequest } from '@/app/api/delete/log/route'
 import { DATE_FORMAT } from '@/constants'
 
 type Props = {
@@ -12,14 +14,14 @@ type Props = {
   content: string
   tags: TagsResponse
 }
-export default function LogEditForm({ log, content, tags }: Props) {
-  const [contentState, setContentState] = useState(content)
-  const [tagsState, setTagsState] = useState(log.tags)
+export default function LogEditForm({ log, content: contentProp, tags: tagsProp }: Props) {
+  const [content, setContent] = useState(contentProp)
+  const [tags, setTags] = useState(log.tags)
   const [title, setTitle] = useState(log.title)
   const router = useRouter()
 
-  // todo : hooks로 뺴기
   useEffect(() => {
+    // * tab키를 누르면 2칸 들여쓰기가 되도록 합니다.
     document.getElementById('textbox')?.addEventListener('keydown', function (e: KeyboardEvent) {
       if (e.key == 'Tab') {
         e.preventDefault()
@@ -37,9 +39,8 @@ export default function LogEditForm({ log, content, tags }: Props) {
 
   async function updateLog() {
     const textarea = document.querySelector('.weblog-textarea') as HTMLTextAreaElement
-    // * content의 변경사항이 있다면 업데이트 합니다.
-    if (content !== contentState) {
-      fetch('/api/update/content', {
+    if (contentProp !== content) {
+      await fetch('/api/update/content', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -50,62 +51,45 @@ export default function LogEditForm({ log, content, tags }: Props) {
         }),
       })
     }
-
-    // * log(Document)에 변경사항이 있다면 업데이트 합니다.
     if (
       title !== log.title ||
-      JSON.stringify(tagsState) !== JSON.stringify(log.tags) ||
-      content !== contentState
+      JSON.stringify(tags) !== JSON.stringify(log.tags) ||
+      contentProp !== content
     ) {
       const curLog: LogResponse = {
         ...log,
         title: title,
-        tags: tagsState,
+        tags: tags,
         lastModifiedAt: dayjs().format(DATE_FORMAT),
       }
-      fetch('/api/update/log', {
+      await fetch('/api/update/log', {
         method: 'POST',
         body: JSON.stringify(curLog),
       })
     }
-
     router.push('/admin/logs')
   }
 
   function removeTag(e: React.MouseEvent<HTMLButtonElement>) {
     const targetTag = (e.target as HTMLButtonElement).textContent
-    setTagsState((prev) => {
-      return prev.filter((tag) => tag !== targetTag)
-    })
+    setTags((prev) => prev.filter((tag) => tag !== targetTag))
   }
-  function resetTags() {
-    setTagsState(log.tags)
-  }
-  function resetTitle() {
-    setTitle(log.title)
-  }
-  function resetContent() {
-    setContentState(content)
-  }
+
   function addTag(e: React.ChangeEvent<HTMLSelectElement>) {
     const targetTag = (e.target as HTMLSelectElement).value
     if (targetTag === '') return
-    setTagsState((prev) => {
-      if (prev.includes(targetTag)) return prev
-      return [...prev, targetTag]
-    })
+    setTags((prev) => (prev.includes(targetTag) ? prev : [...prev, targetTag]))
   }
 
   async function deleteLog() {
     const trigger = prompt('Are you sure you want to delete this post?\nso, type "delete"')
     if (trigger !== 'delete') return
-
     const body: DeleteRequest = {
       logId: log.id,
       thumbnailId: log.thumbnailId,
       storagePath: log.storagePath,
     }
-    await fetch('/api/delete/storage', {
+    await fetch('/api/delete/log', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -114,6 +98,11 @@ export default function LogEditForm({ log, content, tags }: Props) {
     })
     router.push('/admin/logs')
   }
+
+  // * Reset
+  const resetTags = () => setTags(log.tags)
+  const resetTitle = () => setTitle(log.title)
+  const resetContent = () => setContent(contentProp)
 
   return (
     <div className='mb-12'>
@@ -132,7 +121,7 @@ export default function LogEditForm({ log, content, tags }: Props) {
         </button>
       </div>
       <div className='pb-5 pr-5 text-end'>
-        {tagsState.map((name) => {
+        {tags.map((name) => {
           const rgb = randomBrightColor(name)
           return (
             <button
@@ -151,7 +140,7 @@ export default function LogEditForm({ log, content, tags }: Props) {
           className='ml-5'
         >
           <option value=''>Add Tag</option>
-          {tags
+          {tagsProp
             .sort((a, b) => {
               return a.name > b.name ? 1 : -1
             })
@@ -184,8 +173,8 @@ export default function LogEditForm({ log, content, tags }: Props) {
       <textarea
         id='textbox'
         className='w-full h-[60rem] weblog-textarea'
-        value={contentState as string}
-        onChange={(e) => setContentState(e.target.value)}
+        value={content as string}
+        onChange={(e) => setContent(e.target.value)}
       />
       <div className='text-end'>
         <button

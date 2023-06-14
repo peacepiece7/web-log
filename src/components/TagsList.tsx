@@ -1,8 +1,6 @@
 'use client'
 import { TagsResponse, ThumbnailsResponse } from '@/type'
-import Image from 'next/image'
 import Link from 'next/link'
-import React from 'react'
 
 type Props = {
   tags: TagsResponse
@@ -18,7 +16,10 @@ export default function TagsList({ tags, thumbs }: Props) {
             key={tag.id}
             className='pt-24'
           >
-            <Link href={`admin/tags/edit/${tag.id}`}>
+            <Link
+              prefetch={process.env.NODE_ENV === 'production'}
+              href={`admin/tags/edit/${tag.id}`}
+            >
               <div
                 className='w-[100px] h-[100px] flex justify-center items-center rounded-md overflow-hidden'
                 dangerouslySetInnerHTML={{ __html: thumb?.source ? thumb.source : '' }}

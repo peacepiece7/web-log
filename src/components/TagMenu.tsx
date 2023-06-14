@@ -1,6 +1,6 @@
 'use client'
 import { TagsResponse } from '@/type'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 
 type Props = {
@@ -12,15 +12,12 @@ export default function TagMenu({ tags }: Props) {
   useEffect(() => {
     window.addEventListener('click', (e) => {
       const target = e.target as HTMLElement
-      if (target.id !== 'tagBtn') {
-        setIsOpen(false)
-      }
+      if (target.id === 'tagBtn') return
+      setIsOpen(false)
     })
   }, [])
 
-  function openMenu() {
-    setIsOpen(!isOpen)
-  }
+  const openMenu = () => setIsOpen(!isOpen)
 
   return (
     <div>
@@ -45,6 +42,7 @@ export default function TagMenu({ tags }: Props) {
               .map((tag) => {
                 return (
                   <Link
+                    prefetch={process.env.NODE_ENV === 'production'}
                     className='block w-full'
                     href={`/tags/${tag.name}`}
                     key={tag.id}

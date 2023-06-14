@@ -1,6 +1,5 @@
-import React from 'react'
-import Link from 'next/link'
 import { LogsResponse, ThumbnailsResponse } from '@/type'
+import Link from 'next/link'
 import { randomBrightColor } from '@/utils'
 
 type Props = {
@@ -8,7 +7,6 @@ type Props = {
   thumbnails: ThumbnailsResponse
   basePath: string
 }
-
 export default function LatestLogList({ logs, thumbnails, basePath }: Props) {
   return (
     <div className='pl-5 pr-5'>
@@ -20,7 +18,10 @@ export default function LatestLogList({ logs, thumbnails, basePath }: Props) {
             className='flex'
           >
             <div className='pb-14 flex-1'>
-              <Link href={`${basePath}/${log.id}`}>
+              <Link
+                prefetch={process.env.NODE_ENV === 'production'}
+                href={`${basePath}/${log.id}`}
+              >
                 <div
                   className='w-[200px] h-[200px] flex justify-center items-center rounded-md overflow-hidden'
                   dangerouslySetInnerHTML={{ __html: thumb?.source ? thumb.source : '' }}

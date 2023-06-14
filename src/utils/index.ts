@@ -1,4 +1,5 @@
 import MarkdownIt from 'markdown-it'
+// * 랜덤한 Hex Color를 반환합니다.
 export const randomBrightColor = (str: string) => {
   var hash = 0
   for (let i = 0; i < str.length; i++) {
@@ -16,6 +17,7 @@ export type Toc = {
   level: string
   text: string
 }
+// * Markdown에서 Table of Content를 생성합니다.
 export const createToc = (markdown: string) => {
   const toc = [] as Toc[]
   const headers = markdown
@@ -37,8 +39,8 @@ export const createToc = (markdown: string) => {
   return toc
 }
 
-// * markdown에 id 속성을 부여합니다.
-export const addIdToStringHTML = (html: string) => {
+// * markdown의 header에 id 속성을 부여합니다.
+export const addIdToHeader = (html: string) => {
   return html
     .split('\n')
     .map((line) => {

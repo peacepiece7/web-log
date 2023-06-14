@@ -1,6 +1,6 @@
 'use client'
 import { LogsResponse, TagResponse, ThumbnailResponse } from '@/type'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
 type Props = {
@@ -11,10 +11,10 @@ type Props = {
 export default function TagEditForm({ logs, tag: tagProp, thumb: thumbProp }: Props) {
   const [tagName, setTagName] = useState(tagProp.name)
   const [source, setSource] = useState(thumbProp.source)
-
   const router = useRouter()
 
   async function updateTag() {
+    // * 태그 이름이 변경되면 태그 이름과 로그를 업데이트 합니다.
     if (tagName !== tagProp.name) {
       const tag: TagResponse = {
         ...tagProp,
@@ -24,22 +24,17 @@ export default function TagEditForm({ logs, tag: tagProp, thumb: thumbProp }: Pr
         method: 'POST',
         body: JSON.stringify(tag),
       })
-      logs.map((log) => {
+      logs.forEach((log) => {
         const isExist = log.tags.find((tag) => tag === tagProp.name)
-        if (isExist) {
-          log.tags = log.tags.map((tag) => {
-            if (tag === tagProp.name) {
-              return tagName
-            }
-            return tag
-          })
-          fetch('/api/update/log', {
-            method: 'POST',
-            body: JSON.stringify(log),
-          })
-        }
+        if (!isExist) return
+        log.tags = log.tags.map((tag) => (tag === tagProp.name ? tagName : tag))
+        fetch('/api/update/log', {
+          method: 'POST',
+          body: JSON.stringify(log),
+        })
       })
     }
+    // * 썸네일이 변경되면 업데이트 합니다.
     if (source !== thumbProp.source) {
       const thumb: ThumbnailResponse = {
         ...thumbProp,
@@ -60,30 +55,26 @@ export default function TagEditForm({ logs, tag: tagProp, thumb: thumbProp }: Pr
       method: 'POST',
       body: JSON.stringify(tagProp),
     })
+
     await fetch('/api/delete/thumbnail', {
       method: 'POST',
       body: JSON.stringify(thumbProp),
     })
-    // todo Promise.all로 교체하고, 트련젝션 사용하기
-    logs.map((log) => {
+
+    logs.forEach((log) => {
       const isExist = log.tags.find((tag) => tag === tagProp.name)
-      if (isExist) {
-        log.tags = log.tags.filter((tag) => tag !== tagProp.name)
-        fetch('/api/update/log', {
-          method: 'POST',
-          body: JSON.stringify(log),
-        })
-      }
+      if (!isExist) return
+      log.tags = log.tags.filter((tag) => tag !== tagProp.name)
+      fetch('/api/update/log', {
+        method: 'POST',
+        body: JSON.stringify(log),
+      })
     })
     router.push('/admin/tags')
   }
 
-  function resetTagName() {
-    setTagName(tagProp.name)
-  }
-  function resetSource() {
-    setSource(thumbProp.source)
-  }
+  const resetTagName = () => setTagName(tagProp.name)
+  const resetSource = () => setSource(thumbProp.source)
 
   return (
     <div className='mb-12'>

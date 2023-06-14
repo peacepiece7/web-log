@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
 export default function Login() {
@@ -11,7 +11,6 @@ export default function Login() {
     e.preventDefault()
     localStorage.setItem('weblogId', name)
     localStorage.setItem('weblogPassword', password)
-
     router.push('/admin/logs')
   }
 

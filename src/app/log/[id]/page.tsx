@@ -1,22 +1,20 @@
-import React from 'react'
 import { LogsResponse } from '@/type'
-import FirebaseCollection from '@/service/Firebase/collection'
 import MarkdownIt from 'markdown-it'
 import hljs from 'highlight.js'
+
+import FirebaseCollection from '@/service/Firebase/collection'
 import { FirebaseStorage } from '@/service/Firebase/storage'
-import { addIdToStringHTML, createToc } from '@/utils'
+import { addIdToHeader, createToc } from '@/utils'
 import TableOfContent from '@/components/TableOfContent'
-import './styles.css'
 import ScrollToTop from '@/components/ScrollToTop'
+import '@/app/viewer.css'
 
 type Props = {
   params: {
     id: string
   }
 }
-
 export default async function WebLogPage({ params }: Props) {
-  // * firebase에서 log를 가져옵니다.
   const db = new FirebaseCollection()
   const storage = new FirebaseStorage()
   const logs = await db.getDocs<LogsResponse>('logs')
@@ -25,13 +23,8 @@ export default async function WebLogPage({ params }: Props) {
     return <div>not found</div>
   }
 
-  // * firebase에서 content를 가져옵니다.
   const content = await storage.getContentData(log.storagePath)
-
-  // * Table of content를 생성합니다.
   const toc = createToc(content)
-
-  // * Markdown to HTML 규칙을 생성합니다.
   const mdRole = new MarkdownIt({
     html: true,
     linkify: true,
@@ -45,8 +38,7 @@ export default async function WebLogPage({ params }: Props) {
       return ''
     },
   })
-
-  const html = addIdToStringHTML(mdRole.render(content))
+  const html = addIdToHeader(mdRole.render(content))
 
   return (
     <div>

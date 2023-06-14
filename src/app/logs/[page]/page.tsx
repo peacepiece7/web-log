@@ -1,7 +1,7 @@
-import PagenatedItems from '@/components/PagenatedItems'
-import FirebaseCollection from '@/service/Firebase/collection'
 import { LogsResponse, ThumbnailsResponse } from '@/type'
-import React from 'react'
+import FirebaseCollection from '@/service/Firebase/collection'
+
+import PagenatedItems from '@/components/PagenatedItems'
 
 type Props = {
   params: {
@@ -36,6 +36,5 @@ export async function generateStaticParams() {
   for (let i = 0; i < Math.ceil(logs.length / itemsPerPage); i++) {
     pages.push(i + 1)
   }
-
   return pages.map((page) => ({ page: String(page) }))
 }

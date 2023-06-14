@@ -1,7 +1,7 @@
+import { LogsResponse, TagsResponse, ThumbnailsResponse } from '@/type'
+
 import FilteredList from '@/components/FilteredList'
 import FirebaseCollection from '@/service/Firebase/collection'
-import { LogsResponse, TagsResponse, ThumbnailsResponse } from '@/type'
-import React from 'react'
 
 type Props = {
   params: {
@@ -17,6 +17,7 @@ export default async function Tags({ params }: Props) {
   const filteredThumbs = thumbs.filter((thumb) => {
     return filteredLogs.some((log) => log.thumbnailId === thumb.id)
   })
+
   return (
     <main>
       <div className='max-w-7xl inset-0 m-auto pl-5 pr-5'>
