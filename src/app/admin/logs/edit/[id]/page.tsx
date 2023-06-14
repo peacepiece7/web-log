@@ -1,9 +1,9 @@
+import { LogsResponse, TagsResponse } from '@/type'
+import { Suspense } from 'react'
+
 import FirebaseCollection from '@/service/Firebase/collection'
 import { FirebaseStorage } from '@/service/Firebase/storage'
-import { LogsResponse, TagsResponse } from '@/type'
-
 import EditLogForm from '@/components/LogEditForm'
-import { Suspense } from 'react'
 
 type Props = {
   params: {
@@ -11,14 +11,12 @@ type Props = {
   }
 }
 export default async function EditPost({ params }: Props) {
+  // * firebase연결 및 데이터(logs, tags, content) 가져오기
   const db = new FirebaseCollection()
   const storage = new FirebaseStorage()
-
   const logs = await db.getDocs<LogsResponse>('logs')
-  const log = logs.find((log) => log.id === params.id)
-
   const tags = await db.getDocs<TagsResponse>('tags')
-
+  const log = logs.find((log) => log.id === params.id)
   const content = await storage.getContentData(log?.storagePath)
 
   return (

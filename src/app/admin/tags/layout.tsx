@@ -8,6 +8,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [isAdmin, setIsAdmin] = useState(false)
 
   useEffect(() => {
+    // * 관리자 인증 (localstorage에 저장된 id, password)
     const id = localStorage.getItem('weblogId')
     const password = localStorage.getItem('weblogPassword')
     fetch('/api/login', {

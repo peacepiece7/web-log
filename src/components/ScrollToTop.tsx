@@ -1,7 +1,5 @@
 'use client'
-
 import { useScroll } from '@/hooks/useScroll'
-import React from 'react'
 
 export default function ScrollToTop() {
   const [scroll] = useScroll()

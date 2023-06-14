@@ -1,8 +1,8 @@
-import React from 'react'
-import Link from 'next/link'
-import TagMenu from './TagMenu'
-import FirebaseCollection from '@/service/Firebase/collection'
 import { TagsResponse } from '@/type'
+import Link from 'next/link'
+
+import FirebaseCollection from '@/service/Firebase/collection'
+import TagMenu from '@/components/TagMenu'
 
 export default async function Header() {
   const db = new FirebaseCollection()
@@ -14,7 +14,10 @@ export default async function Header() {
     >
       <div className='flex justify-between pr-4 pl-4'>
         <div className='hover:text-red-500 transition-all'>
-          <Link href='/'>
+          <Link
+            prefetch={process.env.NODE_ENV === 'production'}
+            href='/'
+          >
             <p>PEACE</p>
             <p>PIECE</p>
           </Link>

@@ -1,7 +1,6 @@
-import TagEditForm from '@/components/TagEditForm'
-import FirebaseCollection from '@/service/Firebase/collection'
 import { LogsResponse, TagResponse, ThumbnailResponse } from '@/type'
-import React from 'react'
+import FirebaseCollection from '@/service/Firebase/collection'
+import TagEditForm from '@/components/TagEditForm'
 
 type Props = {
   params: {

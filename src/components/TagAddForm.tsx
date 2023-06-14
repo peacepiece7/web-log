@@ -1,11 +1,10 @@
 'use client'
+import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import React from 'react'
 
 export default function TagAddForm() {
-  const [name, setName] = React.useState('')
-  const [thumbnail, setThumbnail] = React.useState('')
-
+  const [name, setName] = useState('')
+  const [thumbnail, setThumbnail] = useState('')
   const router = useRouter()
 
   const addTag = async () => {

@@ -1,20 +1,19 @@
 'use client'
-import React, { useEffect, useState } from 'react'
 import { TagsResponse } from '@/type'
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import dayjs from 'dayjs'
+
+import { AddLogRequest } from '@/app/api/add/log/route'
 import { randomBrightColor } from '@/utils'
 import { DATE_FORMAT } from '@/constants'
-import { AddLogRequest } from '@/app/api/add/log/route'
-import { useRouter } from 'next/navigation'
-
-import Preview from './Preview'
+import Preview from '@/components/Preview'
 
 type Props = {
   tags: TagsResponse
 }
-
 export default function LogAddForm({ tags }: Props) {
-  const [fileName, setFileName] = useState('example-file-name')
+  const [fileName, setFileName] = useState('example')
   const [title, setTitle] = useState('')
   const [thumbnail, setThumbnail] = useState('')
   const [tagsState, setTagsState] = useState([] as string[])
@@ -22,8 +21,8 @@ export default function LogAddForm({ tags }: Props) {
 
   const router = useRouter()
 
-  // todo : hooks로 뺴기
   useEffect(() => {
+    // * tab키를 누르면 2칸 들여쓰기가 되도록 합니다.
     document.getElementById('textbox')?.addEventListener('keydown', function (e: KeyboardEvent) {
       if (e.key == 'Tab') {
         e.preventDefault()
@@ -42,24 +41,15 @@ export default function LogAddForm({ tags }: Props) {
   function addTag(e: React.ChangeEvent<HTMLSelectElement>) {
     const targetTag = (e.target as HTMLSelectElement).value
     if (targetTag === '') return
-    setTagsState((prev) => {
-      if (prev.includes(targetTag)) return prev
-      return [...prev, targetTag]
-    })
+    setTagsState((prev) => (prev.includes(targetTag) ? prev : [...prev, targetTag]))
   }
 
   function removeTag(e: React.MouseEvent<HTMLButtonElement>) {
     const targetTag = (e.target as HTMLButtonElement).textContent
-    setTagsState((prev) => {
-      return prev.filter((tag) => tag !== targetTag)
-    })
+    setTagsState((prev) => prev.filter((tag) => tag !== targetTag))
   }
 
-  function resetTags() {
-    setTagsState([])
-  }
-
-  function addPost() {
+  async function addPost() {
     const date = dayjs().format(DATE_FORMAT)
     const log: AddLogRequest = {
       title: title,
@@ -70,12 +60,14 @@ export default function LogAddForm({ tags }: Props) {
       lastModifiedAt: date,
       fileName: fileName,
     }
-    fetch('/api/add/log', {
+    await fetch('/api/add/log', {
       method: 'POST',
       body: JSON.stringify(log),
     })
     router.push('/admin/logs')
   }
+
+  const resetTags = () => setTagsState([])
 
   return (
     <div className='flex'>
