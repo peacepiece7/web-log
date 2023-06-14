@@ -16,23 +16,13 @@ export async function POST(request: Request) {
     // * markdown 저장
     await store.uploadContentData(`markdown/${fileName}`, log.content)
 
-    // * 썸네일 저장
-    let thumbnailId = ''
-    if (typeof log.thumbnailSource !== 'undefined') {
-      const thumbRes = await db.addDoc<ThumbnailDocument>('thumbnails', {
-        name: `${fileName}_logo`,
-        source: log.thumbnailSource,
-      })
-      thumbnailId = thumbRes.id
-    }
-
     // * 로그 저장
     const logDoc: LogDocument = {
       createdAt: log.createdAt,
       lastModifiedAt: log.lastModifiedAt,
       storagePath: `markdown/${fileName}`,
       tags: log.tags,
-      thumbnailId: thumbnailId,
+      thumbnailId: log.thumbnailId,
       title: log.title,
     }
     await db.addDoc<LogDocument>('logs', logDoc)
@@ -49,7 +39,7 @@ export type AddLogRequest = {
   tags: string[]
   createdAt: string
   lastModifiedAt: string
-  thumbnailSource?: string
+  thumbnailId?: string
   content: string
   fileName: string
 }
