@@ -15,7 +15,7 @@ type Props = {
 export default function LogAddForm({ tags }: Props) {
   const [fileName, setFileName] = useState('example')
   const [title, setTitle] = useState('')
-  const [thumbnail, setThumbnail] = useState('')
+  const [thumbnailName, setThumbnailName] = useState('')
   const [tagsState, setTagsState] = useState([] as string[])
   const [content, setContent] = useState('')
 
@@ -50,10 +50,12 @@ export default function LogAddForm({ tags }: Props) {
   }
 
   async function addPost() {
+    const thumb = tags.find((tag) => tag.name === thumbnailName)
+    thumb?.thumbnailId
     const date = dayjs().format(DATE_FORMAT)
     const log: AddLogRequest = {
       title: title,
-      thumbnailSource: thumbnail,
+      thumbnailId: thumb?.thumbnailId,
       tags: tagsState,
       content: content,
       createdAt: date,
@@ -80,13 +82,28 @@ export default function LogAddForm({ tags }: Props) {
             placeholder='Enter a title'
             onChange={(e) => setTitle(e.target.value)}
           />
-          <input
-            className='border border-solid border-gray-300 rounded-md p-1 mt-4 text-2xl ml-4'
-            type='text'
-            value={thumbnail}
-            placeholder='Enter a svg thumbnail'
-            onChange={(e) => setThumbnail(e.target.value)}
-          />
+          <select
+            name='tag'
+            onChange={(e) => setThumbnailName(e.target.value)}
+            className='border border-solid border-gray-300 rounded-md p-1 mt-4 ml-5'
+          >
+            <option value=''>Add Thumbnail By Tag</option>
+            {tags
+              .sort((a, b) => {
+                return a.name > b.name ? 1 : -1
+              })
+              .map((tag) => {
+                return (
+                  <option
+                    key={tag.name}
+                    value={tag.name}
+                  >
+                    {tag.name}
+                  </option>
+                )
+              })}
+          </select>
+
           <select
             name='tag'
             onChange={addTag}
