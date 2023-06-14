@@ -8,9 +8,6 @@ export async function POST(request: Request) {
     const db = new FirebaseCollection()
     const storage = new FirebaseStorage()
 
-    // * 썸네일이 있다면 삭제
-    if (body.thumbnailId) db.deleteDoc('thumbnails', body.thumbnailId)
-
     // * 로그 삭제
     await db.deleteDoc('logs', body.logId)
 
