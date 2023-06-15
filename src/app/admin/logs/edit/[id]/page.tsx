@@ -20,7 +20,7 @@ export default async function EditPost({ params }: Props) {
   const content = await storage.getContentData(log?.storagePath)
 
   return (
-    <div className='max-w-7xl m-auto'>
+    <div className='max-w-7xl'>
       <h1 className='mb-20'>Admin Edit Post</h1>
       {typeof log === 'undefined' ? (
         <div>Not Found The {params.id} Log</div>
