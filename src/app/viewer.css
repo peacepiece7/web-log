@@ -91,7 +91,8 @@
   font-weight: bold;
 }
 #markdown-body a {
-  color: rgb(233, 122, 123);
+  color: rgb(17, 153, 187);
+  font-weight: 400;
 }
 #markdown-body p,
 #markdown-body li {
@@ -102,7 +103,6 @@
 #markdown-body ul li {
   list-style: circle;
 }
-
 #markdown-body ol li {
   list-style: decimal;
 }
@@ -111,7 +111,6 @@
   line-height: 1.4rem;
 }
 #markdown-body pre {
-  /* font-size: 1.2rem; */
   padding: 1rem 1rem calc(1rem - 20px) 1rem;
   border-radius: 10px;
   background-color: rgba(0, 0, 0, 0.2);
@@ -135,12 +134,14 @@
 }
 #markdown-body code {
   color: rgb(233, 122, 123);
+  font-weight: 400;
   padding: 2px;
-  background-color: rgba(0, 0, 0, 0.2);
-  border-radius: 2px;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
 }
 #markdown-body pre code {
   background-color: transparent;
+  font-weight: 200;
   padding: 0;
   color: black;
 }
