@@ -30,7 +30,7 @@ export default function TagMenu({ tags }: Props) {
       </p>
       <div
         id='tagMenu'
-        className={`absolute top-[70px] bg-white z-20 brder-solidborder-black border-solid h-[100%] right-0 transition-all overflow-hidden
+        className={`absolute top-[70px] right-0 bg-white z-20 border-black border-solid transition-all overflow-hidden
         ${isOpen ? 'w-[400px] border-[1px]' : 'border-0 w-0'}`}
       >
         <ul className='p-0'>
