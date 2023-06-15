@@ -112,7 +112,6 @@
 }
 #markdown-body pre {
   padding: 1rem 1rem calc(1rem - 20px) 1rem;
-  border-radius: 10px;
   background-color: rgba(0, 0, 0, 0.2);
   color: black;
   overflow-x: scroll;
@@ -135,7 +134,7 @@
 #markdown-body code {
   color: rgb(233, 122, 123);
   font-weight: 400;
-  padding: 2px;
+  padding: 1px;
   background-color: rgba(0, 0, 0, 0.1);
   border-radius: 5px;
 }
