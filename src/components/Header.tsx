@@ -1,4 +1,4 @@
-import { TagsResponse } from '@/type'
+import { LogsResponse, TagsResponse } from '@/type'
 import Link from 'next/link'
 
 import FirebaseCollection from '@/service/Firebase/collection'
@@ -7,6 +7,8 @@ import TagMenu from '@/components/TagMenu'
 export default async function Header() {
   const db = new FirebaseCollection()
   const tags = await db.getDocs<TagsResponse>('tags')
+  const logs = await db.getDocs<LogsResponse>('logs')
+
   return (
     <header
       id='header'
@@ -33,7 +35,10 @@ export default async function Header() {
               </Link>
             </li>
             <li className='pr-4'>
-              <TagMenu tags={tags} />
+              <TagMenu
+                tags={tags}
+                logs={logs}
+              />
             </li>
             <li className='pr-4'>
               <Link
