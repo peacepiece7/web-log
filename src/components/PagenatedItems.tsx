@@ -37,6 +37,7 @@ export default function PagenatedItems({ itemsPerPage, items, thumbs, page }: Pr
         logs={currentItems}
         thumbs={thumbs}
       />
+
       <div id='pagenation'>
         <ReactPaginate
           className='flex cursor-pointer justify-center pt-10'

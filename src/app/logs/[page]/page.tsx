@@ -2,6 +2,7 @@ import { LogsResponse, ThumbnailsResponse } from '@/type'
 import FirebaseCollection from '@/service/Firebase/collection'
 
 import PagenatedItems from '@/components/PagenatedItems'
+import { Suspense } from 'react'
 
 type Props = {
   params: {
@@ -17,12 +18,14 @@ export default async function LogPage(props: Props) {
     <main>
       <div className='max-w-7xl inset-0 m-auto pl-5 pr-5'>
         <h1>Logs</h1>
-        <PagenatedItems
-          itemsPerPage={5}
-          items={logs}
-          thumbs={thumbnails}
-          page={parseInt(props.params.page) - 1}
-        />
+        <Suspense fallback={<div>LOADING ...</div>}>
+          <PagenatedItems
+            itemsPerPage={5}
+            items={logs}
+            thumbs={thumbnails}
+            page={parseInt(props.params.page) - 1}
+          />
+        </Suspense>
       </div>
     </main>
   )
