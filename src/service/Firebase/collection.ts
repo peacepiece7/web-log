@@ -24,7 +24,6 @@ export default class FirebaseCollection {
     this.db = getFirestore(init)
   }
   async getDocs<T>(_collection: string): Promise<T> {
-    console.log('캐시가 히트되면 이 로그가 나오지 않습니다..')
     const snapshot = await getDocs(collection(this.db, _collection))
     const docs = snapshot.docs.map((doc) => {
       return { id: doc.id, ...doc.data() }

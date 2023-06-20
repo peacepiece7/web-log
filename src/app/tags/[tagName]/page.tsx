@@ -2,7 +2,6 @@ import { LogsResponse, TagsResponse, ThumbnailsResponse } from '@/type'
 
 import FilteredList from '@/components/FilteredList'
 import FirebaseCollection from '@/service/Firebase/collection'
-import { getAPI } from '@/api'
 
 type Props = {
   params: {
@@ -10,15 +9,12 @@ type Props = {
   }
 }
 export default async function Tags({ params }: Props) {
-  // const db = new FirebaseCollection()
-
-  const res = await Promise.all([getAPI('api/get/logs'), getAPI('api/get/thumbnails')])
-
-  const { logs }: { logs: LogsResponse } = res[0]
-  const { thumbnails }: { thumbnails: ThumbnailsResponse } = res[1]
+  const db = new FirebaseCollection()
+  const logs = await db.getDocs<LogsResponse>('logs')
+  const thumbs = await db.getDocs<ThumbnailsResponse>('thumbnails')
 
   const filteredLogs = logs.filter((log) => log.tags.includes(params.tagName))
-  const filteredThumbs = thumbnails.filter((thumb) => {
+  const filteredThumbs = thumbs.filter((thumb) => {
     return filteredLogs.some((log) => log.thumbnailId === thumb.id)
   })
 

@@ -8,7 +8,6 @@ import { addIdToHeader, createToc } from '@/utils'
 import TableOfContent from '@/components/TableOfContent'
 import ScrollToTop from '@/components/ScrollToTop'
 import '@/app/viewer.css'
-import { getAPI } from '@/api'
 
 type Props = {
   params: {
@@ -16,16 +15,9 @@ type Props = {
   }
 }
 export default async function WebLogPage({ params }: Props) {
-  console.log('params :', params)
-  // const db = new FirebaseCollection()
+  const db = new FirebaseCollection()
   const storage = new FirebaseStorage()
-  // const logs = await db.getDocs<LogsResponse>('logs')
-
-  const res = await fetch('https://web-log-wheat.vercel.app/api/get/logs', {
-    method: 'GET',
-    cache: 'force-cache',
-  })
-  const { logs }: { logs: LogsResponse } = await res.json()
+  const logs = await db.getDocs<LogsResponse>('logs')
   const log = logs.find((log) => log.id === params.id)
   if (!log) {
     return <div>not found</div>
@@ -65,8 +57,7 @@ export default async function WebLogPage({ params }: Props) {
 }
 
 export async function generateStaticParams() {
-  // const db = new FirebaseCollection()
-  // const logs = await db.getDocs<LogsResponse>('logs')
-  const { logs }: { logs: LogsResponse } = await getAPI('api/get/logs')
+  const db = new FirebaseCollection()
+  const logs = await db.getDocs<LogsResponse>('logs')
   return logs.map((log) => ({ id: log.id }))
 }
