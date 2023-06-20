@@ -3,6 +3,7 @@ import FirebaseCollection from '@/service/Firebase/collection'
 
 import PagenatedItems from '@/components/PagenatedItems'
 import { Suspense } from 'react'
+import { getAPI } from '@/api'
 
 type Props = {
   params: {
@@ -10,9 +11,18 @@ type Props = {
   }
 }
 export default async function LogPage(props: Props) {
-  const db = new FirebaseCollection()
-  const logs = await db.getDocs<LogsResponse>('logs')
-  const thumbnails = await db.getDocs<ThumbnailsResponse>('thumbnails')
+  const url =
+    process.env.NODE_ENV === 'development'
+      ? `http://localhost:3000`
+      : `https://web-log-wheat.vercel.app`
+
+  const res = await Promise.all([
+    getAPI(`${url}/api/get/logs`),
+    getAPI(`${url}/api/get/thumbnails`),
+  ])
+
+  const { logs }: { logs: LogsResponse } = res[0]
+  const { thumbnails }: { thumbnails: ThumbnailsResponse } = res[1]
 
   return (
     <main>

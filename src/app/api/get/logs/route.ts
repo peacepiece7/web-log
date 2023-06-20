@@ -9,6 +9,7 @@ export async function GET() {
   try {
     const db = new FirebaseCollection()
     const logs = await db.getDocs<LogDocument>('logs')
+    console.log('LOG API가 호출 되었습니다.')
     return NextResponse.json({ logs })
   } catch (error) {
     console.error(error)

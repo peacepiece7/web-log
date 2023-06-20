@@ -1,22 +1,21 @@
 import { LogsResponse, ThumbnailsResponse } from '@/type'
 import Image from 'next/image'
-import { headers } from 'next/headers'
 
-import FirebaseCollection from '@/service/Firebase/collection'
 import PagenatedItems from '@/components/PagenatedItems'
+import { getAPI } from '@/api'
 
 export default async function Home() {
-  const headerList = headers()
-  // console.log(headerList.get('host'))
-  const db = new FirebaseCollection()
-  const logs = await db.getDocs<LogsResponse>('logs')
-  // const response = await fetch('/api/get/logs', {
-  //   method: 'GET',
-  //   cache: 'force-cache',
-  // })
-  // const data = await response.json()
-  // console.log(data)
-  const thumbnails = await db.getDocs<ThumbnailsResponse>('thumbnails')
+  const url =
+    process.env.NODE_ENV === 'development'
+      ? `http://localhost:3000`
+      : `https://web-log-wheat.vercel.app`
+  const res = await Promise.all([
+    getAPI(`${url}/api/get/logs`),
+    getAPI(`${url}/api/get/thumbnails`),
+  ])
+
+  const { logs }: { logs: LogsResponse } = res[0]
+  const { thumbnails }: { thumbnails: ThumbnailsResponse } = res[1]
 
   return (
     <main className='relative overflow-hidden'>
