@@ -1,12 +1,21 @@
 import { LogsResponse, ThumbnailsResponse } from '@/type'
 import Image from 'next/image'
+import { headers } from 'next/headers'
 
 import FirebaseCollection from '@/service/Firebase/collection'
 import PagenatedItems from '@/components/PagenatedItems'
 
 export default async function Home() {
+  const headerList = headers()
+  // console.log(headerList.get('host'))
   const db = new FirebaseCollection()
   const logs = await db.getDocs<LogsResponse>('logs')
+  // const response = await fetch('/api/get/logs', {
+  //   method: 'GET',
+  //   cache: 'force-cache',
+  // })
+  // const data = await response.json()
+  // console.log(data)
   const thumbnails = await db.getDocs<ThumbnailsResponse>('thumbnails')
 
   return (

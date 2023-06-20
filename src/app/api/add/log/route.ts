@@ -43,5 +43,3 @@ export type AddLogRequest = {
   content: string
   fileName: string
 }
-
-// todo : 트렌잭션 기능 사용하기
