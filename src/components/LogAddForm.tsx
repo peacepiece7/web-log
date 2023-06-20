@@ -53,11 +53,20 @@ export default function LogAddForm({ tags }: Props) {
     const thumb = tags.find((tag) => tag.name === thumbnailName)
     thumb?.thumbnailId
     const date = dayjs().format(DATE_FORMAT)
+    const contentIncludesHashLink = content
+      .split('\n')
+      .map((line) => {
+        if (!line.startsWith('#')) return line
+        const [hash, ...rest] = line.split(' ')
+        const title = `[${rest.join('')}](#${rest.join('_')})`
+        return `${hash} ${title}`
+      })
+      .join('\n')
     const log: AddLogRequest = {
       title: title,
       thumbnailId: thumb?.thumbnailId,
       tags: tagsState,
-      content: content,
+      content: contentIncludesHashLink,
       createdAt: date,
       lastModifiedAt: date,
       fileName: fileName,

@@ -1,13 +1,25 @@
 'use client'
-import { TagsResponse } from '@/type'
+import { LogsResponse, TagsResponse } from '@/type'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 
 type Props = {
   tags: TagsResponse
+  logs: LogsResponse
 }
-export default function TagMenu({ tags }: Props) {
+export default function TagMenu({ tags, logs }: Props) {
   const [isOpen, setIsOpen] = useState(false)
+
+  const tagList = tags.map((tag) => {
+    let cnt = 0
+    logs.forEach((log) => {
+      log.tags.includes(tag.name) && cnt++
+    })
+    return {
+      ...tag,
+      cnt,
+    }
+  })
 
   useEffect(() => {
     window.addEventListener('click', (e) => {
@@ -34,10 +46,13 @@ export default function TagMenu({ tags }: Props) {
         ${isOpen ? 'w-[400px] border-[1px]' : 'border-0 w-0'}`}
       >
         <ul className='p-0'>
-          {tags &&
-            tags
+          {tagList &&
+            tagList
               .sort((a, b) => {
-                return a.name > b.name ? 1 : -1
+                if (a.cnt === b.cnt) {
+                  return a.name < b.name ? -1 : 1
+                }
+                return b.cnt - a.cnt
               })
               .map((tag) => {
                 return (
@@ -48,7 +63,8 @@ export default function TagMenu({ tags }: Props) {
                     key={tag.id}
                   >
                     <li className='mt-4 pl-12 p-4 text-left rounded-md hover:text-red-500 transition-all'>
-                      {tag.name}
+                      <span>{tag.name}</span>
+                      <span className='pl-4 text-gray-400'>{`(${tag.cnt})`}</span>
                     </li>
                   </Link>
                 )

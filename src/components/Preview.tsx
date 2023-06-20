@@ -26,7 +26,7 @@ export default function Preview({ content }: Props) {
   const html = addIdToHeader(mdRole.render(content))
 
   return (
-    <div className='flex-1'>
+    <div className='flex-1 mr-4'>
       <h2>Preview</h2>
       <div
         id='markdown-body'
