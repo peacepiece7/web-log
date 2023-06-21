@@ -7,21 +7,16 @@ import {
   doc,
   setDoc,
   getDoc,
-  updateDoc,
   collection,
   getDocs,
   getFirestore,
   deleteField,
-  query,
-  where,
-  WhereFilterOp,
   DocumentData,
   DocumentReference,
   deleteDoc,
 } from 'firebase/firestore'
 
 let i = 0
-let j = 0
 export default class FirebaseCollection {
   db
   constructor() {
@@ -66,9 +61,6 @@ export default class FirebaseCollection {
   }
   async deleteDoc(_collection: string, id: string) {
     if (!_collection || !id) throw new Error('컬렉션과 아이디가 입력되지 않았습니다.')
-    await deleteDoc(doc(this.db, _collection, id)),
-      {
-        capital: deleteField(),
-      }
+    await deleteDoc(doc(this.db, _collection, id))
   }
 }
