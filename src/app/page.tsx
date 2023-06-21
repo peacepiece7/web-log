@@ -3,11 +3,12 @@ import Image from 'next/image'
 
 import FirebaseCollection from '@/service/Firebase/collection'
 import PagenatedItems from '@/components/PagenatedItems'
+import { getDocs } from 'firebase/firestore'
+import { getDocsCache } from '@/service/Firebase_fn/collection'
 
 export default async function Home() {
-  const db = new FirebaseCollection()
-  const logs = await db.getDocs<LogsResponse>('logs')
-  const thumbnails = await db.getDocs<ThumbnailsResponse>('thumbnails')
+  const logs = await getDocsCache<LogsResponse>('logs')
+  const thumbnails = await getDocsCache<ThumbnailsResponse>('thumbnails')
 
   return (
     <main className='relative overflow-hidden'>

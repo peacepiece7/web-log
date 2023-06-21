@@ -8,6 +8,7 @@ import { addIdToHeader, createToc } from '@/utils'
 import TableOfContent from '@/components/TableOfContent'
 import ScrollToTop from '@/components/ScrollToTop'
 import '@/app/viewer.css'
+import { getDocsCache } from '@/service/Firebase_fn/collection'
 
 type Props = {
   params: {
@@ -17,7 +18,7 @@ type Props = {
 export default async function WebLogPage({ params }: Props) {
   const db = new FirebaseCollection()
   const storage = new FirebaseStorage()
-  const logs = await db.getDocs<LogsResponse>('logs')
+  const logs = await getDocsCache<LogsResponse>('logs')
   const log = logs.find((log) => log.id === params.id)
   if (!log) {
     return <div>not found</div>

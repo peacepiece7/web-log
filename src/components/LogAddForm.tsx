@@ -53,12 +53,15 @@ export default function LogAddForm({ tags }: Props) {
     const thumb = tags.find((tag) => tag.name === thumbnailName)
     thumb?.thumbnailId
     const date = dayjs().format(DATE_FORMAT)
+    let flag = false
     const contentIncludesHashLink = content
       .split('\n')
       .map((line) => {
+        if (line.startsWith('```')) flag = !flag
+        if (flag) return line
         if (!line.startsWith('#')) return line
         const [hash, ...rest] = line.split(' ')
-        const title = `[${rest.join(' ')}](#${rest.join('_')})`
+        const title = `[${rest.join('')}](#${rest.join('_')})`
         return `${hash} ${title}`
       })
       .join('\n')

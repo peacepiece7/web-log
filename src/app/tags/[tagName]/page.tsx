@@ -2,6 +2,7 @@ import { LogsResponse, TagsResponse, ThumbnailsResponse } from '@/type'
 
 import FilteredList from '@/components/FilteredList'
 import FirebaseCollection from '@/service/Firebase/collection'
+import { getDocsCache } from '@/service/Firebase_fn/collection'
 
 type Props = {
   params: {
@@ -9,12 +10,11 @@ type Props = {
   }
 }
 export default async function Tags({ params }: Props) {
-  const db = new FirebaseCollection()
-  const logs = await db.getDocs<LogsResponse>('logs')
-  const thumbs = await db.getDocs<ThumbnailsResponse>('thumbnails')
+  const logs = await getDocsCache<LogsResponse>('logs')
+  const thumbnails = await getDocsCache<ThumbnailsResponse>('thumbnails')
 
   const filteredLogs = logs.filter((log) => log.tags.includes(params.tagName))
-  const filteredThumbs = thumbs.filter((thumb) => {
+  const filteredThumbs = thumbnails.filter((thumb) => {
     return filteredLogs.some((log) => log.thumbnailId === thumb.id)
   })
 
