@@ -58,7 +58,7 @@ export default function LogAddForm({ tags }: Props) {
       .map((line) => {
         if (!line.startsWith('#')) return line
         const [hash, ...rest] = line.split(' ')
-        const title = `[${rest.join('')}](#${rest.join('_')})`
+        const title = `[${rest.join(' ')}](#${rest.join('_')})`
         return `${hash} ${title}`
       })
       .join('\n')

@@ -1,3 +1,5 @@
+// 랜더링 사이클 내에서만 캐싱
+import { cache } from 'react'
 import { init } from './config'
 
 import {
@@ -18,12 +20,15 @@ import {
   deleteDoc,
 } from 'firebase/firestore'
 
+let i = 0
+let j = 0
 export default class FirebaseCollection {
   db
   constructor() {
     this.db = getFirestore(init)
   }
   async getDocs<T>(_collection: string): Promise<T> {
+    console.log('GET DOCS가 호출되었습니다.', i++)
     const snapshot = await getDocs(collection(this.db, _collection))
     const docs = snapshot.docs.map((doc) => {
       return { id: doc.id, ...doc.data() }
