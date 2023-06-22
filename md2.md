@@ -1,234 +1,167 @@
-# Redux
 
-단방향 바인딩만 가능한 React의 특성상 전역 상태 관리의 어려움이 있었습니다.
+# 개발자의 글쓰기
 
-지금은 상태 관리 도구를 사용하면서 이 문제를 해결하고 있는데
+## 글쓰기 방법
 
-대부분 [Flux 아키텍처](https://taegon.kim/archives/5288)를 구현한 라이브러리입니다.
+1. 서술식
 
-Redux 또한 이 시기에 나온 라이브러리로 Redux는 상태 관리 도구이며 Flux 아키텍쳐의 구현체입니다.
+~다 로 끝남
 
-## 구조
+개발 가이드에서 많이 사용
 
-**/store.ts** redux의 설정 파일
+2. 개조식
 
-**/feature/couter/couter.ts** 동기 상태 관리 파일 (Action)
+명사 (완료, 증대 등)이나 ~했음으로 용언을 끝냄
 
-**/feature/todo/todoSlice.ts** 비동기 상태 관리 파일 (Slice)
+릴리즈 문서, 장애 보고서
 
-## 설치
+3. 도식
 
-`npm install @reduxjs/toolkit react-redux`
+표, 그래프를 사용
 
-## 스토어 설정하기
+사물의 구조, 관계를 표현
+                  
+## 영어 단어 선택
 
-먼저 `/store.ts` 파일을 만들어 아래와 같이 설정을 추가해 주겠습니다.
+ **단어에 의도를 정확히 담기, 중요한 건 일관성**
+### 반대말 선택
 
-```js
-import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import counterReducer from '../features/counter/counter';
-import todoReducer from '../features/todo/todoSlice';
+반대말에 주의하여 사용하기
 
-export const store = configureStore({
-  reducer: {
-    counter: counterReducer,
-    todo : todoReducer
-  },
-});
+fade in/out, appear/disappear, show/hide, visible/invisible
 
-export type AppDispatch = typeof store.dispatch;
-export type RootState = ReturnType<typeof store.getState>;
-export type AppThunk<ReturnType = void> = ThunkAction<
-  ReturnType,
-  RootState,
-  unknown,
-  Action<string>
->;
-```
+header/footer, head/tail, top/bottom, start/end, first/last
 
-## index.ts에 Redux 연결하기
- 
-`index.ts`에 아래와 같이 store를 연결해 주면 끝입니다.
+under/over, or under/and over, above/below, up/down, ascend/descend, rise/fall
 
-```js
-import { createRoot } from 'react-dom/client';
-import { Provider } from 'react-redux';
-import { store } from './app/store';
+### 유의어
 
-root.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </React.StrictMode>
-);
-```
+1. 중단
 
-## Action
+stop : 잠시 중단
 
-`redux-action`의 기능입니다.
+end : 완전히 중단됨
 
-기존의 사용 방법 그대로 사용하면 됩니다.
+finish : 끝까지 가서 재시작 가능성이 없음
 
-`/feature/couter/couter.ts`에 아래와 같이 작성하면 됩니다.
+pause : 아무 잠시 중단
 
-```js
-// 
-const increment = createAction("INCREMENT");
-const decrement = createAction("DECREMENT");
+suspend : 다음 단계의 시작을 중단 
 
-function counter(state = 0, action) {
-  switch (action.type) {
-    case increment.type:
-      return state + 1;
-    case decrement.type:
-      return state - 1;
-    default:
-      return state;
-  }
-}
+hold : 의도가 있어서 중단,
 
-export default counter
-```
+2. 가져오기
+   
+get : 얻다. 값을 돌려받아서 반환한다.
 
-store에 연결되어 있기 때문에 `Dispatch`로 바로 사용할 수 있습니다.
+retrieve : 검색하다. 검색해서 가져온다.
 
-## Disaptch
+acquire : 습득하다. 다른 함수에서 가져가지 못하게 독점한다.
 
-`Dispatch`는 redux의 **Action을 실행하는 함수**입니다.
+fetch : 가져오다. 포인터가 다음 값으로 이동한다. (참조가 변경됨)
 
-`useDispatch`를 사용하여 아래와 같이 사용할 수 있습니다.
+2. 설정하기
 
-```js
-import { increment } from './counter'
-import { decrement } from  './counter'
-import { useDispatch } from 'react-redux'
+set : 설정하다. 값을 변경하거나 설정한다.
 
-export default function counter(){
-    const dispath = useDispatch()
-    return (
-        <button onClick={() => dispatch(increment())}>+</button>
-    )
-}
-```
+create : 생성하다. 새로운 틀을 만들다.
 
-## ThunkAction
+register : 등록하다. 이미 정해진 틀에 새로운 것을 등록한다.
 
-비동기 로직을 수행하는 기능으로
-[react-thunk와 같습니다.](https://redux-toolkit.js.org/api/createAsyncThunk)
+init : 초기화하다. 처음 상태로 되돌린다.
 
-`createAsyncThunk`함수로 구현할 수 있습니다.
+3. 수정하기
 
-아래 비동기 상태 관리하기 예제를 참고해주세요.
+change : 바꾸다. 내용을 변경하다.
 
-## 비동기 상태 관리하기
+modify : 수정하다. 잘못된 것을 바로잡다.
 
-비동기 데이터를 다룰때는 `createAsyncThunk`와 `createSlice`를 사용합니다.
+alter : 변경하다. 원래의 것을 다른 것으로 바꾼다.
 
-### createSlice, createAsyncThunk 설정하기
+revise : 개정하다. 기존과 전혀 다르게 달려졌음을 분명히 나타낸다.
 
-todo list를 API로 가져오는 로직을 예로 들어보겠습니다.
+4. 속성
 
-```js
-import { createSlice } from '@reduxjs/toolkit'
-import { RootState } from '@/app/store'
+parameter : 함수에서 정의하는 변수, 선언할 떄
 
-import { Todos } from '@/types'
-const initState: Todos = { todos: [] }
+argument : 함수를 호출할 때 전달하는 값, 실제 사용되는 값
 
-export const getTodoAsync = createAsyncThunk('todo/get', async () => {
-  const responseData = await getTodosAPI()
-  return responseData
-})
-export const addTodoAsync = createAsyncThunk('todo/create', async (todo: TodoAddParams) => {
-  const responseData = await addTodoAPI(todo)
-  return responseData
-})
-// Edit todo, Delete todo 등 로직을 추가할 수 있습니다.
+attribuite, property : 속성, HTML Tag 속성은 attribute,  HTML  DOM은 property (언어마다 다름)
 
-export const todoSlice = createSlice({
-  name: 'todo',
-  initialState: initState,
-  reducers: {},
-  extraReducers: (builder) => {
-    builder
-      // * getTodoAsync
-      .addCase(getTodoAsync.pending, (state) => {
-        state.getTodoStatus = 'loading'
-        state.editTodoStatus = undefined
-        state.addTodoStatus = undefined
-        state.deleteTodoStatus = undefined
-      })
-      .addCase(getTodoAsync.fulfilled, (state, action) => {
-        state.getTodoStatus = 'idle'
-        state.todos = action.payload
-      })
-      .addCase(getTodoAsync.rejected, (state) => {
-        state.getTodoStatus = 'failed'
-        state.todos = []
-      })
-      // * addTodoAsync
-      .addCase(addTodoAsync.pending, (state, action) => {
-        state.getTodoStatus = undefined
-        state.editTodoStatus = undefined
-        state.addTodoStatus = 'loading'
-        state.deleteTodoStatus = undefined
-      })
-      .addCase(addTodoAsync.fulfilled, (state, action) => {
-        state.addTodoStatus = 'idle'
-        state.todos = [...state.todos, action.payload]
-      })
-      .addCase(addTodoAsync.rejected, (state) => {
-        state.addTodoStatus = 'failed'
-      })
-  },
-})
+5. etc
 
-export const selectTodo = (state: RootState) => state.todo
-export default todoSlice.reducer
-```
+must : 필수 요구사항 (required)
 
-### Selector, Dispath로 비동기 데이터 사용하기
+should : 권장사항 (recommended)
 
-Selector : 선택한 상태를 불러옵니다.
+can : 선택사항 (optional)
 
-Dispatch : redux의 createSlice의 action을 실행합니다.
+## 이름 짓기는 조합
+
+### 컨벤션
+
+Class, Constructor function : PascalCase
+
+Function, Variable : camelCase
+
+Constant : SNAKE_CASE (ALL_CAPITAL_LETTERS)
+
+local variable, private variable : startWith underscore(_)
+
+acronyms : HTML, HTTP, XML, URL, etc
+
+### 네이밍
+
+보통 16글자, 3단어 조합
+
+### 보통 품사는 명사, 동사, 형용사의 조합
+
+품사 : 낱말의 공통된 설질에 따라 분류한 것 (명사, 동사, 형용사, 부사, 전치사...)
+
+1. 명사 + 명사 + 명사
+
+2. 동사 + 명사 + 명사
+
+3. 형용사 + 명사 + 명사 
+
+## 팁
+### 베열
+
+~s 가 문자열 중간에 붙는다면
+
+~ListOf~ 나 ~Array~로 규칙을 통일한다.
+### 함수
+
+1. 사용자가 아니라 시스템이 하는 일을 동사로 표현
+2. 의미상 없어도 되는 단어 생략
+
+### 약어
+
+보편적인건 그대로 사용하고
+
+서비스에 맞게 용어 정의서를 작성한다.
+
+### 중요한 단어를 앞으로
+
+totalVisitor => visitorTotal, buyerTotal
+
+
+### 접두어
+
+비동기 상태 표현, 에러 코드 등 접두어를 사용하여 검색, 가독성을 높인다.
+
+### 언어의 사회성
+
+누가봐도 아는 것은 그대로 두기
 
 ```js
-import { useDispatch, useSelector } from 'react-redux'
-import { todoReducer } from '@/app/features/todo/todoSlice'
-import { addTodoAsync } from '@/app/features/todo/todoSlice'
-import Spinner from '@/app/components/Spinner'
-
-export default function TodoForm() {
-  const dispatch = useDispatch()
-  const { todos, addTodoStatus } = useSelector(todoReducer)
-  const [title, setTitle] = useState('')
-
-  const setTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTodoTitle(e.target.value)
-  }
-  const addTodo = (e: React.FormEvent<HTMLFormElement>) => {
-    dispatch(addTodoAsync({title}))
-  }
-
-  return (
-      <div>
-        <h2>Add To do</h2>
-        {addTodoStatus === 'loading' ? (
-          <Spinner />
-        ) : (
-          <form onSubmit={addTodo}>
-            <input
-              type='text'
-              value={title}
-              placeholder='Write a to do'
-              onChange={setTitle}
-            />
-            <input type='submit'/>
-          </form>
-        )}
-      </div>
-  )
+for(let i = users, len=users.length; i < len; i++) {
+    // ... The rest of the code
 }
 ```
+
+## 주석 
+
+1. 좋은 코드는 코드가 곧 주석이다. 하지만 영어 실력이 별로라면 주석을 달자
+2. 의도, 아이디어, 의견 등을 전달하는 주석은 필요하다.
+3. 주석도 코드에 맞춰서 업데이트하기, 틀린 주석이 제공되어선 안된다.

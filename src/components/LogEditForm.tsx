@@ -42,19 +42,6 @@ export default function LogEditForm({ log, content: contentProp, tags: tagsProp 
   async function updateLog() {
     const textarea = document.querySelector('.weblog-textarea') as HTMLTextAreaElement
     if (contentProp !== content) {
-      let flag = false
-      const contentIncludesHashLink = textarea.value
-        .split('\n')
-        .map((line) => {
-          if (line.startsWith('```')) flag = !flag
-          if (flag) return line
-          if (!line.startsWith('#')) return line
-          const [hash, ...rest] = line.split(' ')
-          const title = `[${rest.join('')}](#${rest.join('_')})`
-          return `${hash} ${title}`
-        })
-        .join('\n')
-
       await fetch('/api/update/content', {
         method: 'POST',
         headers: {
@@ -62,7 +49,7 @@ export default function LogEditForm({ log, content: contentProp, tags: tagsProp 
         },
         body: JSON.stringify({
           storagePath: log.storagePath,
-          content: contentIncludesHashLink,
+          content: textarea.value,
         }),
       })
     }
