@@ -5,6 +5,7 @@ import ReactPaginate from 'react-paginate'
 
 import Items from './Items'
 import './PagenatedItems.css'
+import { useEffect } from 'react'
 
 type Props = {
   itemsPerPage: number
@@ -37,7 +38,6 @@ export default function PagenatedItems({ itemsPerPage, items, thumbs, page }: Pr
         logs={currentItems}
         thumbs={thumbs}
       />
-
       <div id='pagenation'>
         <ReactPaginate
           className='flex cursor-pointer justify-center pt-10'

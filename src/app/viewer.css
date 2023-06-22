@@ -12,7 +12,7 @@
   white-space: nowrap;
 }
 #toc li a:hover {
-  font-weight: 700;
+  font-weight: 500;
 }
 #toc li[data-level='1'] {
   margin-left: 0rem;
@@ -93,17 +93,18 @@
 #markdown-body h5 a,
 #markdown-body h6 a {
   color: black;
+  font-weight: 400;
 }
 
 #markdown-body hr {
   border: 1px solid grey;
 }
 #markdown-body strong {
-  font-weight: bold;
+  font-weight: 500;
 }
 #markdown-body a {
   color: rgb(17, 153, 187);
-  font-weight: 400;
+  font-weight: 500;
 }
 #markdown-body p,
 #markdown-body li {
