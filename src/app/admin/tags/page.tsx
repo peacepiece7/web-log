@@ -1,11 +1,10 @@
 import { TagsResponse, ThumbnailsResponse } from '@/type'
-import FirebaseCollection from '@/service/Firebase/collection'
 import TagsList from '@/components/TagsList'
+import { getDocsCache } from '@/service/Firebase_fn/collection'
 
 export default async function tag() {
-  const db = new FirebaseCollection()
-  const tags = await db.getDocs<TagsResponse>('tags')
-  const thumbnails = await db.getDocs<ThumbnailsResponse>('thumbnails')
+  const tags = await getDocsCache<TagsResponse>('tags')
+  const thumbnails = await getDocsCache<ThumbnailsResponse>('thumbnails')
 
   return (
     <div className='max-w-7xl m-auto'>

@@ -1,4 +1,4 @@
-import { LogDocument } from '@/type'
+import { LogDocument, TagsResponse } from '@/type'
 import { NextResponse } from 'next/server'
 import { getDocsCache } from '@/service/Firebase_fn/collection'
 
@@ -6,10 +6,10 @@ import { getDocsCache } from '@/service/Firebase_fn/collection'
 
 export async function GET() {
   try {
-    const logs = await getDocsCache<LogDocument>('logs')
-    return NextResponse.json({ logs })
+    const tags = await getDocsCache<TagsResponse>('tags')
+    return NextResponse.json({ tags })
   } catch (error) {
     console.error(error)
-    return { logs: [] }
+    return { tags: [] }
   }
 }

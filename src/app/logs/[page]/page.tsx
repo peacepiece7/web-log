@@ -1,6 +1,5 @@
 import { Suspense } from 'react'
 import { LogsResponse, ThumbnailsResponse } from '@/type'
-import FirebaseCollection from '@/service/Firebase/collection'
 import PagenatedItems from '@/components/PagenatedItems'
 import { getDocsCache } from '@/service/Firebase_fn/collection'
 
@@ -31,8 +30,7 @@ export default async function LogPage(props: Props) {
 }
 
 export async function generateStaticParams() {
-  const db = new FirebaseCollection()
-  const logs = await db.getDocs<LogsResponse>('logs')
+  const logs = await getDocsCache<LogsResponse>('logs')
   const itemsPerPage = 5
   const pages = []
   for (let i = 0; i < Math.ceil(logs.length / itemsPerPage); i++) {

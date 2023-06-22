@@ -1,7 +1,6 @@
 import { LogsResponse, TagsResponse, ThumbnailsResponse } from '@/type'
 
 import FilteredList from '@/components/FilteredList'
-import FirebaseCollection from '@/service/Firebase/collection'
 import { getDocsCache } from '@/service/Firebase_fn/collection'
 
 type Props = {
@@ -33,7 +32,6 @@ export default async function Tags({ params }: Props) {
 }
 
 export async function generateStaticParams() {
-  const db = new FirebaseCollection()
-  const tags = await db.getDocs<TagsResponse>('tags')
+  const tags = await getDocsCache<TagsResponse>('tags')
   return tags.map((tag) => ({ tagName: tag.name }))
 }

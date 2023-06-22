@@ -1,12 +1,11 @@
 import { LogsResponse, ThumbnailsResponse } from '@/type'
 
-import FirebaseCollection from '@/service/Firebase/collection'
 import LatestLogList from '@/components/LatestLogList'
+import { getDocsCache } from '@/service/Firebase_fn/collection'
 
 export default async function Posts() {
-  const db = new FirebaseCollection()
-  const logs = await db.getDocs<LogsResponse>('logs')
-  const thumbs = await db.getDocs<ThumbnailsResponse>('thumbnails')
+  const logs = await getDocsCache<LogsResponse>('logs')
+  const thumbs = await getDocsCache<ThumbnailsResponse>('thumbnails')
 
   return (
     <div className='pl-8 pr-8 max-w-7xl m-auto'>

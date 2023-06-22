@@ -1,3 +1,5 @@
+import 'server-only'
+
 import { initializeApp } from 'firebase/app'
 import dotenv from 'dotenv'
 
@@ -13,10 +15,7 @@ const firebaseConfig = {
 }
 
 let i = 0
-export const init = () => {
-  console.log('init 함수가 몇 번 실행되는지 체크 합시다. ', i)
-  return initializeApp(firebaseConfig)
-}
+export const init = initializeApp(firebaseConfig)
 // export const store = getFirestore(init)
 // export const analytics = getAnalytics(init)
 

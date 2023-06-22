@@ -1,3 +1,4 @@
+import 'server-only'
 // 랜더링 사이클 내에서만 캐싱
 import { cache } from 'react'
 import { init } from './config'
@@ -13,14 +14,12 @@ import {
   deleteDoc,
 } from 'firebase/firestore'
 
-let i = 0
-
 // ! db가 전역 선언 되었을 떄 몇번 리 렌더링 되는지 체크하고,
 // ! memo 또는 cache를 사용하여 최적화를 진행해야 합니다.
-const db = getFirestore(init())
+const db = getFirestore(init)
 
 export const getDocsCache = cache(async <T extends object>(_collection: string) => {
-  console.log('GET DOCS CACHE가 호출되었습니다.', i)
+  console.log('GET DOCS CACHE가 호출되었습니다.')
   const snapshot = await getDocs(collection(db, _collection))
   const docs = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
   return docs as T
