@@ -2,13 +2,12 @@ import { LogsResponse } from '@/type'
 import MarkdownIt from 'markdown-it'
 import hljs from 'highlight.js'
 
-import FirebaseCollection from '@/service/Firebase/collection'
-import { FirebaseStorage } from '@/service/Firebase/storage'
 import { addIdToHeader, createToc } from '@/utils'
 import TableOfContent from '@/components/TableOfContent'
 import ScrollToTop from '@/components/ScrollToTop'
 import '@/app/viewer.css'
 import { getDocsCache } from '@/service/Firebase_fn/collection'
+import { getContentDataCache } from '@/service/Firebase_fn/storage'
 
 type Props = {
   params: {
@@ -16,15 +15,13 @@ type Props = {
   }
 }
 export default async function WebLogPage({ params }: Props) {
-  const db = new FirebaseCollection()
-  const storage = new FirebaseStorage()
   const logs = await getDocsCache<LogsResponse>('logs')
   const log = logs.find((log) => log.id === params.id)
   if (!log) {
     return <div>not found</div>
   }
 
-  const content = await storage.getContentData(log.storagePath)
+  const content = await getContentDataCache(log.storagePath)
   const toc = createToc(content)
   const mdRole = new MarkdownIt({
     html: true,
@@ -58,7 +55,6 @@ export default async function WebLogPage({ params }: Props) {
 }
 
 export async function generateStaticParams() {
-  const db = new FirebaseCollection()
-  const logs = await db.getDocs<LogsResponse>('logs')
+  const logs = await getDocsCache<LogsResponse>('logs')
   return logs.map((log) => ({ id: log.id }))
 }

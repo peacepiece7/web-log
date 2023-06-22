@@ -1,13 +1,12 @@
 import { TagResponse } from '@/type'
-import FirebaseCollection from '@/service/Firebase/collection'
+import { deleteDocCache } from '@/service/Firebase_fn/collection'
 
 // * Delete Tag API
 export async function POST(request: Request) {
   try {
     const body = (await request.json()) as TagResponse
-    const db = new FirebaseCollection()
 
-    await db.deleteDoc('tags', body.id)
+    await deleteDocCache('tags', body.id)
 
     return { status: 'success', response: '' }
   } catch (error) {

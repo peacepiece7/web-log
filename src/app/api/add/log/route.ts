@@ -2,19 +2,17 @@ import { LogDocument, ThumbnailDocument } from '@/type'
 import { NextResponse } from 'next/server'
 import { v1 } from 'uuid'
 
-import FirebaseCollection from '@/service/Firebase/collection'
-import { FirebaseStorage } from '@/service/Firebase/storage'
+import { addDocCache } from '@/service/Firebase_fn/collection'
+import { uploadContentDataCache } from '@/service/Firebase_fn/storage'
 
 // * Add Log API
 export async function POST(request: Request) {
   try {
     const log = (await request.json()) as AddLogRequest
-    const db = new FirebaseCollection()
-    const store = new FirebaseStorage()
     const fileName = `${log.fileName}-${v1()}.md`
 
     // * markdown 저장
-    await store.uploadContentData(`markdown/${fileName}`, log.content)
+    await uploadContentDataCache(`markdown/${fileName}`, log.content)
 
     // * 로그 저장
     const logDoc: LogDocument = {
@@ -25,7 +23,7 @@ export async function POST(request: Request) {
       thumbnailId: log.thumbnailId,
       title: log.title,
     }
-    await db.addDoc<LogDocument>('logs', logDoc)
+    await addDocCache<LogDocument>('logs', logDoc)
 
     return NextResponse.json({ state: 'success', response: '' })
   } catch (error) {

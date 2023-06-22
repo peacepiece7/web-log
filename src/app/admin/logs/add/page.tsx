@@ -1,12 +1,11 @@
 import { TagsResponse } from '@/type'
 import { Suspense } from 'react'
 
-import FirebaseCollection from '@/service/Firebase/collection'
 import LogAddForm from '@/components/LogAddForm'
+import { getDocsCache } from '@/service/Firebase_fn/collection'
 
 export default async function AddPost() {
-  const db = new FirebaseCollection()
-  const tags = await db.getDocs<TagsResponse>('tags')
+  const tags = await getDocsCache<TagsResponse>('tags')
 
   return (
     <div className='max-w-7xl m-auto'>

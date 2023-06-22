@@ -1,6 +1,6 @@
 import { LogsResponse, TagResponse, ThumbnailResponse } from '@/type'
-import FirebaseCollection from '@/service/Firebase/collection'
 import TagEditForm from '@/components/TagEditForm'
+import { getDocCache, getDocsCache } from '@/service/Firebase_fn/collection'
 
 type Props = {
   params: {
@@ -8,10 +8,9 @@ type Props = {
   }
 }
 export default async function EditTag({ params }: Props) {
-  const db = new FirebaseCollection()
-  const logs = await db.getDocs<LogsResponse>('logs')
-  const tag = await db.getDoc<TagResponse>('tags', params.tagId)
-  const thumb = await db.getDoc<ThumbnailResponse>('thumbnails', tag.thumbnailId)
+  const logs = await getDocsCache<LogsResponse>('logs')
+  const tag = await getDocCache<TagResponse>('tags', params.tagId)
+  const thumb = await getDocCache<ThumbnailResponse>('thumbnails', tag.thumbnailId)
 
   return (
     <div className='max-w-7xl m-auto'>

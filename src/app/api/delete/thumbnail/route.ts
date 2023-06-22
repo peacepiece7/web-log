@@ -1,13 +1,12 @@
 import { ThumbnailResponse } from '@/type'
-import FirebaseCollection from '@/service/Firebase/collection'
+import { deleteDocCache } from '@/service/Firebase_fn/collection'
 
 // * Delete Thumbnail API
 export async function POST(request: Request) {
   try {
     const body = (await request.json()) as ThumbnailResponse
-    const db = new FirebaseCollection()
 
-    await db.deleteDoc('thumbnails', body.id)
+    await deleteDocCache('thumbnails', body.id)
 
     return { status: 'success', response: '' }
   } catch (error) {

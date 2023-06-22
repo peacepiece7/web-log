@@ -1,18 +1,16 @@
-import FirebaseCollection from '@/service/Firebase/collection'
-import { FirebaseStorage } from '@/service/Firebase/storage'
+import { deleteDocCache } from '@/service/Firebase_fn/collection'
+import { deleteContentDataCache } from '@/service/Firebase_fn/storage'
 
 // * Delete Log API
 export async function POST(request: Request) {
   try {
     const body = (await request.json()) as DeleteRequest
-    const db = new FirebaseCollection()
-    const storage = new FirebaseStorage()
 
     // * 로그 삭제
-    await db.deleteDoc('logs', body.logId)
+    await deleteDocCache('logs', body.logId)
 
     // * 저장소에서 markdown 파일 삭제
-    await storage.deleteContentData(body.storagePath)
+    await deleteContentDataCache(body.storagePath)
 
     return { status: 'success', response: '' }
   } catch (error) {

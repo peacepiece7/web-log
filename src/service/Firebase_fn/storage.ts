@@ -1,3 +1,5 @@
+import 'server-only'
+
 import { cache } from 'react'
 import { init } from './config'
 
@@ -15,9 +17,9 @@ export type ContentData = {
   content: string
 }
 
-const storage = getStorage(init())
+const storage = getStorage(init)
 
-export const getContentData = cache(async (_ref?: string) => {
+export const getContentDataCache = cache(async (_ref?: string) => {
   try {
     if (!_ref) {
       console.warn('ref is not defined')
@@ -34,13 +36,13 @@ export const getContentData = cache(async (_ref?: string) => {
   }
 })
 
-export const uploadContentData = cache(
+export const uploadContentDataCache = cache(
   async (storagePath: string, content: string): Promise<UploadResult | void> => {
     const mountainsRef = ref(storage, storagePath)
     return await uploadString(mountainsRef, content)
   },
 )
 
-export const deleteContentData = cache(async (storagePath: string) => {
+export const deleteContentDataCache = cache(async (storagePath: string) => {
   await deleteObject(ref(storage, storagePath))
 })
