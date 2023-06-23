@@ -10,6 +10,12 @@ export default async function Home() {
   const logs = await getDocsCache<LogsResponse>('logs')
   const thumbnails = await getDocsCache<ThumbnailsResponse>('thumbnails')
 
+  // const thumbnailsPromise = getDocsCache<ThumbnailsResponse>('thumbnails')
+  // const logsPromise = getDocsCache<LogsResponse>('logs')
+
+  // const thumbnails = await thumbnailsPromise
+  // const logs = await logsPromise
+
   return (
     <main className='relative overflow-hidden'>
       <div className='max-w-7xl inset-0 m-auto pl-5 pr-5'>

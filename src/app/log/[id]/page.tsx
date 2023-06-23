@@ -14,14 +14,28 @@ type Props = {
     id: string
   }
 }
+
+// const { log, content }: { log: LogResponse | undefined; content: string } =
+// await logsPromise.then((logs) => {
+//   let log = logs.find((log) => log.id === params.id)
+//   const contentPromise = getContentDataCache(log?.storagePath)
+//   return contentPromise.then((content) => {
+//     return { log, content: content ? content : '' }
+//   })
+// })
+
 export default async function WebLogPage({ params }: Props) {
-  const logs = await getDocsCache<LogsResponse>('logs')
+  // const logs = await getDocsCache<LogsResponse>('logs')
+
+  const logsPromise = getDocsCache<LogsResponse>('logs')
+  const logs = await logsPromise
   const log = logs.find((log) => log.id === params.id)
   if (!log) {
     return <div>not found</div>
   }
+  const contentPromise = getContentDataCache(log.storagePath)
+  const content = await contentPromise
 
-  const content = await getContentDataCache(log.storagePath)
   const toc = createToc(content)
   const mdRole = new MarkdownIt({
     html: true,

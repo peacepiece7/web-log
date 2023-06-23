@@ -5,8 +5,11 @@ import TagMenu from '@/components/TagMenu'
 import { getDocsCache } from '@/service/Firebase_fn/collection'
 
 export default async function Header() {
-  const tags = await getDocsCache<TagsResponse>('tags')
-  const logs = await getDocsCache<LogsResponse>('logs')
+  const tagsPromise = getDocsCache<TagsResponse>('tags')
+  const logsPromise = getDocsCache<LogsResponse>('logs')
+
+  const tags = await tagsPromise
+  const logs = await logsPromise
 
   return (
     <header
