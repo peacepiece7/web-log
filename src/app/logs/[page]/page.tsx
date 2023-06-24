@@ -1,4 +1,4 @@
-import { Suspense } from 'react'
+import { Suspense, useMemo } from 'react'
 import { LogsResponse, ThumbnailsResponse } from '@/type'
 import PagenatedItems from '@/components/PagenatedItems'
 import { getDocsCache } from '@/service/Firebase_fn/collection'
@@ -9,8 +9,8 @@ type Props = {
   }
 }
 export default async function LogPage(props: Props) {
-  const logs = await getDocsCache<LogsResponse>('logs')
-  const thumbnails = await getDocsCache<ThumbnailsResponse>('thumbnails')
+  const thumbnails = await useMemo(async () => await getDocsCache<ThumbnailsResponse>('tags'), [])
+  const logs = await useMemo(async () => await getDocsCache<LogsResponse>('logs'), [])
 
   return (
     <main>

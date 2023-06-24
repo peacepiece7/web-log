@@ -18,6 +18,13 @@ import {
 // ! memo 또는 cache를 사용하여 최적화를 진행해야 합니다.
 const db = getFirestore(init)
 
+// export const getDocsCache = async <T extends object>(_collection: string) => {
+//   console.log('GET DOCS CACHE가 호출되었습니다.')
+//   const snapshot = await getDocs(collection(db, _collection))
+//   const docs = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+//   return docs as T
+// }
+
 export const getDocsCache = cache(async <T extends object>(_collection: string) => {
   console.log('GET DOCS CACHE가 호출되었습니다.')
   const snapshot = await getDocs(collection(db, _collection))

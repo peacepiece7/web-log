@@ -5,7 +5,6 @@ import ReactPaginate from 'react-paginate'
 
 import Items from './Items'
 import './PagenatedItems.css'
-import { useEffect } from 'react'
 
 type Props = {
   itemsPerPage: number
