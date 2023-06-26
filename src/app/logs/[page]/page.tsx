@@ -9,7 +9,7 @@ type Props = {
   }
 }
 export default async function LogPage(props: Props) {
-  const thumbnails = await getDocsCache<ThumbnailsResponse>('tags')
+  const thumbnails = await getDocsCache<ThumbnailsResponse>('thumbnails')
   const logs = await getDocsCache<LogsResponse>('logs')
 
   return (
