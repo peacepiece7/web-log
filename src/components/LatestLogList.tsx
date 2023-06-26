@@ -42,7 +42,7 @@ export default function LatestLogList({ logs, thumbnails, basePath }: Props) {
                     )
                   })}
                 </p>
-                <p className='text-end pt-4'>{`Last Modified At : ${log.lastModifiedAt}`}</p>
+                <p className='text-end pt-4'>{`Created At : ${log.createdAt}`}</p>
               </Link>
             </div>
           </div>
