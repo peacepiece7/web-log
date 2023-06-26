@@ -17,8 +17,8 @@ export default function PagenatedItems({ itemsPerPage, items, thumbs, page }: Pr
   const itemOffset = page * itemsPerPage
 
   const latestItems = items.sort((a, b) => {
-    const anum = parseInt(a.lastModifiedAt.split('-').join(''))
-    const bnum = parseInt(b.lastModifiedAt.split('-').join(''))
+    const anum = parseInt(a.createdAt.split('-').join(''))
+    const bnum = parseInt(b.createdAt.split('-').join(''))
     return bnum - anum
   })
 
