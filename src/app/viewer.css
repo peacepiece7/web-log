@@ -45,14 +45,14 @@
 #markdown-body img {
   display: block;
   max-width: 500px;
-  width: inherit;
+  width: 100%;
   margin: auto;
 }
 #markdown-body img[title='large'] {
-  max-width: 700px;
+  max-width: 1200px;
 }
 #markdown-body img[title='small'] {
-  max-width: 300px;
+  max-width: 700px;
 }
 #markdown-body h1 {
   font-size: 2.5rem;
