@@ -1,6 +1,6 @@
 'use client'
 import React from 'react'
-import './markdownViewer.css'
+import './MarkdownViewer.css'
 
 export default function MarkdownViewer({ html }: { html: string }) {
   return (
