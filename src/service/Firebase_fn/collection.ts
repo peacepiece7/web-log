@@ -33,6 +33,7 @@ export const getDocsCache = cache(async <T extends object>(_collection: string) 
 })
 
 export const getDocCache = cache(async <T extends object>(_collection: string, id: string) => {
+  console.log('GET DOC CACHE가 호출되었습니다.')
   const ref = doc(db, _collection, id)
   const docSnap = await getDoc(ref)
   return { id: docSnap.id, ...docSnap.data() } as T

@@ -3,7 +3,7 @@ import MarkdownIt from 'markdown-it'
 import hljs from 'highlight.js'
 
 import { addIdToHeader } from '@/utils'
-import '@/app/viewer.css'
+import MarkdownViewer from './MarkdownViewer'
 
 type Props = {
   content: string
@@ -28,10 +28,7 @@ export default function Preview({ content }: Props) {
   return (
     <div className='flex-1 mr-4'>
       <h2>Preview</h2>
-      <div
-        id='markdown-body'
-        dangerouslySetInnerHTML={{ __html: html }}
-      />
+      <MarkdownViewer html={html} />
     </div>
   )
 }

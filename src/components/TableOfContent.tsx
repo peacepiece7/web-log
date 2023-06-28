@@ -1,3 +1,4 @@
+'use client'
 import { Toc } from '@/utils'
 
 type Props = {
