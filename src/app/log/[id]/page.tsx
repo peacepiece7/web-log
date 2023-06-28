@@ -1,13 +1,13 @@
-import { LogsResponse } from '@/type'
+import { LogResponse, LogsResponse } from '@/type'
 import MarkdownIt from 'markdown-it'
 import hljs from 'highlight.js'
 
 import { addIdToHeader, createToc } from '@/utils'
 import TableOfContent from '@/components/TableOfContent'
 import ScrollToTop from '@/components/ScrollToTop'
-import '@/app/viewer.css'
-import { getDocsCache } from '@/service/Firebase_fn/collection'
+import { getDocCache, getDocsCache } from '@/service/Firebase_fn/collection'
 import { getContentDataCache } from '@/service/Firebase_fn/storage'
+import MarkdownViewer from '@/components/MarkdownViewer'
 
 type Props = {
   params: {
@@ -27,14 +27,9 @@ type Props = {
 export default async function WebLogPage({ params }: Props) {
   // const logs = await getDocsCache<LogsResponse>('logs')
 
-  const logsPromise = getDocsCache<LogsResponse>('logs')
-  const logs = await logsPromise
-  const log = logs.find((log) => log.id === params.id)
-  if (!log) {
-    return <div>not found</div>
-  }
-  const contentPromise = getContentDataCache(log.storagePath)
-  const content = await contentPromise
+  const log = await getDocCache<LogResponse>('logs', params.id)
+
+  const content = await getContentDataCache(log.storagePath)
 
   const toc = createToc(content)
   const mdRole = new MarkdownIt({
@@ -57,18 +52,14 @@ export default async function WebLogPage({ params }: Props) {
       <section className='flex flex-col items-center'>
         <h1 className='text-4xl text-center'>{log.title}</h1>
         <TableOfContent toc={toc} />
-        <div
-          id='markdown-body'
-          className='max-w-7xl w-full pl-8 pr-8'
-          dangerouslySetInnerHTML={{ __html: html }}
-        />
+        <MarkdownViewer html={html} />
         <ScrollToTop />
       </section>
     </div>
   )
 }
 
-export async function generateStaticParams() {
-  const logs = await getDocsCache<LogsResponse>('logs')
-  return logs.map((log) => ({ id: log.id }))
-}
+// export async function generateStaticParams() {
+//   const logs = await getDocsCache<LogsResponse>('logs')
+//   return logs.map((log) => ({ id: log.id }))
+// }

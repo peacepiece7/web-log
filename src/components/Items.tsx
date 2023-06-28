@@ -1,3 +1,4 @@
+'use client'
 import { LogsResponse, ThumbnailsResponse } from '@/type'
 import Link from 'next/link'
 
