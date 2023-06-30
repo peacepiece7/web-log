@@ -1,3 +1,4 @@
+import { Metadata } from 'next'
 import { Suspense } from 'react'
 import { LogsResponse, ThumbnailsResponse } from '@/type'
 import PagenatedItems from '@/components/PagenatedItems'
@@ -27,6 +28,9 @@ export default async function LogPage(props: Props) {
       </div>
     </main>
   )
+}
+export const metadata = {
+  title: 'Web Log | logs',
 }
 
 export async function generateStaticParams() {
