@@ -1,3 +1,4 @@
+import { Metadata } from 'next'
 import { LogResponse, LogsResponse } from '@/type'
 import MarkdownIt from 'markdown-it'
 import hljs from 'highlight.js'
@@ -14,15 +15,6 @@ type Props = {
     id: string
   }
 }
-
-// const { log, content }: { log: LogResponse | undefined; content: string } =
-// await logsPromise.then((logs) => {
-//   let log = logs.find((log) => log.id === params.id)
-//   const contentPromise = getContentDataCache(log?.storagePath)
-//   return contentPromise.then((content) => {
-//     return { log, content: content ? content : '' }
-//   })
-// })
 
 export default async function WebLogPage({ params }: Props) {
   // const logs = await getDocsCache<LogsResponse>('logs')
@@ -59,7 +51,17 @@ export default async function WebLogPage({ params }: Props) {
   )
 }
 
-// export async function generateStaticParams() {
-//   const logs = await getDocsCache<LogsResponse>('logs')
-//   return logs.map((log) => ({ id: log.id }))
-// }
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const log = await getDocCache<LogResponse>('logs', params.id)
+
+  return {
+    title: `Web log | ${log.title}`,
+    description: `${log.title} 포스팅`,
+    keywords: `${log.tags.join(', ')}`,
+  }
+}
+
+export async function generateStaticParams() {
+  const logs = await getDocsCache<LogsResponse>('logs')
+  return logs.map((log) => ({ id: log.id }))
+}
