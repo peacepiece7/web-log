@@ -49,14 +49,15 @@ export default function PagenatedItems({ itemsPerPage, items, thumbs, page }: Pr
       <div id='pagenation'>
         <ReactPaginate
           className='flex cursor-pointer justify-center pt-10'
-          breakLabel='...'
-          nextLabel='next >'
+          breakLabel='..'
+          nextLabel='>'
           onPageChange={handlePageClick}
           pageRangeDisplayed={5}
-          pageCount={pageCnt}
-          previousLabel='< prev'
-          renderOnZeroPageCount={null}
+          pageCount={999}
+          previousLabel='<'
           forcePage={page}
+          renderOnZeroPageCount={null}
+          marginPagesDisplayed={1}
         />
       </div>
     </>

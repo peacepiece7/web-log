@@ -1,12 +1,14 @@
+#pagenation > ul {
+  padding: 0;
+}
 #pagenation a {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-width: 50px;
   height: 25px;
   padding: 0 1rem;
-  margin: 0 2rem;
   border-radius: 1rem;
+  white-space: nowrap;
   transition: all ease-in-out 0.1s;
 }
 #pagenation a:hover {
@@ -18,4 +20,11 @@
 }
 #pagenation .selected {
   color: rgb(214, 52, 52);
+}
+
+@media screen and (max-width: 768px) {
+  #pagenation a {
+    padding: 0 0.5rem;
+    font-size: 0.9rem;
+  }
 }
