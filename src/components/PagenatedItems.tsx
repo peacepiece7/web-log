@@ -53,7 +53,7 @@ export default function PagenatedItems({ itemsPerPage, items, thumbs, page }: Pr
           nextLabel='>'
           onPageChange={handlePageClick}
           pageRangeDisplayed={5}
-          pageCount={999}
+          pageCount={pageCnt}
           previousLabel='<'
           forcePage={page}
           renderOnZeroPageCount={null}
