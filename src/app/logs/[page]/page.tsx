@@ -17,14 +17,12 @@ export default async function LogPage(props: Props) {
   return (
     <div className='max-w-7xl inset-0 m-auto pl-5 pr-5'>
       <h1>Logs</h1>
-      <Suspense fallback={<div>Loading... from src/app/logs/[pages]</div>}>
-        <PagenatedItems
-          itemsPerPage={5}
-          items={logs}
-          thumbs={thumbnails}
-          page={parseInt(props.params.page) - 1}
-        />
-      </Suspense>
+      <PagenatedItems
+        itemsPerPage={5}
+        items={logs}
+        thumbs={thumbnails}
+        page={parseInt(props.params.page) - 1}
+      />
     </div>
   )
 }
@@ -33,15 +31,8 @@ export const metadata = {
 }
 
 export async function generateStaticParams() {
-  const logsResponse = await fetch(
-    `${
-      process.env.NODE_ENV === 'development'
-        ? 'http://localhost:3000'
-        : `https://${process.env.VERCEL_URL}`
-    }/api/get/logs`,
-  )
-  const logsData = await logsResponse.json()
-  const logs = logsData.logs as LogsResponse
+  const response = await getFetcher('logs')
+  const logs = response[0].logs as LogsResponse
 
   const itemsPerPage = 5
   const pages = []

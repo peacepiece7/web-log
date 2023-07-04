@@ -12,7 +12,6 @@ type Props = {
 
 export default async function Tags({ params }: Props) {
   const response = await getFetcher('logs', 'thumbnails')
-
   const logs = response[0].logs as LogsResponse
   const thumbnails = response[1].thumbnails as ThumbnailsResponse
 
