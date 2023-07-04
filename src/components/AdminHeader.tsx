@@ -4,28 +4,28 @@ export default function AdminHeader() {
   return (
     <header className='flex justify-end h-[100px]'>
       <Link
-        prefetch={false}
+        prefetch={process.env.NODE_ENV === 'production'}
         className='pr-12'
         href='/admin/logs'
       >
         Logs
       </Link>
       <Link
-        prefetch={false}
+        prefetch={process.env.NODE_ENV === 'production'}
         className='pr-12'
         href='/admin/logs/add'
       >
         Add Log
       </Link>
       <Link
-        prefetch={false}
+        prefetch={process.env.NODE_ENV === 'production'}
         className='pr-12'
         href='/admin/tags'
       >
         Tags
       </Link>
       <Link
-        prefetch={false}
+        prefetch={process.env.NODE_ENV === 'production'}
         className='pr-12'
         href='/admin/tags/add'
       >
