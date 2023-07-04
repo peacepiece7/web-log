@@ -1,5 +1,6 @@
 import 'server-only'
 import { getDocsCache } from '../Firebase_fn/collection'
+import { getContentDataCache } from '../Firebase_fn/storage'
 
 type CollectionName = 'logs' | 'tags' | 'thumbnails'
 type Collections = CollectionName[]
@@ -17,4 +18,13 @@ export const getFetcher = async (...collections: Collections) => {
     return getDocsCache(collection)
   })
   return Promise.all(apis)
+}
+
+export const getContentFetcher = async (productId: string) => {
+  if (process.env.NODE_ENV === 'development') {
+    const response = await fetch(`http://localhost:3000/api/get/content?productId=${productId}`)
+    return response.json()
+  }
+
+  return getContentDataCache(productId)
 }

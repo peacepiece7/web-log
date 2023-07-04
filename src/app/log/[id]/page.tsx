@@ -1,16 +1,13 @@
 import { Metadata } from 'next'
-import { LogResponse, LogsResponse } from '@/type'
+import { LogsResponse } from '@/type'
 import MarkdownIt from 'markdown-it'
 import hljs from 'highlight.js'
 
 import { addIdToHeader, createToc } from '@/utils'
 import TableOfContent from '@/components/TableOfContent'
 import ScrollToTop from '@/components/ScrollToTop'
-import { getDocCache, getDocsCache } from '@/service/Firebase_fn/collection'
-import { getContentDataCache } from '@/service/Firebase_fn/storage'
 import MarkdownViewer from '@/components/MarkdownViewer'
-import { Suspense } from 'react'
-import { getFetcher } from '@/service/fetcher'
+import { getContentFetcher, getFetcher } from '@/service/fetcher'
 
 type Props = {
   params: {
@@ -24,8 +21,7 @@ export default async function WebLogPage({ params }: Props) {
 
   // todo log 없을 경우 처리
   const log = logs.find((log) => log.id === params.id)
-
-  const content = await getContentDataCache(log?.storagePath)
+  const content = await getContentFetcher(log?.storagePath!)
 
   const toc = createToc(content)
   const mdRole = new MarkdownIt({
