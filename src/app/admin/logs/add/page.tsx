@@ -5,7 +5,7 @@ import LogAddForm from '@/components/LogAddForm'
 import { getDocsCache } from '@/service/Firebase_fn/collection'
 
 export default async function AddPost() {
-  const tags = await getDocsCache<TagsResponse>('tags')
+  const { tags } = await getDocsCache<TagsResponse>('tags')
 
   return (
     <div className='max-w-7xl m-auto'>

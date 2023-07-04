@@ -8,7 +8,7 @@ type Props = {
   }
 }
 export default async function EditTag({ params }: Props) {
-  const logs = await getDocsCache<LogsResponse>('logs')
+  const { logs } = await getDocsCache<LogsResponse>('logs')
   const tag = await getDocCache<TagResponse>('tags', params.tagId)
   const thumb = await getDocCache<ThumbnailResponse>('thumbnails', tag.thumbnailId)
 

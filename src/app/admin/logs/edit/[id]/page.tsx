@@ -12,8 +12,8 @@ type Props = {
 }
 export default async function EditPost({ params }: Props) {
   // * firebase연결 및 데이터(logs, tags, content) 가져오기
-  const logs = await getDocsCache<LogsResponse>('logs')
-  const tags = await getDocsCache<TagsResponse>('tags')
+  const { logs } = await getDocsCache<LogsResponse>('logs')
+  const { tags } = await getDocsCache<TagsResponse>('tags')
   const log = logs.find((log) => log.id === params.id)
   const content = await getContentDataCache(log?.storagePath)
 
