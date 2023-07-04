@@ -4,11 +4,19 @@ import Link from 'next/link'
 import TagMenu from '@/components/TagMenu'
 
 export default async function Header() {
-  const logsResponse = await fetch('http://localhost:3000/api/get/logs')
+  const logsResponse = await fetch(
+    `${
+      process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : process.env.VERCEL_URL
+    }/api/get/logs`,
+  )
   const logsData = await logsResponse.json()
   const logs = logsData.logs as LogsResponse
 
-  const tagsResponse = await fetch('http://localhost:3000/api/get/tags')
+  const tagsResponse = await fetch(
+    `${
+      process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : process.env.VERCEL_URL
+    }/api/get/tags`,
+  )
   const tagsData = await tagsResponse.json()
   const tags = tagsData.tags as TagsResponse
 

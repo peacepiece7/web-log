@@ -5,11 +5,19 @@ import Image from 'next/image'
 import PagenatedItems from '@/components/PagenatedItems'
 
 export default async function Home() {
-  const logsResponse = await fetch('http://localhost:3000/api/get/logs')
+  const logsResponse = await fetch(
+    `${
+      process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : process.env.VERCEL_URL
+    }/api/get/logs`,
+  )
   const logsData = await logsResponse.json()
   const logs = logsData.logs as LogsResponse
 
-  const thumbsResponse = await fetch('http://localhost:3000/api/get/thumbnails')
+  const thumbsResponse = await fetch(
+    `${
+      process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : process.env.VERCEL_URL
+    }/api/get/thumbnails`,
+  )
   const thumbsData = await thumbsResponse.json()
   const thumbnails = thumbsData.thumbnails as ThumbnailsResponse
 
