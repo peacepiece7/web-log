@@ -1,4 +1,4 @@
-import { Suspense } from 'react'
+import Link from 'next/link'
 import { LogsResponse, ThumbnailsResponse } from '@/type'
 import PagenatedItems from '@/components/PagenatedItems'
 import { getFetcher } from '@/service/fetcher'
@@ -15,19 +15,13 @@ export default async function LogPage(props: Props) {
   const thumbnails = response[1].thumbnails as ThumbnailsResponse
 
   return (
-    <div className='max-w-7xl inset-0 m-auto pl-5 pr-5 mb-12'>
-      <h1>Logs</h1>
-      <PagenatedItems
-        itemsPerPage={5}
-        items={logs}
-        thumbs={thumbnails}
-        page={parseInt(props.params.page) - 1}
-      />
-    </div>
+    <PagenatedItems
+      itemsPerPage={5}
+      items={logs}
+      thumbs={thumbnails}
+      page={parseInt(props.params.page) - 1}
+    />
   )
-}
-export const metadata = {
-  title: 'Web Log | logs',
 }
 
 export async function generateStaticParams() {

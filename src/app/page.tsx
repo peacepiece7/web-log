@@ -1,4 +1,3 @@
-import { Suspense } from 'react'
 import { LogsResponse, ThumbnailsResponse } from '@/type'
 import Image from 'next/image'
 
@@ -48,18 +47,16 @@ export default async function Home() {
 
         <section className='pt-32 pb-32'>
           <h1 className='text-3xl pb-10'>Latest Logs</h1>
-          <Suspense fallback={<div>Loading... from app/pages.tsx</div>}>
-            {logs ? (
-              <PagenatedItems
-                itemsPerPage={5}
-                items={logs}
-                thumbs={thumbnails}
-                page={0}
-              />
-            ) : (
-              <div>not found log data</div>
-            )}
-          </Suspense>
+          {logs ? (
+            <PagenatedItems
+              itemsPerPage={5}
+              items={logs}
+              thumbs={thumbnails}
+              page={0}
+            />
+          ) : (
+            <div>not found log data</div>
+          )}
         </section>
       </div>
     </main>
