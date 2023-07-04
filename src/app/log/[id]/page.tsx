@@ -40,7 +40,7 @@ export default async function WebLogPage({ params }: Props) {
   const html = addIdToHeader(mdRole.render(content))
 
   return (
-    <div>
+    <div className='mb-12'>
       <section className='flex flex-col items-center'>
         <h1 className='text-4xl text-center'>{log?.title}</h1>
         <TableOfContent toc={toc} />

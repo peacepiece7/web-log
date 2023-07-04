@@ -15,7 +15,7 @@ export default async function LogPage(props: Props) {
   const thumbnails = response[1].thumbnails as ThumbnailsResponse
 
   return (
-    <div className='max-w-7xl inset-0 m-auto pl-5 pr-5'>
+    <div className='max-w-7xl inset-0 m-auto pl-5 pr-5 mb-12'>
       <h1>Logs</h1>
       <PagenatedItems
         itemsPerPage={5}
