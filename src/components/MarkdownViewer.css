@@ -65,32 +65,7 @@
   line-height: 3rem;
   margin: 2rem 0 0 0;
 }
-/* #markdown-body h2 {
-  font-size: 2.2rem;
-  line-height: 2.2rem;
-  margin-bottom: 1rem;
-  color: black !important;
-}
-#markdown-body h3 {
-  font-size: 2rem;
-  line-height: 2rem;
-  margin-bottom: 1rem;
-}
-#markdown-body h4 {
-  font-size: 1.5rem;
-  line-height: 1.5rem;
-  margin-bottom: 1rem;
-}
-#markdown-body h5 {
-  font-size: 1.3rem;
-  line-height: 1.5rem;
-  margin-bottom: 1rem;
-}
-#markdown-body h6 {
-  font-size: 1.1rem;
-  line-height: 1.5rem;
-  margin-bottom: 1rem;
-} */
+
 #markdown-body h1 a,
 #markdown-body h2 a,
 #markdown-body h3 a,
@@ -102,15 +77,20 @@
   text-decoration: none;
 }
 
-#markdown-body hr {
-  border: 1px solid grey;
+#markdown-body table {
+  width: fit-content;
 }
-#markdown-body strong {
-  font-weight: 600;
+
+#markdown-body th,
+#markdown-body td {
+  padding: 1rem 2rem;
+  text-align: left !important;
+  border: 1px solid grey;
 }
 #markdown-body a {
   color: rgb(17, 153, 187);
   font-weight: 500;
+  text-decoration: none;
 }
 #markdown-body p,
 #markdown-body li {
