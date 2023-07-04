@@ -20,7 +20,9 @@ type Props = {
 export default async function WebLogPage({ params }: Props) {
   const logsResponse = await fetch(
     `${
-      process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : process.env.VERCEL_URL
+      process.env.NODE_ENV === 'development'
+        ? 'http://localhost:3000'
+        : `https://${process.env.VERCEL_URL}`
     }/api/get/logs`,
   )
   const logsData = await logsResponse.json()

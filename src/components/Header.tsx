@@ -6,7 +6,9 @@ import TagMenu from '@/components/TagMenu'
 export default async function Header() {
   const logsResponse = await fetch(
     `${
-      process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : process.env.VERCEL_URL
+      process.env.NODE_ENV === 'development'
+        ? 'http://localhost:3000'
+        : `https://${process.env.VERCEL_URL}`
     }/api/get/logs`,
   )
   const logsData = await logsResponse.json()
@@ -14,7 +16,9 @@ export default async function Header() {
 
   const tagsResponse = await fetch(
     `${
-      process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : process.env.VERCEL_URL
+      process.env.NODE_ENV === 'development'
+        ? 'http://localhost:3000'
+        : `https://${process.env.VERCEL_URL}`
     }/api/get/tags`,
   )
   const tagsData = await tagsResponse.json()
