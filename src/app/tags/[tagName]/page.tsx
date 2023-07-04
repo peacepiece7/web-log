@@ -8,9 +8,15 @@ type Props = {
     tagName: string
   }
 }
+
 export default async function Tags({ params }: Props) {
-  const logs = await getDocsCache<LogsResponse>('logs')
-  const thumbnails = await getDocsCache<ThumbnailsResponse>('thumbnails')
+  const logsResponse = await fetch('http://localhost:3000/api/get/logs')
+  const logsData = await logsResponse.json()
+  const logs = logsData.logs as LogsResponse
+
+  const thumbsResponse = await fetch('http://localhost:3000/api/get/thumbnails')
+  const thumbsData = await thumbsResponse.json()
+  const thumbnails = thumbsData.thumbnails as ThumbnailsResponse
 
   const filteredLogs = logs.filter((log) => log.tags.includes(params.tagName))
   const filteredThumbs = thumbnails.filter((thumb) => {

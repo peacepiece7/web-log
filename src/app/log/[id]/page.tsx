@@ -9,6 +9,7 @@ import ScrollToTop from '@/components/ScrollToTop'
 import { getDocCache, getDocsCache } from '@/service/Firebase_fn/collection'
 import { getContentDataCache } from '@/service/Firebase_fn/storage'
 import MarkdownViewer from '@/components/MarkdownViewer'
+import { Suspense } from 'react'
 
 type Props = {
   params: {
@@ -17,11 +18,14 @@ type Props = {
 }
 
 export default async function WebLogPage({ params }: Props) {
-  // const logs = await getDocsCache<LogsResponse>('logs')
+  const logsResponse = await fetch('http://localhost:3000/api/get/logs')
+  const logsData = await logsResponse.json()
+  const logs = logsData.logs as LogsResponse
 
-  const log = await getDocCache<LogResponse>('logs', params.id)
+  // todo log 없을 경우 처리
+  const log = logs.find((log) => log.id === params.id)
 
-  const content = await getContentDataCache(log.storagePath)
+  const content = await getContentDataCache(log?.storagePath)
 
   const toc = createToc(content)
   const mdRole = new MarkdownIt({
@@ -42,10 +46,16 @@ export default async function WebLogPage({ params }: Props) {
   return (
     <div>
       <section className='flex flex-col items-center'>
-        <h1 className='text-4xl text-center'>{log.title}</h1>
-        <TableOfContent toc={toc} />
-        <MarkdownViewer html={html} />
-        <ScrollToTop />
+        <h1 className='text-4xl text-center'>{log?.title}</h1>
+        <Suspense fallback={<div>create table of content...</div>}>
+          <TableOfContent toc={toc} />
+        </Suspense>
+        <Suspense fallback={<div>create post content</div>}>
+          <MarkdownViewer html={html} />
+        </Suspense>
+        <Suspense fallback={<div>create scroll top button</div>}>
+          <ScrollToTop />
+        </Suspense>
       </section>
     </div>
   )
@@ -53,7 +63,6 @@ export default async function WebLogPage({ params }: Props) {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const log = await getDocCache<LogResponse>('logs', params.id)
-
   return {
     title: `Web log | ${log.title}`,
     description: `${log.title} 포스팅`,
@@ -62,6 +71,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export async function generateStaticParams() {
-  const logs = await getDocsCache<LogsResponse>('logs')
+  const logsResponse = await fetch('http://localhost:3000/api/get/logs')
+  const logsData = await logsResponse.json()
+  const logs = logsData.logs as LogsResponse
+
   return logs.map((log) => ({ id: log.id }))
 }

@@ -26,7 +26,8 @@ const db = getFirestore(init)
 // }
 
 export const getDocsCache = cache(async <T extends object>(_collection: string) => {
-  console.log('GET DOCS CACHE가 호출되었습니다.')
+  console.log(_collection + 'GET DOCS CACHE가 호출되었습니다.')
+  debugger
   const snapshot = await getDocs(collection(db, _collection))
   const docs = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
   return docs as T

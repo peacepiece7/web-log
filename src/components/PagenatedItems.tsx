@@ -36,7 +36,8 @@ export default function PagenatedItems({ itemsPerPage, items, thumbs, page }: Pr
 
   const handlePageClick = (event: { selected: number }) => {
     const newOffset = (event.selected * itemsPerPage) % items.length
-    router.push(`/logs/${newOffset / itemsPerPage + 1}`)
+    window.location.replace(`/logs/${newOffset / itemsPerPage + 1}`)
+    // router.push(`/logs/${newOffset / itemsPerPage + 1}`)
   }
 
   return (

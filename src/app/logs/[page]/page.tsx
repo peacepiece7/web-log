@@ -1,8 +1,6 @@
-import { Metadata } from 'next'
 import { Suspense } from 'react'
 import { LogsResponse, ThumbnailsResponse } from '@/type'
 import PagenatedItems from '@/components/PagenatedItems'
-import { getDocsCache } from '@/service/Firebase_fn/collection'
 
 type Props = {
   params: {
@@ -10,23 +8,26 @@ type Props = {
   }
 }
 export default async function LogPage(props: Props) {
-  const thumbnails = await getDocsCache<ThumbnailsResponse>('thumbnails')
-  const logs = await getDocsCache<LogsResponse>('logs')
+  const logsResponse = await fetch('http://localhost:3000/api/get/logs')
+  const logsData = await logsResponse.json()
+  const logs = logsData.logs as LogsResponse
+
+  const thumbsResponse = await fetch('http://localhost:3000/api/get/thumbnails')
+  const thumbsData = await thumbsResponse.json()
+  const thumbnails = thumbsData.thumbnails as ThumbnailsResponse
 
   return (
-    <main>
-      <div className='max-w-7xl inset-0 m-auto pl-5 pr-5'>
-        <h1>Logs</h1>
-        <Suspense fallback={<div>Loading... from src/app/logs/[pages]</div>}>
-          <PagenatedItems
-            itemsPerPage={5}
-            items={logs}
-            thumbs={thumbnails}
-            page={parseInt(props.params.page) - 1}
-          />
-        </Suspense>
-      </div>
-    </main>
+    <div className='max-w-7xl inset-0 m-auto pl-5 pr-5'>
+      <h1>Logs</h1>
+      <Suspense fallback={<div>Loading... from src/app/logs/[pages]</div>}>
+        <PagenatedItems
+          itemsPerPage={5}
+          items={logs}
+          thumbs={thumbnails}
+          page={parseInt(props.params.page) - 1}
+        />
+      </Suspense>
+    </div>
   )
 }
 export const metadata = {
@@ -34,7 +35,10 @@ export const metadata = {
 }
 
 export async function generateStaticParams() {
-  const logs = await getDocsCache<LogsResponse>('logs')
+  const logsResponse = await fetch('http://localhost:3000/api/get/logs')
+  const logsData = await logsResponse.json()
+  const logs = logsData.logs as LogsResponse
+
   const itemsPerPage = 5
   const pages = []
   for (let i = 0; i < Math.ceil(logs.length / itemsPerPage); i++) {
