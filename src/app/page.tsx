@@ -3,18 +3,13 @@ import { LogsResponse, ThumbnailsResponse } from '@/type'
 import Image from 'next/image'
 
 import PagenatedItems from '@/components/PagenatedItems'
-
-import { getDocsCache } from '@/service/Firebase_fn/collection'
+import { getFetcher } from '@/service/fetcher'
 
 export default async function Home() {
-  const logs = await getDocsCache<LogsResponse>('logs')
-  const thumbnails = await getDocsCache<ThumbnailsResponse>('thumbnails')
+  const response = await getFetcher('logs', 'thumbnails')
 
-  // const thumbnailsPromise = getDocsCache<ThumbnailsResponse>('thumbnails')
-  // const logsPromise = getDocsCache<LogsResponse>('logs')
-
-  // const thumbnails = await thumbnailsPromise
-  // const logs = await logsPromise
+  const logs = response[0].logs as LogsResponse
+  const thumbnails = response[1].thumbnails as ThumbnailsResponse
 
   return (
     <main className='relative overflow-hidden'>

@@ -20,7 +20,7 @@ export default function Items({ logs, thumbs: thumbnails }: Props) {
           >
             <div className='pb-4 flex-1'>
               <Link
-                prefetch={false}
+                prefetch={process.env.NODE_ENV === 'production'}
                 href={`/log/${log.id}`}
               >
                 <div

@@ -2,14 +2,13 @@ import { LogsResponse, TagsResponse } from '@/type'
 import Link from 'next/link'
 
 import TagMenu from '@/components/TagMenu'
-import { getDocsCache } from '@/service/Firebase_fn/collection'
+import { getFetcher } from '@/service/fetcher'
 
 export default async function Header() {
-  const tagsPromise = getDocsCache<TagsResponse>('tags')
-  const logsPromise = getDocsCache<LogsResponse>('logs')
+  const response = await getFetcher('logs', 'tags')
 
-  const tags = await tagsPromise
-  const logs = await logsPromise
+  const logs = response[0].logs as LogsResponse
+  const tags = response[1].tags as TagsResponse
 
   return (
     <header

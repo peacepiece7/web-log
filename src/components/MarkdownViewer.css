@@ -109,8 +109,8 @@
 #markdown-body p,
 #markdown-body li {
   margin: 0.5rem 0rem;
-  word-spacing: -0.07rem;
-  line-height: 1.8rem;
+  word-spacing: -0.2rem;
+  line-height: 1.5rem;
 }
 #markdown-body ul li {
   list-style: circle;

@@ -2,15 +2,18 @@ import { LogsResponse, TagsResponse, ThumbnailsResponse } from '@/type'
 
 import FilteredList from '@/components/FilteredList'
 import { getDocsCache } from '@/service/Firebase_fn/collection'
+import { getFetcher } from '@/service/fetcher'
 
 type Props = {
   params: {
     tagName: string
   }
 }
+
 export default async function Tags({ params }: Props) {
-  const logs = await getDocsCache<LogsResponse>('logs')
-  const thumbnails = await getDocsCache<ThumbnailsResponse>('thumbnails')
+  const response = await getFetcher('logs', 'thumbnails')
+  const logs = response[0].logs as LogsResponse
+  const thumbnails = response[1].thumbnails as ThumbnailsResponse
 
   const filteredLogs = logs.filter((log) => log.tags.includes(params.tagName))
   const filteredThumbs = thumbnails.filter((thumb) => {
@@ -32,6 +35,7 @@ export default async function Tags({ params }: Props) {
 }
 
 export async function generateStaticParams() {
-  const tags = await getDocsCache<TagsResponse>('tags')
+  const response = await getFetcher('logs', 'thumbnails')
+  const tags = response[0].logs as TagsResponse
   return tags.map((tag) => ({ tagName: tag.name }))
 }
