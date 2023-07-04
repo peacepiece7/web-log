@@ -22,7 +22,7 @@ export default async function Tags({ params }: Props) {
 
   return (
     <main>
-      <div className='max-w-7xl inset-0 m-auto pl-5 pr-5'>
+      <div className='max-w-7xl inset-0 m-auto pl-5 pr-5 mb-12'>
         <h1>{`${params.tagName} Logs`}</h1>
         <FilteredList
           logs={filteredLogs}

@@ -13,7 +13,7 @@ export default async function Home() {
 
   return (
     <main className='relative overflow-hidden'>
-      <div className='max-w-7xl inset-0 m-auto pl-5 pr-5'>
+      <div className='max-w-7xl inset-0 m-auto pl-5 pr-5 mb-12'>
         <div className='flex mt-24'>
           <Image
             className='rounded-[75px] border-[1px] border-[rgba(255,255,255,0.1)]'
