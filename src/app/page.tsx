@@ -3,27 +3,13 @@ import { LogsResponse, ThumbnailsResponse } from '@/type'
 import Image from 'next/image'
 
 import PagenatedItems from '@/components/PagenatedItems'
+import { getFetcher } from '@/service/fetcher'
 
 export default async function Home() {
-  const logsResponse = await fetch(
-    `${
-      process.env.NODE_ENV === 'development'
-        ? 'http://localhost:3000'
-        : `https://${process.env.VERCEL_URL}`
-    }/api/get/logs`,
-  )
-  const logsData = await logsResponse.json()
-  const logs = logsData.logs as LogsResponse
+  const response = await getFetcher('logs', 'thumbnails')
 
-  const thumbsResponse = await fetch(
-    `${
-      process.env.NODE_ENV === 'development'
-        ? 'http://localhost:3000'
-        : `https://${process.env.VERCEL_URL}`
-    }/api/get/thumbnails`,
-  )
-  const thumbsData = await thumbsResponse.json()
-  const thumbnails = thumbsData.thumbnails as ThumbnailsResponse
+  const logs = response[0].logs as LogsResponse
+  const thumbnails = response[1].thumbnails as ThumbnailsResponse
 
   return (
     <main className='relative overflow-hidden'>

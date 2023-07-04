@@ -10,6 +10,7 @@ import { getDocCache, getDocsCache } from '@/service/Firebase_fn/collection'
 import { getContentDataCache } from '@/service/Firebase_fn/storage'
 import MarkdownViewer from '@/components/MarkdownViewer'
 import { Suspense } from 'react'
+import { getFetcher } from '@/service/fetcher'
 
 type Props = {
   params: {
@@ -18,15 +19,8 @@ type Props = {
 }
 
 export default async function WebLogPage({ params }: Props) {
-  const logsResponse = await fetch(
-    `${
-      process.env.NODE_ENV === 'development'
-        ? 'http://localhost:3000'
-        : `https://${process.env.VERCEL_URL}`
-    }/api/get/logs`,
-  )
-  const logsData = await logsResponse.json()
-  const logs = logsData.logs as LogsResponse
+  const response = await getFetcher('logs')
+  const logs = response[0].logs as LogsResponse
 
   // todo log 없을 경우 처리
   const log = logs.find((log) => log.id === params.id)
@@ -53,39 +47,28 @@ export default async function WebLogPage({ params }: Props) {
     <div>
       <section className='flex flex-col items-center'>
         <h1 className='text-4xl text-center'>{log?.title}</h1>
-        <Suspense fallback={<div>create table of content...</div>}>
-          <TableOfContent toc={toc} />
-        </Suspense>
-        <Suspense fallback={<div>create post content</div>}>
-          <MarkdownViewer html={html} />
-        </Suspense>
-        <Suspense fallback={<div>create scroll top button</div>}>
-          <ScrollToTop />
-        </Suspense>
+        <TableOfContent toc={toc} />
+        <MarkdownViewer html={html} />
+        <ScrollToTop />
       </section>
     </div>
   )
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const log = await getDocCache<LogResponse>('logs', params.id)
+  const response = await getFetcher('logs')
+  const logs = response[0].logs as LogsResponse
+  const log = logs.find((log) => log.id === params.id)
+
   return {
-    title: `Web log | ${log.title}`,
-    description: `${log.title} 포스팅`,
-    keywords: `${log.tags.join(', ')}`,
+    title: `Web log | ${log?.title}`,
+    description: `${log?.title} 포스팅`,
+    keywords: `${log?.tags.join(', ')}`,
   }
 }
 
 export async function generateStaticParams() {
-  const logsResponse = await fetch(
-    `${
-      process.env.NODE_ENV === 'development'
-        ? 'http://localhost:3000'
-        : `https://${process.env.VERCEL_URL}`
-    }/api/get/logs`,
-  )
-  const logsData = await logsResponse.json()
-  const logs = logsData.logs as LogsResponse
-
+  const response = await getFetcher('logs')
+  const logs = response[0].logs as LogsResponse
   return logs.map((log) => ({ id: log.id }))
 }

@@ -7,7 +7,7 @@ import { getDocsCache } from '@/service/Firebase_fn/collection'
 export async function GET() {
   try {
     const tags = await getDocsCache<TagsResponse>('tags')
-    return NextResponse.json({ tags })
+    return NextResponse.json(tags)
   } catch (error) {
     console.error(error)
     return { tags: [] }
