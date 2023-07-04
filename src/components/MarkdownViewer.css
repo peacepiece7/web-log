@@ -62,6 +62,7 @@
 
 #markdown-body h3,
 #markdown-body h4 {
+  font-weight: 500;
   line-height: 3rem;
   margin: 2rem 0 0 0;
 }
