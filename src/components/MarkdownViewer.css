@@ -54,7 +54,7 @@
 #markdown-body img[title='small'] {
   max-width: 700px;
 }
-#markdown-body h1 {
+/* #markdown-body h1 {
   font-size: 2.5rem;
   line-height: 2.5rem;
   margin-bottom: 1rem;
@@ -85,7 +85,7 @@
   font-size: 1.1rem;
   line-height: 1.5rem;
   margin-bottom: 1rem;
-}
+} */
 #markdown-body h1 a,
 #markdown-body h2 a,
 #markdown-body h3 a,
@@ -94,6 +94,7 @@
 #markdown-body h6 a {
   color: black;
   font-weight: 400;
+  text-decoration: none;
 }
 
 #markdown-body hr {
@@ -111,6 +112,7 @@
   margin: 0.5rem 0rem;
   word-spacing: -0.2rem;
   line-height: 1.5rem;
+  color: black;
 }
 #markdown-body ul li {
   list-style: circle;
@@ -124,8 +126,7 @@
 }
 #markdown-body pre {
   padding: 1rem 1rem calc(1rem - 20px) 1rem;
-  background-color: rgba(0, 0, 0, 0.2);
-  color: black;
+  /* background-color: rgba(0, 0, 0,); */
   overflow-x: scroll;
 }
 #markdown-body pre::-webkit-scrollbar {
@@ -140,7 +141,7 @@
 }
 #markdown-body * {
   font-family: var(--font-azeret-mono);
-  font-weight: 200;
+  font-weight: 300;
   line-height: 1.2rem;
 }
 #markdown-body code {
@@ -158,9 +159,9 @@
 
 #markdown-body pre code {
   background-color: transparent;
-  font-weight: 200;
+  font-weight: 400;
   padding: 0;
-  color: black;
+  color: white;
 }
 #markdown-body blockquote {
   border: 1px solid rgba(39, 169, 227, 0.5);
@@ -171,26 +172,26 @@
   border-left: 6px solid rgba(39, 169, 227, 0.5);
 }
 #markdown-body .hljs-keyword {
-  color: rgb(179, 67, 179);
+  color: rgb(219, 218, 117);
 }
 #markdown-body .hljs-params {
-  color: rgb(39, 39, 212);
+  color: rgb(136, 136, 228);
 }
 #markdown-body .hljs-variable {
-  color: rgba(9, 88, 9);
+  color: rgb(145, 238, 145);
 }
 #markdown-body .hljs-property {
-  color: rgb(95, 6, 136);
+  color: rgb(193, 93, 240);
 }
 #markdown-body .hljs-string {
-  color: green;
+  color: rgb(233, 122, 123);
 }
 #markdown-body .hljs-number {
-  color: rgba(250, 2, 196);
+  color: rgb(250, 122, 222);
 }
 #markdown-body .hljs-title {
-  color: #d73a49;
+  color: #c6aeec;
 }
 #markdown-body .hljs-comment {
-  color: #6a737d;
+  color: #b9cbe0;
 }

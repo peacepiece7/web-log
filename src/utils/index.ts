@@ -10,7 +10,6 @@ export const randomBrightColor = (str: string) => {
     let value = (hash >> (i * 8)) & 0xff
     colour += ('00' + value.toString(16)).substr(-2)
   }
-  console.log('colour : ', colour)
   return colour
 }
 
